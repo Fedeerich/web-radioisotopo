@@ -1,17 +1,21 @@
 import "../styles/Login.css";
 import logo from "../assets/logo.png"; 
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export function LoginForm() {
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+
+    const navigate = useNavigate();
     
     const handleSubmit = (event ) => {
         event.preventDefault();
         console.log("Intentando iniciar sesión...");
 
-        alert("Intentando entrar con: " + email) // En un futuro aquí irá la parte base de datos
+        console.log("Intentando entrar con: " + email) // En un futuro aquí irá la parte base de datos
+        navigate("/main-page");
     };
 
     const manejarCambioEmail = (event) => {

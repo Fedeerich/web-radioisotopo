@@ -1,0 +1,88 @@
+.navbar-main {
+    height: 70px;
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 30px;
+    margin-left: 260px; 
+    border-bottom: 1px solid #e2e8f0;
+    box-sizing: border-box;
+}
+
+.navbar-left h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: #1a202c;
+    font-weight: 600;
+}
+
+.connection-status {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 0.75rem;
+    color: #768191;
+    margin-top: 2px;
+}
+
+.connection-status i {
+    font-size: 10px;
+}
+
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.notification-btn {
+    background: transparent;
+    border: none;
+    font-size: 1.2rem;
+    color: #4a5568;
+    cursor: pointer;
+    display: flex;
+}
+
+.navbar-divider-vertical {
+    width: 1px;
+    height: 35px;
+    background-color: #e2e8f0;
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    text-align: right;
+}
+
+.user-name {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #2d3748;
+}
+
+.user-role {
+    font-size: 0.75rem;
+    color: #768191;
+}
+
+.user-avatar {
+    width: 40px;
+    height: 40px;
+    background-color: #4299e1;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
