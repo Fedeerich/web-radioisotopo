@@ -1,0 +1,181 @@
+.dashboard-layout {
+    display: flex;
+    background-color: #f4f7f9;
+    min-height: 100vh;
+}
+
+.dashboard-main-area {
+    flex-grow: 1;
+    margin-left: 260px;
+    display: flex;
+    flex-direction: column;
+}
+
+.dashboard-content {
+    padding: 40px 50px;
+    margin-top: 40px; 
+}
+
+.content-header {
+    margin-bottom: 35px;
+}
+
+.content-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 8px;
+}
+
+.content-header p {
+    color: #718096;
+    font-size: 1rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 40px;
+}
+
+.stat-card {
+    background: white;
+    padding: 25px 30px;
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.stat-icon {
+    width: 65px;
+    height: 65px;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+}
+
+.stat-icon.blue { background-color: #3dabff1e; color: #4299e1; }
+.stat-icon.red { background-color: #ff000026; color: #f56565; }
+.stat-icon.green { background-color: #00ff4426; color: #48bb78; }
+
+.stat-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-number {
+    display: block;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #2d3748;
+    line-height: 1;
+    margin-bottom: 5px;
+}
+
+.stat-label {
+    color: #a0aec0;
+    font-size: 0.95rem;
+}
+
+.activity-card {
+    background: white;
+    border-radius: 24px;
+    padding: 15px;
+    padding-left: 35px;
+    padding-right: 35px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.activity-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.activity-header h3 {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #1a202c;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.btn-view-all {
+    background: none;
+    border: none;
+    color: #3182ce;
+    font-weight: 700;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.btn-view-all:hover {
+    color: #2b6cb0;
+    text-decoration: underline;
+}
+
+.activity-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.activity-item {
+    display: flex;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #f7fafc;
+    gap: 20px;
+    transition: background-color 0.2s;
+}
+
+.activity-item:last-child {
+    border-bottom: none;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+}
+
+.red-dot { background-color: #f56565; box-shadow: 0 0 8px rgba(245, 101, 101, 0.4); }
+.green-dot { background-color: #48bb78; box-shadow: 0 0 8px rgba(72, 187, 120, 0.4); }
+.yellow-dot { background-color: #dae158; box-shadow: 0 0 8px rgba(166, 187, 72, 0.4); }
+.blue-dot { background-color: #51c9d4; box-shadow: 0 0 8px rgba(72, 181, 187, 0.4); }
+
+.patient-info {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.patient-name { 
+    font-weight: 700; 
+    color: #2d3748; 
+    font-size: 1rem;
+}
+
+.patient-status { 
+    font-size: 0.9rem; 
+    color: #a0aec0; 
+    margin-top: 2px;
+}
+
+.time-ago { 
+    color: #8b9096; 
+    font-size: 0.85rem; 
+    margin-right: 15px;
+}
+
+.arrow { 
+    color: #8b9096; 
+    font-size: 0.9rem;
+}

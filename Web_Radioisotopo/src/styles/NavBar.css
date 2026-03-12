@@ -1,12 +1,16 @@
 .navbar-main {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: calc(100% - 260px); 
     height: 70px;
     background-color: white;
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 30px;
-    margin-left: 260px; 
     border-bottom: 1px solid #e2e8f0;
+    z-index: 100;
     box-sizing: border-box;
 }
 
