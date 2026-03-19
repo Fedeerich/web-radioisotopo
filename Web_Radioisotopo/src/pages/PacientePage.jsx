@@ -1,12 +1,26 @@
+import { useState } from "react";
 import "../styles/Paciente.css";
 
+import { PerfilPacientePage } from './PerfilPacientePage';
+
 export function PacientePage() {
+    const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
+
     const pacientes = [
-        { id: "JF", nombre: "Jordi Farré", emotional: "ESTABLE", tratamiento: "Iodo 131 (150MBq)", progreso: 95, color: "green" },
-        { id: "MV", nombre: "Montserrat Vila", emotional: "ANSIEDAD LEVE", tratamiento: "Lutenci 177 (200MBq)", progreso: 61, color: "yellow" },
-        { id: "LM", nombre: "Laia Martí", emotional: "DEPRESIÓN", tratamiento: "Lutenci 177 (200MBq)", progreso: 79, color: "red" },
-        { id: "MP", nombre: "Marc Puig", emotional: "ESTABLE", tratamiento: "Iodo 131 (50 Ci)", progreso: 26, color: "green" },
+        { id: "FARR345678911", nombre: "Jordi Farré", emotional: "ESTABLE", tratamiento: "Iodo 131 (150MBq)", progreso: 95, color: "green", edad: 84 },
+        { id: "VILA343123211", nombre: "Montserrat Vila", emotional: "ANSIEDAD LEVE", tratamiento: "Lutenci 177 (200MBq)", progreso: 61, color: "yellow", edad: 36 },
+        { id: "MART349978927", nombre: "Laia Martí", emotional: "DEPRESIÓN", tratamiento: "Lutenci 177 (200MBq)", progreso: 79, color: "red", edad: 22 },
+        { id: "PUIG269483104", nombre: "Marc Puig", emotional: "ESTABLE", tratamiento: "Iodo 131 (50 Ci)", progreso: 26, color: "green", edad: 48 },
     ];
+
+    if (pacienteSeleccionado) {
+        return (
+            <PerfilPacientePage 
+                paciente={pacienteSeleccionado} 
+                alVolver={() => setPacienteSeleccionado(null)} 
+            />
+        );
+    }
 
     return (
         <div className="pacientes-container">
@@ -53,10 +67,12 @@ export function PacientePage() {
                         {pacientes.map((p, index) => (
                             <tr key={index}>
                                 <td className="user-cell">
-                                    <div className={`avatar ${p.id.toLowerCase()}`}>{p.id}</div>
+                                    <div className={`avatar ${p.id.toLowerCase()}`}>
+                                        {p.nombre.split(" ").map(n => n[0]).join("").toUpperCase()}
+                                    </div>
                                     <div>
                                         <div className="user-name">{p.nombre}</div>
-                                        <div className="user-id">XXXXXXXXXX</div>
+                                        <div className="user-id">{p.id}</div>
                                     </div>
                                 </td>
                                 <td>
@@ -72,7 +88,12 @@ export function PacientePage() {
                                     </div>
                                 </td>
                                 <td>
-                                    <button className="btn-perfil">Ver Perfil</button>
+                                    <button 
+                                        className="btn-perfil" 
+                                        onClick={() => setPacienteSeleccionado(p)}
+                                    >
+                                        Ver Perfil
+                                    </button>
                                 </td>
                             </tr>
                         ))}

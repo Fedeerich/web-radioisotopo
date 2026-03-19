@@ -1,0 +1,489 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+.detalle-container {
+    padding: 20px;
+    background: #f4f6f9;
+    font-family: 'Inter', sans-serif;
+    color: #1f2937;
+    animation: fadeIn 0.4s ease-out;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+/* HEADER */
+.patient-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.back-btn {
+    width: 44px;
+    height: 44px;
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+    color: #4b5563;
+    transition: all 0.2s;
+}
+
+.back-btn:hover {
+    background: #f9fafb;
+    color: #1f2937;
+}
+
+.patient-title-area {
+    margin-left: 20px;
+}
+
+.patient-title-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 6px;
+}
+
+.patient-name {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+.badge {
+    background: #6ee7b7;
+    color: #064e3b;
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: 600;
+}
+
+.patient-subtitle {
+    margin: 0;
+    font-size: 1rem;
+    color: #6b7280;
+}
+
+/* GRID */
+.grid-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    border-radius: 14px;
+    padding: 18px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    min-width: 0; /* Fixes horizontal stretching from overflowing children */
+}
+
+.span-2 {
+    grid-column: span 2;
+}
+
+.card-title {
+    margin: 0 0 20px 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.icon-blue { color: #3b82f6; }
+.icon-green { color: #22c55e; }
+.icon-red { color: #ef4444; }
+.icon-yellow { color: #eab308; }
+
+.watch-content {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-top: 10px;
+    margin-bottom: 24px;
+}
+
+.watch-icon-box {
+    background: #f3f4f6;
+    border-radius: 14px;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}  
+
+.watch-icon-box i {
+    font-size: 1.9rem;
+    color: #00000083;
+    display: flex;
+}
+
+.watch-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.watch-info strong {
+    font-size: 1rem;
+    color: #111827;
+}
+
+.status-text.green {
+    color: #16a34a;
+    font-weight: 600;
+    font-size: 0.8rem;
+}
+
+.watch-info small {
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+.watch-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.btn-sync {
+    flex: 1;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.btn-disconnect {
+    width: 44px;
+    background: white;
+    border: 1px solid #fecaca;
+    color: #ef4444;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.watch-note {
+    font-size: 0.75rem;
+    color: #9ca3af;
+    text-align: center;
+    margin: 16px 0 0 0;
+}
+
+/* CARD 2: PROGRESO */
+.atom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 30px 0;
+}
+
+.atom-icon {
+    margin-bottom: 12px;
+}
+
+.atom-text {
+    margin: 0;
+    font-weight: 600;
+    color: #4b5563;
+    font-size: 1.1rem;
+}
+
+.progress-stats {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.stat-left, .stat-right {
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-right {
+    align-items: flex-end;
+}
+
+.stat-value {
+    font-size: 1.3rem;
+    font-weight: 700;
+}
+
+.stat-value.green { color: #16a34a; }
+.stat-value.black { color: #111827; }
+
+.stat-label {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    font-weight: 500;
+}
+
+.progress-bar-container {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-bar-fill {
+    height: 100%;
+    background: #22c55e;
+    border-radius: 4px;
+}
+
+/* CARD 3: CONSONANCIA */
+.card-desc {
+    margin: 0 0 12px 0;
+    font-size: 0.8rem;
+    color: #6b7280;
+    line-height: 1.4;
+}
+
+.alert-green {
+    background: #dcfce7;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 10px;
+    margin-bottom: 16px;
+}
+
+.alert-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #16a34a;
+    font-size: 0.85rem;
+    margin-bottom: 4px;
+}
+
+.alert-time {
+    font-size: 0.75rem;
+    color: rgba(22, 163, 74, 0.8);
+    display: block;
+    padding-left: 24px;
+}
+
+.select-input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    background: #f9fafb;
+    color: #4b5563;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
+    outline: none;
+    font-family: inherit;
+}
+
+.btn-outline {
+    width: 100%;
+    padding: 8px;
+    background: white;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-weight: 500;
+    font-size: 0.85rem;
+    color: #374151;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-outline:hover {
+    background: #f9fafb;
+}
+
+/* CARD 4: MONITOR EMOCIONAL */
+.emot-card {
+    display: flex;
+    flex-direction: column;
+}
+
+.emoji-row {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin: 15px 0 35px 0;
+}
+
+.emoji-item {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    background: #f9fafb;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.emoji-item.active {
+    background: #fff;
+}
+
+.emoji-item.green-emoji { border: 4px solid #22c55e; }
+.emoji-item.yellow-emoji { border: 2px solid #eab308; }
+.emoji-item.orange-emoji { border: 2px solid #f97316; }
+.emoji-item.red-emoji { border: 2px solid #ef4444; }
+
+.mood-scale-container {
+    position: relative;
+    width: 85%;
+    margin: 0 auto;
+}
+
+.mood-scale {
+    display: flex;
+    height: 14px;
+    border-radius: 7px;
+    overflow: hidden;
+}
+
+.scale-segment {
+    flex: 1;
+}
+
+.c-green { background: #22c55e; }
+.c-yellow { background: #eab308; }
+.c-orange { background: #f97316; }
+.c-red { background: #ef4444; }
+
+.mood-pointer {
+    position: absolute;
+    top: -16px;
+    color: #1f2937;
+    font-size: 14px;
+    transform: translateX(-50%);
+}
+
+.mood-labels {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.mood-labels span {
+    flex: 1;
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: #4b5563;
+}
+
+.two-lines {
+    line-height: 1.2;
+    display: block;
+}
+
+.mood-note {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-top: 30px;
+}
+
+/* CARD 5: CHAT */
+.chat-card {
+    padding-right: 12px;
+}
+.message-list {
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+}
+
+.msg-item {
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.msg-item.border-0 {
+    border-bottom: none;
+}
+
+.msg-icon {
+    width: 44px;
+    height: 44px;
+    background: #fee2e2;
+    color: #ef4444;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.msg-content {
+    flex: 1;
+    display: flex;
+    gap: 16px;
+    align-items: center;
+    overflow: hidden;
+    min-width: 0;
+}
+
+.msg-left {
+    flex-shrink: 0;
+    width: 140px;
+    display: flex;
+    flex-direction: column;
+}
+
+.msg-left strong {
+    font-size: 0.95rem;
+    color: #111827;
+}
+
+.msg-subject {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4b5563;
+    margin-top: 2px;
+}
+
+.msg-preview {
+    font-size: 0.8rem;
+    color: #9ca3af;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    min-width: 0;
+}
