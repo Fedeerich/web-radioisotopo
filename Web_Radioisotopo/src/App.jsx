@@ -1,9 +1,24 @@
-import { HomePage } from "./pages/HomePage"
+import { useLocation } from "react-router-dom";
+import { SideBar } from './components/SideBar';
+import { NavBar } from './components/NavBar';
+import { HomePage } from './pages/HomePage';
+import { PacientePage } from './pages/PacientePage';
 
 export function App() {
-    return(
-        <>
-            <HomePage />
-        </>
-    )
+    const location = useLocation();
+
+    return (
+        <div className="dashboard-layout">
+            <SideBar />
+            
+            <div className="dashboard-main-area">
+                <NavBar />
+                
+                <main className="dashboard-content">
+                    {location.pathname === "/main-page" && <HomePage />}
+                    {location.pathname === "/paciente" && <PacientePage />}
+                </main>
+            </div>
+        </div>
+    );
 }

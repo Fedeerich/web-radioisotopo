@@ -12,6 +12,7 @@ function Root() {
 
         <Route path="/login-page" element={<LoginPage />} />
         <Route path="/main-page" element={<App />} />
+        <Route path="/paciente" element={<App />} />
 
         <Route path="*" element={<Navigate to="/" />} />
       </Routes>

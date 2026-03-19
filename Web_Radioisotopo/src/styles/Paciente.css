@@ -1,0 +1,207 @@
+.pacientes-container {
+    animation: fadeIn 0.4s ease-out;
+}
+
+.content-header {
+    margin-bottom: 30px;
+}
+
+.content-header h1 {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #1a202c;
+    margin-bottom: 5px;
+}
+
+.content-header p {
+    color: #718096;
+    font-size: 1rem;
+}
+
+.filter-bar {
+    background: white;
+    padding: 20px 25px;
+    border-radius: 18px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+}
+
+.search-input input,
+.filter-select {
+    height: 48px;
+    box-sizing: border-box; 
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    background-color: #f8fafc;
+    font-size: 0.95rem;
+    outline: none;
+    transition: all 0.2s;
+}
+
+.search-input {
+    position: relative;
+    flex: 2.5;
+    display: flex;
+    align-items: center;
+}
+
+.search-input i {
+    position: absolute;
+    left: 15px;
+    color: #1a202c;
+    font-size: 1.1rem;
+    pointer-events: none;
+}
+
+.search-input input {
+    width: 100%;
+    padding: 0 15px 0 48px;
+    color: #4a5568;
+}
+
+.search-input input::placeholder {
+    color: #a0aec0;
+}
+
+input[type="text"] {
+    margin-bottom: 0;
+}
+
+.filter-select {
+    flex: 1;
+    padding: 0 35px 0 15px;
+    font-weight: 700;
+    color: #2d3748;
+    cursor: pointer;
+    appearance: none;
+    
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 15px center;
+    background-size: 14px;
+
+    transition: all 0.3s ease; 
+}
+
+.filter-select:focus {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%232d3748' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 15l-6-6-6 6'/%3E%3C/svg%3E");
+    border-color: #3182ce;
+}
+
+.table-card {
+    background: white;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+}
+
+.patients-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.patients-table th {
+    text-align: left;
+    padding: 20px 25px;
+    color: #a0aec0;
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 1px;
+    border-bottom: 1px solid #f7fafc;
+}
+
+.patients-table td {
+    padding: 20px 25px;
+    border-bottom: 1px solid #f7fafc;
+    vertical-align: middle;
+}
+
+.user-cell {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    font-size: 0.9rem;
+    background: #ebf8ff;
+    color: #3182ce;
+}
+
+.user-name { font-weight: 700; color: #2d3748; font-size: 0.95rem; }
+.user-id { font-size: 0.75rem; color: #cbd5e0; }
+
+/* --- TUS BADGES MANTENIDOS --- */
+.badge {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 800;
+    display: inline-block;
+}
+
+.badge.green { background: #00ff6275; }
+.badge.yellow { background: #ffea0077; }
+.badge.red { background: #ff000070; }
+
+.treatment-cell {
+    color: #718096;
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.progress-bar-bg {
+    width: 110px;
+    height: 8px;
+    background: #edf2f7;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progress-fill { height: 100%; border-radius: 10px; }
+.progress-fill.green { background: #48bb65; }
+.progress-fill.yellow { background: #ecc94b; }
+.progress-fill.red { background: #f56565; }
+
+.progress-text { font-size: 0.85rem; font-weight: 700; }
+.progress-text.green { color: #48bb78; }
+.progress-text.yellow { color: #ecc94b; }
+.progress-text.red { color: #f56565; }
+
+.btn-perfil {
+    padding: 10px 18px;
+    border: 1.5px solid #e2e8f0;
+    background: white;
+    border-radius: 10px;
+    color: #4a5568;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-perfil:hover {
+    background: #f8fafc;
+    border-color: #cbd5e0;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}

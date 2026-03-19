@@ -23,14 +23,20 @@ export function SideBar() {
             <nav className="sidebar-menu">
                 <button 
                     className={`menu-item ${activeTab === "inicio" ? "active" : ""}`}
-                    onClick={() => setActiveTab("inicio")}
+                    onClick={() => {
+                        setActiveTab("inicio")
+                        navigate("/main-page")   
+                    }}
                 >
                     <i className="fi fi-rs-home"></i> <span>Página Principal</span>
                 </button>
 
                 <button 
                     className={`menu-item ${activeTab === "pacientes" ? "active" : ""}`}
-                    onClick={() => setActiveTab("pacientes")}
+                    onClick={() => {
+                        setActiveTab("pacientes")
+                        navigate("/paciente") 
+                    }}
                 >
                     <i className="fi fi-rs-users"></i> <span>Pacientes</span>
                 </button>
