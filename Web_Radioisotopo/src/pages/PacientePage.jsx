@@ -2,9 +2,11 @@ import { useState } from "react";
 import "../styles/Paciente.css";
 
 import { PerfilPacientePage } from './PerfilPacientePage';
+import { CrearPacientePage } from './CrearPacientePage';
 
 export function PacientePage() {
     const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
+    const [creandoPaciente, setCreandoPaciente] = useState(false);
 
     const pacientes = [
         { id: "FARR345678911", nombre: "Jordi Farré", emotional: "ESTABLE", tratamiento: "Iodo 131 (150MBq)", progreso: 95, color: "green", edad: 84 },
@@ -12,6 +14,14 @@ export function PacientePage() {
         { id: "MART349978927", nombre: "Laia Martí", emotional: "DEPRESIÓN", tratamiento: "Lutenci 177 (200MBq)", progreso: 79, color: "red", edad: 22 },
         { id: "PUIG269483104", nombre: "Marc Puig", emotional: "ESTABLE", tratamiento: "Iodo 131 (50 Ci)", progreso: 26, color: "green", edad: 48 },
     ];
+
+    if (creandoPaciente) {
+        return (
+            <CrearPacientePage 
+                alVolver={() => setCreandoPaciente(false)} 
+            />
+        );
+    }
 
     if (pacienteSeleccionado) {
         return (
@@ -24,9 +34,14 @@ export function PacientePage() {
 
     return (
         <div className="pacientes-container">
-            <header className="content-header">
-                <h1>Gestión de pacientes</h1>
-                <p>Gestión de dispositivos y supervisión de tratamientos</p>
+            <header className="content-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>
+                    <h1>Gestión de pacientes</h1>
+                    <p>Gestión de dispositivos y supervisión de tratamientos</p>
+                </div>
+                <button className="btn-add-patient" onClick={() => setCreandoPaciente(true)}>
+                    <i className="fi fi-sr-user-add"></i> Añadir Paciente
+                </button>
             </header>
 
             <div className="filter-bar">
