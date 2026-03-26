@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 
 export function SideBar() {
     const navigate = useNavigate();
-
     const [activeTab, setActiveTab] = useState("inicio");
 
     return (
@@ -24,8 +23,8 @@ export function SideBar() {
                 <button 
                     className={`menu-item ${activeTab === "inicio" ? "active" : ""}`}
                     onClick={() => {
-                        setActiveTab("inicio")
-                        navigate("/main-page")   
+                        setActiveTab("inicio");
+                        navigate("/main-page");   
                     }}
                 >
                     <i className="fi fi-rs-home"></i> <span>Página Principal</span>
@@ -34,8 +33,8 @@ export function SideBar() {
                 <button 
                     className={`menu-item ${activeTab === "pacientes" ? "active" : ""}`}
                     onClick={() => {
-                        setActiveTab("pacientes")
-                        navigate("/paciente") 
+                        setActiveTab("pacientes");
+                        navigate("/paciente"); 
                     }}
                 >
                     <i className="fi fi-rs-users"></i> <span>Pacientes</span>
@@ -45,7 +44,10 @@ export function SideBar() {
             <div className="sidebar-bottom-section">
                 <button 
                     className={`menu-item ${activeTab === "config" ? "active" : ""}`}
-                    onClick={() => setActiveTab("config")}
+                    onClick={() => {
+                        setActiveTab("config");
+                        navigate("/configuracion");
+                    }}
                 >
                     <i className="fi fi-rs-settings"></i> <span>Configuración</span>
                 </button>

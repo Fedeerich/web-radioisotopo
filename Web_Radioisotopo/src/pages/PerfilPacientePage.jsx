@@ -17,7 +17,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 </button>
                 <div className="patient-title-area">
                     <div className="patient-title-row">
-                        <h1 className="patient-name">{patientData.nombre}</h1>
+                        <h1 className="patient-name-2">{patientData.nombre}</h1>
                         <span className="badge active">Tractament Actiu</span>
                     </div>
                     <p className="patient-subtitle">

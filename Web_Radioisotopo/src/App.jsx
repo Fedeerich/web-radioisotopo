@@ -3,6 +3,7 @@ import { SideBar } from './components/SideBar';
 import { NavBar } from './components/NavBar';
 import { HomePage } from './pages/HomePage';
 import { PacientePage } from './pages/PacientePage';
+import { ConfiguracionPage } from './pages/ConfiguracionPage';
 
 export function App() {
     const location = useLocation();
@@ -17,6 +18,7 @@ export function App() {
                 <main className="dashboard-content">
                     {location.pathname === "/main-page" && <HomePage />}
                     {location.pathname === "/paciente" && <PacientePage />}
+                    {location.pathname === "/configuracion" && <ConfiguracionPage />}
                 </main>
             </div>
         </div>
