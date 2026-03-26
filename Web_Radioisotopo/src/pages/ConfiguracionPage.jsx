@@ -4,12 +4,6 @@ export function ConfiguracionPage({ alVolver }) {
     return (
         <div className="configuracion-container">
             <div className="header-seccion">
-                <button className="btn-back-square" onClick={alVolver}>
-                    <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="19" y1="12" x2="5" y2="12"></line>
-                        <polyline points="12 19 5 12 12 5"></polyline>
-                    </svg>
-                </button>
                 <div className="header-textos">
                     <h1>Configuración del Sistema</h1>
                     <p>Ajustes de cuenta, alertas y preferencias del entorno clínico</p>
