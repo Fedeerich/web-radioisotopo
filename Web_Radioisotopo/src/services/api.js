@@ -1,4 +1,4 @@
-const API_URL = "http://192.168.16.35:8080/api"; 
+const API_URL = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev/api"; 
 
 export const loginService = {
     iniciarSesion: async (emailIngresado, passwordIngresado) => {
