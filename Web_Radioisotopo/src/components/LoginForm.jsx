@@ -1,5 +1,6 @@
 import "../styles/Login.css";
 import logo from "../assets/logo.png"; 
+import { loginService } from "../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -7,27 +8,33 @@ export function LoginForm() {
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [mensajeError, setMensajeError] = useState(""); 
 
     const navigate = useNavigate();
-    
-    const handleSubmit = (event ) => {
-        event.preventDefault();
-        console.log("Intentando iniciar sesión...");
-
-        console.log("Intentando entrar con: " + email) // En un futuro aquí irá la parte base de datos
-        navigate("/main-page");
-    };
 
     const manejarCambioEmail = (event) => {
-        setEmail(event.target.value)
+        setEmail(event.target.value);
     };
 
     const manejarCambioPassword = (event) => {
-        setPassword(event.target.value)
+        setPassword(event.target.value);
+    };
+
+    const manejarLogin = async (e) => {
+        e.preventDefault();
+        setMensajeError(""); 
+
+        try {
+            const respuesta = await loginService.iniciarSesion(email, password);
+            navigate("/main-page", { state: { nombreUsuario: respuesta.nombreCompleto } });
+
+        } catch (error) {
+            setMensajeError(error.message); 
+        }
     };
 
     return (
-        <form className="login-form" onSubmit={handleSubmit}>
+        <form className="login-form" onSubmit={manejarLogin}>
             <div className="header-container">
                 <img src={ logo } alt="Logo" className="logo" />
                 <h1>Bienvenido/a a la Área Privada</h1>
@@ -41,6 +48,7 @@ export function LoginForm() {
                 onChange={ manejarCambioEmail }
                 placeholder="Correo electrónico..." 
                 required 
+                className={ mensajeError ? "input-error" : "" }
             />
             
             <div className="passDiv">
@@ -51,6 +59,7 @@ export function LoginForm() {
                     onChange={ manejarCambioPassword }
                     placeholder="Contraseña..." 
                     required 
+                    className={ mensajeError ? "input-error" : "" }
                 />
                 <button 
                     type="button" 
@@ -70,6 +79,12 @@ export function LoginForm() {
                     ¿Olvidaste tu contraseña?
                 </a>
             </div>
+
+            {mensajeError && (
+                <span className="error-texto-final">
+                    {mensajeError}
+                </span>
+            )}
 
             <button type="submit" className="submit-btn">
                 Iniciar sesión

@@ -106,3 +106,18 @@ input[type="text"] {
 .submit-btn:hover {
     background-color: #3991e6;
 }
+
+.login-form input.input-error {
+    border-color: #ef4444 !important;
+    box-shadow: 0 0 0 1px #ef4444 !important;
+}
+
+.error-texto-final {
+    color: #ef4444;
+    font-size: 0.9rem;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    display: block;
+    text-align: center;
+    width: 100%;
+}

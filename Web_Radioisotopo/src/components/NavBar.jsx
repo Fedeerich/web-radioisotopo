@@ -1,6 +1,10 @@
 import "../styles/NavBar.css";
+import { useLocation } from "react-router-dom";
 
 export function NavBar() {
+    const location = useLocation();
+    const nombre = location.state?.nombreUsuario;
+
     return (
         <header className="navbar-main">
             <div className="navbar-left">
@@ -20,7 +24,7 @@ export function NavBar() {
 
                 <div className="user-profile">
                     <div className="user-info">
-                        <span className="user-name">Dr. Nombre Apellido</span>
+                        <span className="user-name">Dr. {nombre} </span>
                         <span className="user-role">Oncología Radioterápica</span>
                     </div>
                     <div className="user-avatar">
