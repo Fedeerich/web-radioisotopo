@@ -3,14 +3,16 @@ import logo from "../assets/logo.png";
 import { loginService } from "../services/api";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export function LoginForm() {
+    const { login } = useAuth();
+    const navigate = useNavigate();
+
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [mensajeError, setMensajeError] = useState(""); 
-
-    const navigate = useNavigate();
 
     const manejarCambioEmail = (event) => {
         setEmail(event.target.value);
@@ -26,7 +28,10 @@ export function LoginForm() {
 
         try {
             const respuesta = await loginService.iniciarSesion(email, password);
-            navigate("/main-page", { state: { nombreUsuario: respuesta.nombreCompleto } });
+            
+            login(respuesta); 
+
+            navigate("/main-page");
 
         } catch (error) {
             setMensajeError(error.message); 

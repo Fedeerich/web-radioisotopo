@@ -1,23 +1,27 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { App } from './App';
+import { AuthProvider } from "./context/AuthContext";
 
 function Root() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LoginPage />} />
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LoginPage />} />
+          <Route path="/login-page" element={<LoginPage />} />
+          
+          <Route path="/main-page" element={<App />} />
+          <Route path="/paciente" element={<App />} />
+          <Route path="/configuracion" element={<App />} />
+          <Route path="/admin" element={<App />} /> 
 
-        <Route path="/login-page" element={<LoginPage />} />
-        <Route path="/main-page" element={<App />} />
-        <Route path="/paciente" element={<App />} />
-        <Route path="/configuracion" element={<App />} />
-
-        <Route path="*" element={<Navigate to="/" />} />
-      </Routes>
-    </BrowserRouter>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

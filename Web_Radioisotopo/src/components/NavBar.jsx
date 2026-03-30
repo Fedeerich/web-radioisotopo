@@ -1,9 +1,10 @@
 import "../styles/NavBar.css";
-import { useLocation } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export function NavBar() {
-    const location = useLocation();
-    const nombre = location.state?.nombreUsuario;
+    const { usuario } = useAuth();
+
+    const nombre = usuario?.nombreCompleto || "Invitado";
 
     return (
         <header className="navbar-main">
@@ -24,11 +25,11 @@ export function NavBar() {
 
                 <div className="user-profile">
                     <div className="user-info">
-                        <span className="user-name">Dr. {nombre} </span>
-                        <span className="user-role">Oncología Radioterápica</span>
+                        <span className="user-name">Dr. {nombre}</span>
+                        <span className="user-role">{usuario?.especialidad || "Oncología Radioterápica"}</span>
                     </div>
                     <div className="user-avatar">
-                        DX
+                        {nombre.substring(0, 2).toUpperCase()}
                     </div>
                 </div>
             </div>

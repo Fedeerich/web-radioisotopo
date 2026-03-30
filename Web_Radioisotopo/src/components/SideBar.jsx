@@ -1,11 +1,14 @@
 import { useState, useEffect } from "react";
 import "../styles/SideBar.css";
 import logo from "../assets/logo.png"; 
-
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 export function SideBar() {
     const navigate = useNavigate();
+    
+    const { logout, usuario } = useAuth();
+    
     const [activeTab, setActiveTab] = useState("inicio");
     const [avisoSalir, setAvisoSalir] = useState(false);
 
@@ -19,6 +22,12 @@ export function SideBar() {
             document.body.style.overflow = "";
         };
     }, [avisoSalir]);
+
+    const manejarCierreSesion = () => {
+        logout();
+        setAvisoSalir(false);
+        navigate("/");
+    };
 
     return (
         <>
@@ -52,6 +61,19 @@ export function SideBar() {
                     >
                         <i className="fi fi-rs-users"></i> <span>Pacientes</span>
                     </button>
+
+                    {usuario?.rol === "ADMIN" && (
+                        <button 
+                            className={`menu-item ${activeTab === "admin" ? "active" : ""}`}
+                            onClick={() => {
+                                setActiveTab("admin");
+                                navigate("/admin");
+                            }}
+                        >
+                            <i className="fi fi-rs-user-add"></i> 
+                            <span>Gestión Usuarios</span>
+                        </button>
+                    )}
                 </nav>
 
                 <div className="sidebar-bottom-section">
@@ -79,7 +101,7 @@ export function SideBar() {
                         <h3>¿Seguro que quieres cerrar sesión?</h3>
                         <div className="modal-botones">
                             <button onClick={() => setAvisoSalir(false)}>Cancelar</button>
-                            <button onClick={() => navigate("/")}>Confirmar</button>
+                            <button className="btn-confirmar" onClick={manejarCierreSesion}>Confirmar</button>
                         </div>
                     </div>
                 </div>

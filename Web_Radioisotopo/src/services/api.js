@@ -4,24 +4,31 @@ export const loginService = {
     iniciarSesion: async (emailIngresado, passwordIngresado) => {
         const respuesta = await fetch(`${API_URL}/auth/login`, {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
                 email: emailIngresado,
                 contraseña: passwordIngresado
             })
         });
 
-        if (respuesta.status === 401) {
-            throw new Error("Email o contraseña incorrectos");
-        }
-
-        if (!respuesta.ok) {
-            throw new Error("Error en el servidor Java");
-        }
+        if (respuesta.status === 401) throw new Error("Email o contraseña incorrectos");
+        if (!respuesta.ok) throw new Error("Error en el servidor Java");
 
         return respuesta.json(); 
+    },
+
+    registrarMedico: async (datosFormulario) => {
+        const respuesta = await fetch(`${API_URL}/users/register-doctor`, { 
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(datosFormulario)
+        });
+
+        if (!respuesta.ok) {
+            const textoError = await respuesta.text();
+            throw new Error(textoError || "Error al registrar el médico");
+        }
+
+        return await respuesta.text();
     }
 };

@@ -1,6 +1,15 @@
+import React from "react";
+import { useAuth } from "../context/AuthContext";
 import "../styles/Configuracion.css";
 
 export function ConfiguracionPage({ alVolver }) {
+    const { usuario } = useAuth();
+
+    const obtenerEspecialidadInicial = () => {
+        if (usuario?.rol === "ADMIN") return "Administración de Sistemas";
+        return usuario?.doctor?.especialidad || "Oncología Radioterápica";
+    };
+
     return (
         <div className="configuracion-container">
             <div className="header-seccion">
@@ -18,18 +27,36 @@ export function ConfiguracionPage({ alVolver }) {
                         <div className="card-header-icon">
                             <h3>Datos de la Cuenta</h3>
                         </div>
+                        
                         <div className="form-group">
                             <label>Nombre del Profesional</label>
-                            <input type="text" value="Dr. Nombre Apellido" disabled className="form-input disabled-input" />
+                            <input 
+                                type="text" 
+                                defaultValue={usuario?.nombreCompleto} 
+                                className="form-input" 
+                                placeholder="Ej: Dr. Marcos Góngora"
+                            />
                         </div>
+
                         <div className="form-group">
                             <label>Correo Electrónico</label>
-                            <input type="text" value="doctor@hospital.cat" disabled className="form-input disabled-input" />
+                            <input 
+                                type="text" 
+                                defaultValue={usuario?.email} 
+                                className="form-input" 
+                                placeholder="doctor@hospital.cat"
+                            />
                         </div>
+
                         <div className="form-group">
                             <label>Especialidad</label>
-                            <input type="text" value="Oncología Radioterápica" disabled className="form-input disabled-input" />
+                            <input 
+                                type="text" 
+                                defaultValue={obtenerEspecialidadInicial()} 
+                                className="form-input" 
+                            />
                         </div>
+                        
                         <button className="btn-blue-outline">Cambiar contraseña</button>
                     </div>
 
@@ -39,7 +66,7 @@ export function ConfiguracionPage({ alVolver }) {
                         </div>
                         <div className="form-group">
                             <label>Idioma de la interfaz</label>
-                            <select className="form-input select-styled">
+                            <select className="form-input select-styled" defaultValue="Castellano">
                                 <option>Castellano</option>
                                 <option>Català</option>
                                 <option>English</option>
@@ -47,7 +74,7 @@ export function ConfiguracionPage({ alVolver }) {
                         </div>
                         <div className="form-group">
                             <label>Zona Horaria</label>
-                            <select className="form-input select-styled">
+                            <select className="form-input select-styled" defaultValue="Europa/Madrid (CET)">
                                 <option>Europa/Madrid (CET)</option>
                                 <option>Europa/Londres (GMT)</option>
                             </select>
@@ -95,6 +122,7 @@ export function ConfiguracionPage({ alVolver }) {
                                     <span className="slider round"></span>
                                 </label>
                             </div>
+
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>Alerta de Radiación Segura</strong>

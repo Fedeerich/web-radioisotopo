@@ -4,26 +4,25 @@ import { NavBar } from './components/NavBar';
 import { HomePage } from './pages/HomePage';
 import { PacientePage } from './pages/PacientePage';
 import { ConfiguracionPage } from './pages/ConfiguracionPage';
-import { AuthProvider } from "./context/AuthContext";
+import { GestionUsuarioPage } from './pages/GestionUsuarioPage';
 
 export function App() {
     const location = useLocation();
 
     return (
-        <AuthProvider>
-            <div className="dashboard-layout">
-                <SideBar />
+        <div className="dashboard-layout">
+            <SideBar />
+            
+            <div className="dashboard-main-area">
+                <NavBar />
                 
-                <div className="dashboard-main-area">
-                    <NavBar />
-                    
-                    <main className="dashboard-content">
-                        {location.pathname === "/main-page" && <HomePage />}
-                        {location.pathname === "/paciente" && <PacientePage />}
-                        {location.pathname === "/configuracion" && <ConfiguracionPage />}
-                    </main>
-                </div>
+                <main className="dashboard-content">
+                    {location.pathname === "/main-page" && <HomePage />}
+                    {location.pathname === "/paciente" && <PacientePage />}
+                    {location.pathname === "/configuracion" && <ConfiguracionPage />}
+                    {location.pathname === "/admin" && <GestionUsuarioPage />}
+                </main>
             </div>
-        </AuthProvider>
+        </div>
     );
 }
