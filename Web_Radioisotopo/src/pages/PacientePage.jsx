@@ -1,35 +1,44 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import "../styles/Paciente.css";
 
 import { PerfilPacientePage } from './PerfilPacientePage';
 import { CrearPacientePage } from './CrearPacientePage';
+import { loginService } from "../services/api";
 
 export function PacientePage() {
     const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
     const [creandoPaciente, setCreandoPaciente] = useState(false);
+    
+    const [pacientes, setPacientes] = useState([]);
+    const [busqueda, setBusqueda] = useState("");
+    const [cargando, setCargando] = useState(true);
 
-    const pacientes = [
-        { id: "FARR345678911", nombre: "Jordi Farré", emotional: "ESTABLE", tratamiento: "Iodo 131 (150MBq)", progreso: 95, color: "green", edad: 84 },
-        { id: "VILA343123211", nombre: "Montserrat Vila", emotional: "ANSIEDAD LEVE", tratamiento: "Lutenci 177 (200MBq)", progreso: 61, color: "yellow", edad: 36 },
-        { id: "MART349978927", nombre: "Laia Martí", emotional: "DEPRESIÓN", tratamiento: "Lutenci 177 (200MBq)", progreso: 79, color: "red", edad: 22 },
-        { id: "PUIG269483104", nombre: "Marc Puig", emotional: "ESTABLE", tratamiento: "Iodo 131 (50 Ci)", progreso: 26, color: "green", edad: 48 },
-    ];
+    useEffect(() => {
+        const cargarDatos = async () => {
+            try {
+                // Ahora recibe los datos calculados: tratamiento con MBq actual, progreso y color
+                const data = await loginService.obtenerListaPacientes();
+                setPacientes(data);
+            } catch (error) {
+                console.error("Error cargando pacientes:", error);
+            } finally {
+                setCargando(false);
+            }
+        };
+        cargarDatos();
+    }, []);
+
+    const pacientesFiltrados = pacientes.filter(p => 
+        p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || 
+        p.cip?.toLowerCase().includes(busqueda.toLowerCase())
+    );
 
     if (creandoPaciente) {
-        return (
-            <CrearPacientePage 
-                alVolver={() => setCreandoPaciente(false)} 
-            />
-        );
+        return <CrearPacientePage alVolver={() => setCreandoPaciente(false)} />;
     }
 
     if (pacienteSeleccionado) {
-        return (
-            <PerfilPacientePage 
-                paciente={pacienteSeleccionado} 
-                alVolver={() => setPacienteSeleccionado(null)} 
-            />
-        );
+        return <PerfilPacientePage paciente={pacienteSeleccionado} alVolver={() => setPacienteSeleccionado(null)} />;
     }
 
     return (
@@ -47,22 +56,21 @@ export function PacientePage() {
             <div className="filter-bar">
                 <div className="search-input">
                     <i className="fi fi-rs-search"></i>
-                    <input type="text" placeholder="Buscar por tarjeta sanitaria del paciente o nombre..." />
+                    <input 
+                        type="text" 
+                        placeholder="Buscar por tarjeta sanitaria del paciente o nombre..." 
+                        value={busqueda}
+                        onChange={(e) => setBusqueda(e.target.value)}
+                    />
                 </div>
-                
                 <div className="filter-group">
                     <select className="filter-select">
                         <option>Estado Emocional (Todos)</option>
-                        <option>Estable / Positivo</option>
-                        <option>Ansiedad / Depresión</option>
                     </select>
                 </div>
-
                 <div className="filter-group">
                     <select className="filter-select">
                         <option>Tratamiento (Todos)</option>
-                        <option>Iodo 131</option>
-                        <option>Lutenci 177</option>
                     </select>
                 </div>
             </div>
@@ -79,39 +87,54 @@ export function PacientePage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {pacientes.map((p, index) => (
-                            <tr key={index}>
-                                <td className="user-cell">
-                                    <div className={`avatar ${p.id.toLowerCase()}`}>
-                                        {p.nombre.split(" ").map(n => n[0]).join("").toUpperCase()}
-                                    </div>
-                                    <div>
-                                        <div className="user-name">{p.nombre}</div>
-                                        <div className="user-id">{p.id}</div>
-                                    </div>
-                                </td>
-                                <td>
-                                    <span className={`badge ${p.color}`}>{p.emotional}</span>
-                                </td>
-                                <td className="treatment-cell">{p.tratamiento}</td>
-                                <td>
-                                    <div className="progress-container">
-                                        <div className="progress-bar-bg">
-                                            <div className={`progress-fill ${p.color}`} style={{ width: `${p.progreso}%` }}></div>
+                        {cargando ? (
+                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>Cargando datos clínicos reales...</td></tr>
+                        ) : (
+                            pacientesFiltrados.map((p, index) => (
+                                <tr key={p.cip || index}>
+                                    <td className="user-cell">
+                                        <div className="avatar">
+                                            {p.nombre ? p.nombre.split(" ").map(n => n[0]).join("").toUpperCase().substring(0, 2) : "??"}
                                         </div>
-                                        <span className={`progress-text ${p.color}`}>{p.progreso}%</span>
-                                    </div>
-                                </td>
-                                <td>
-                                    <button 
-                                        className="btn-perfil" 
-                                        onClick={() => setPacienteSeleccionado(p)}
-                                    >
-                                        Ver Perfil
-                                    </button>
-                                </td>
-                            </tr>
-                        ))}
+                                        <div>
+                                            <div className="user-name">{p.nombre}</div>
+                                            <div className="user-id">{p.cip}</div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        {/* p.color dinámico: red/yellow/green según el cálculo del Excel */}
+                                        <span className={`badge ${p.color || 'green'}`}>
+                                            {p.estado || 'ESTABLE'}
+                                        </span>
+                                    </td>
+                                    <td className="treatment-cell">
+                                        {/* Muestra el isótopo y la dosis actual (A(t)) calculada en Java */}
+                                        {p.tratamiento}
+                                    </td>
+                                    <td>
+                                        <div className="progress-container">
+                                            <div className="progress-bar-bg">
+                                                <div 
+                                                    className={`progress-fill ${p.color || 'green'}`} 
+                                                    style={{ width: `${p.progreso}%` }}
+                                                ></div>
+                                            </div>
+                                            <span className={`progress-text ${p.color || 'green'}`}>
+                                                {p.progreso}%
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <button 
+                                            className="btn-perfil" 
+                                            onClick={() => setPacienteSeleccionado(p)}
+                                        >
+                                            Ver Perfil
+                                        </button>
+                                    </td>
+                                </tr>
+                            ))
+                        )}
                     </tbody>
                 </table>
             </div>

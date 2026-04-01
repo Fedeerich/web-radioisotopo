@@ -75,12 +75,19 @@ export const loginService = {
         const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/patients/count-total`, {
             method: "GET",
-            headers: {
-                "Authorization": `Bearer ${token}`,
-                "Content-Type": "application/json"
-            }
+            headers: getHeaders()
         });
         if (!response.ok) throw new Error("Error al obtener el conteo");
+        return await response.json();
+    },
+
+    obtenerListaPacientes: async () => {
+        const token = localStorage.getItem("token");
+        const response = await fetch(`${API_URL}/patients/lista-gestion`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!response.ok) throw new Error("Error al obtener la lista de gestión");
         return await response.json();
     }
 };

@@ -10,7 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/CrearPaciente.css";
 
 export function CrearPacientePage({ alVolver }) {
-    const { usuario } = useAuth(); // Obtenemos el médico logueado para vincularlo al alta
+    const { usuario } = useAuth(); 
 
     const [formData, setFormData] = useState({
         nombreCompleto: "",
@@ -19,7 +19,7 @@ export function CrearPacientePage({ alVolver }) {
         hospitalReferencia: "Hospital del Mar",
         radioisotopo: "",
         dosis: "",
-        unidades: "MBq",
+        unidades: "MBq", 
         fechaAdministracion: new Date()
     });
 
@@ -42,20 +42,20 @@ export function CrearPacientePage({ alVolver }) {
                 paciente: {
                     nombreCompleto: formData.nombreCompleto,
                     cip: formData.cip,
-                    fechaNacimiento: formData.fechaNacimiento.toISOString().split('T')[0], // YYYY-MM-DD
+                    fechaNacimiento: formData.fechaNacimiento.toISOString().split('T')[0],
                     hospitalReferencia: formData.hospitalReferencia,
                     doctor: { id: usuario?.id } 
                 },
                 tratamiento: {
                     radioisotopo: formData.radioisotopo,
                     dosis: parseFloat(formData.dosis),
-                    unidades: formData.unidades,
+                    unidad: formData.unidades, // Se envía 'unidad' para que el Backend haga la conversión
                     fechaAdministracion: formData.fechaAdministracion.toISOString()
                 }
             };
 
             await loginService.registrarAltaCompleta(payload);
-            setMensaje({ texto: "Alta y monitorización iniciada con éxito.", tipo: "exito" });
+            setMensaje({ texto: "Alta i monitorització iniciada amb èxit.", tipo: "exito" });
             
             setTimeout(alVolver, 2000);
 
@@ -74,8 +74,8 @@ export function CrearPacientePage({ alVolver }) {
                     </svg>
                 </button>
                 <div className="header-textos">
-                    <h1>Alta de paciente nuevo y tratamiento.</h1>
-                    <p>Registro al registro de Salud de Cataluña (CatSalut)</p>
+                    <h1>Alta de pacient nou i tractament</h1>
+                    <p>Registre al fitxer de Salut de Catalunya (CatSalut)</p>
                 </div>
             </div>
 
@@ -84,11 +84,11 @@ export function CrearPacientePage({ alVolver }) {
                     
                     <div className="formulario-card">
                         <div className="card-header-icon">
-                            <h3>Datos Personales (CatSalut)</h3>
+                            <h3>Dades Personals (CatSalut)</h3>
                         </div>
                         
                         <div className="form-group">
-                            <label>Nombre y Apellido</label>
+                            <label>Nom i Cognoms</label>
                             <input 
                                 type="text" 
                                 name="nombreCompleto"
@@ -101,7 +101,7 @@ export function CrearPacientePage({ alVolver }) {
 
                         <div className="form-row">
                             <div className="form-group half">
-                                <label>CIP (Tarjeta Sanitària)</label>
+                                <label>CIP (Targeta Sanitària)</label>
                                 <input 
                                     type="text" 
                                     name="cip"
@@ -112,7 +112,7 @@ export function CrearPacientePage({ alVolver }) {
                                 />
                             </div>
                             <div className="form-group half">
-                                <label>Fecha de nacimiento</label>
+                                <label>Data de naixement</label>
                                 <div className="datepicker-wrapper">
                                     <DatePicker
                                         selected={formData.fechaNacimiento}
@@ -129,7 +129,7 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
 
                         <div className="form-group">
-                            <label>Hospital de Referencia</label>
+                            <label>Hospital de Referència</label>
                             <select 
                                 name="hospitalReferencia"
                                 value={formData.hospitalReferencia}
@@ -146,52 +146,52 @@ export function CrearPacientePage({ alVolver }) {
 
                     <div className="formulario-card">
                         <div className="card-header-icon">
-                            <h3>Tratamiento de Radioisótopos</h3>
+                            <h3>Tractament de Radioisòtops</h3>
                         </div>
                         
                         <div className="form-group">
-                            <label>Tipos de Radioisótopo</label>
+                            <label>Tipus de Radioisòtop</label>
                             <select 
                                 name="radioisotopo"
                                 value={formData.radioisotopo}
                                 onChange={handleChange}
                                 className="form-input select-styled"
                             >
-                                <option value="">Selecciona un isótopo...</option>
-                                <option value="Iode 131">Iode 131</option>
-                                <option value="Lutenci 177">Lutenci 177</option>
+                                <option value="">Selecciona un isòtop...</option>
+                                <option value="I-131">I-131 (Iode)</option>
+                                <option value="Lu-177">Lu-177 (Lutenci)</option>
                             </select>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group half">
-                                <label>Dosis/Radiación</label>
+                                <label>Dosi Administrada</label>
                                 <input 
                                     type="number" 
                                     name="dosis"
                                     value={formData.dosis}
                                     onChange={handleChange}
-                                    placeholder="0 - 10.000" 
+                                    placeholder="0 - 10000" 
                                     className="form-input" 
                                 />
                             </div>
                             <div className="form-group half">
-                                <label>Unidades</label>
+                                <label>Unitats</label>
                                 <select 
                                     name="unidades"
                                     value={formData.unidades}
                                     onChange={handleChange}
                                     className="form-input select-styled"
                                 >
-                                    <option value="MBq">Mega becquerels (MBq)</option>
-                                    <option value="Ci">Curis (Ci)</option>
-                                    <option value="mCi">Millicuris (mCi)</option>
+                                    <option value="MBq">MBq</option>
+                                    <option value="mCi">mCi</option>
+                                    <option value="Ci">Ci</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label>Fecha de administración</label>
+                            <label>Data i hora d'administració</label>
                             <div className="datepicker-wrapper">
                                 <DatePicker
                                     selected={formData.fechaAdministracion}
@@ -207,20 +207,19 @@ export function CrearPacientePage({ alVolver }) {
                             </div>
                         </div>
                     </div>
-
                 </div>
 
                 <div className="columna-acciones">
-                    
                     <div className="formulario-card card-sync">
                         <div className="card-header-icon">
-                            <h3>Sincronización de Dispositivos (Zero-Config)</h3>
+                            <h3>Sincronització de Dispositius</h3>
                         </div>
                         <p className="sync-desc">
-                            Acosta el SmartWatch compatible del pacient al terminal per iniciar la sincronització segura.
+                            Apropa el SmartWatch compatible del pacient per iniciar la vinculació.
                         </p>
                         
                         <div className="sync-box">
+                            {/* RESTAURADO EL ICONO NFC AQUÍ */}
                             <div className="nfc-icon-wrapper">
                                 <svg viewBox="0 0 24 24" width="48" height="48" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M4 8.2a10.9 10.9 0 0 1 16 0"></path>
@@ -230,14 +229,13 @@ export function CrearPacientePage({ alVolver }) {
                                 </svg>
                             </div>
                             <button className="btn-blue-sync" type="button">
-                                Buscar dispositivo via NFC/Bluetooth
+                                Buscar dispositiu NFC
                             </button>
                         </div>
                     </div>
 
                     <div className="card-resumen-green">
-                        <h3>Resumen del Alta</h3>
-                        
+                        <h3>Resum de l'Alta</h3>
                         {mensaje.texto && (
                             <div className={`mensaje-status ${mensaje.tipo}`} style={{
                                 padding: '10px',
@@ -251,19 +249,15 @@ export function CrearPacientePage({ alVolver }) {
                                 {mensaje.texto}
                             </div>
                         )}
-
                         <ul className="resumen-lista">
-                            <li>Registro del consentimiento informado para el uso de datos digitales.</li>
-                            <li>Sincronización automática de rutinas de actividad física diaria.</li>
-                            <li>Validación del plan de seguimiento personalizado post-alta.</li>
+                            <li>Consentiment informat registrat.</li>
+                            <li>Monitorització Zero-Config activa.</li>
+                            <li>Càlcul de decaïment segons Te efectiu.</li>
                         </ul>
-                        
                         <button className="btn-confirmar-verde" onClick={manejarAlta}>
-                            <i className="fi fi-sr-disk"></i> Confirmar alta i iniciar Monitorització
+                            <i className="fi fi-sr-disk"></i> Confirmar i Iniciar
                         </button>
-                        {!formData.radioisotopo && <p className="warning-red">Falta seleccionar isòtop</p>}
                     </div>
-
                 </div>
             </div>
         </div>

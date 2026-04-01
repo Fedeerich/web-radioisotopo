@@ -3,7 +3,6 @@ import { loginService } from "../services/api";
 import "../styles/Home.css";
 
 export function HomePage() {
-    // Estado para el contador real
     const [totalPacientes, setTotalPacientes] = useState("...");
 
     useEffect(() => {
@@ -32,7 +31,6 @@ export function HomePage() {
                         <i className="fi fi-rs-users"></i>
                     </div>
                     <div className="stat-details">
-                        {/* Aquí inyectamos el valor real */}
                         <span className="stat-number">{totalPacientes}</span>
                         <span className="stat-label">Pacientes Activos</span>
                     </div>
