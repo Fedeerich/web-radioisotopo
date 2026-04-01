@@ -24,15 +24,10 @@ export function LoginForm() {
 
     const manejarLogin = async (e) => {
         e.preventDefault();
-        setMensajeError(""); 
-
         try {
             const respuesta = await loginService.iniciarSesion(email, password);
-            
             login(respuesta); 
-
             navigate("/main-page");
-
         } catch (error) {
             setMensajeError(error.message); 
         }

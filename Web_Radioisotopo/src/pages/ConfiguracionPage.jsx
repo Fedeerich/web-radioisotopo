@@ -7,7 +7,7 @@ export function ConfiguracionPage({ alVolver }) {
 
     const obtenerEspecialidadInicial = () => {
         if (usuario?.rol === "ADMIN") return "Administración de Sistemas";
-        return usuario?.doctor?.especialidad || "Oncología Radioterápica";
+        return usuario?.especialidad || "Especialidad no definida";
     };
 
     return (

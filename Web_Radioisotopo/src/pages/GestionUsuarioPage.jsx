@@ -9,7 +9,7 @@ export function GestionUsuarioPage() {
     const [formData, setFormData] = useState({
         nombreCompleto: "",
         email: "",
-        contraseña: "",
+        password: "",
         rol: "MEDICO",
         estado: "ACTIVO",
         hospitalRef: "",
@@ -102,7 +102,7 @@ export function GestionUsuarioPage() {
                         <label>Contraseña Temporal</label>
                         <input 
                             type="password" 
-                            name="contraseña"
+                            name="password"
                             value={formData.contraseña} 
                             onChange={handleChangeUser} 
                             placeholder="Asigna una contraseña" 

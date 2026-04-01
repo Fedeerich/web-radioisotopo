@@ -1,6 +1,24 @@
+import { useState, useEffect } from "react";
+import { loginService } from "../services/api";
 import "../styles/Home.css";
 
 export function HomePage() {
+    // Estado para el contador real
+    const [totalPacientes, setTotalPacientes] = useState("...");
+
+    useEffect(() => {
+        const cargarContador = async () => {
+            try {
+                const total = await loginService.obtenerTotalPacientes();
+                setTotalPacientes(total);
+            } catch (error) {
+                console.error("Error al cargar el total de pacientes:", error);
+                setTotalPacientes(0); // Fallback en caso de error
+            }
+        };
+        cargarContador();
+    }, []);
+
     return (
         <>
             <header className="content-header">
@@ -14,7 +32,8 @@ export function HomePage() {
                         <i className="fi fi-rs-users"></i>
                     </div>
                     <div className="stat-details">
-                        <span className="stat-number">142</span>
+                        {/* Aquí inyectamos el valor real */}
+                        <span className="stat-number">{totalPacientes}</span>
                         <span className="stat-label">Pacientes Activos</span>
                     </div>
                 </div>

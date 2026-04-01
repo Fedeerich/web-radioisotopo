@@ -1,6 +1,8 @@
 import { useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker"; 
 import { es } from "date-fns/locale";
+import { useAuth } from "../context/AuthContext";
+import { loginService } from "../services/api";
 
 registerLocale("es", es);
 
@@ -8,8 +10,59 @@ import "react-datepicker/dist/react-datepicker.css";
 import "../styles/CrearPaciente.css";
 
 export function CrearPacientePage({ alVolver }) {
-    const [fechaNacimiento, setFechaNacimiento] = useState(new Date());
-    const [fechaAdministracion, setFechaAdministracion] = useState(new Date());
+    const { usuario } = useAuth(); // Obtenemos el médico logueado para vincularlo al alta
+
+    const [formData, setFormData] = useState({
+        nombreCompleto: "",
+        cip: "",
+        fechaNacimiento: new Date(),
+        hospitalReferencia: "Hospital del Mar",
+        radioisotopo: "",
+        dosis: "",
+        unidades: "MBq",
+        fechaAdministracion: new Date()
+    });
+
+    const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const manejarAlta = async () => {
+        if (!formData.nombreCompleto || !formData.cip || !formData.radioisotopo) {
+            setMensaje({ texto: "Por favor, completa los campos obligatorios.", tipo: "error" });
+            return;
+        }
+
+        setMensaje({ texto: "Sincronizando con CatSalut...", tipo: "info" });
+
+        try {
+            const payload = {
+                paciente: {
+                    nombreCompleto: formData.nombreCompleto,
+                    cip: formData.cip,
+                    fechaNacimiento: formData.fechaNacimiento.toISOString().split('T')[0], // YYYY-MM-DD
+                    hospitalReferencia: formData.hospitalReferencia,
+                    doctor: { id: usuario?.id } 
+                },
+                tratamiento: {
+                    radioisotopo: formData.radioisotopo,
+                    dosis: parseFloat(formData.dosis),
+                    unidades: formData.unidades,
+                    fechaAdministracion: formData.fechaAdministracion.toISOString()
+                }
+            };
+
+            await loginService.registrarAltaCompleta(payload);
+            setMensaje({ texto: "Alta y monitorización iniciada con éxito.", tipo: "exito" });
+            
+            setTimeout(alVolver, 2000);
+
+        } catch (error) {
+            setMensaje({ texto: error.message || "Error al procesar el alta", tipo: "error" });
+        }
+    };
 
     return (
         <div className="crear-paciente-container">
@@ -36,25 +89,40 @@ export function CrearPacientePage({ alVolver }) {
                         
                         <div className="form-group">
                             <label>Nombre y Apellido</label>
-                            <input type="text" placeholder="Ej: Marcos Góngora" className="form-input" />
+                            <input 
+                                type="text" 
+                                name="nombreCompleto"
+                                value={formData.nombreCompleto}
+                                onChange={handleChange}
+                                placeholder="Ej: Marcos Góngora" 
+                                className="form-input" 
+                            />
                         </div>
 
                         <div className="form-row">
                             <div className="form-group half">
                                 <label>CIP (Tarjeta Sanitària)</label>
-                                <input type="text" placeholder="FARR000000000" className="form-input" />
+                                <input 
+                                    type="text" 
+                                    name="cip"
+                                    value={formData.cip}
+                                    onChange={handleChange}
+                                    placeholder="FARR000000000" 
+                                    className="form-input" 
+                                />
                             </div>
                             <div className="form-group half">
                                 <label>Fecha de nacimiento</label>
                                 <div className="datepicker-wrapper">
                                     <DatePicker
-                                        selected={fechaNacimiento}
-                                        onChange={(date) => setFechaNacimiento(date)}
+                                        selected={formData.fechaNacimiento}
+                                        onChange={(date) => setFormData({...formData, fechaNacimiento: date})}
                                         dateFormat="dd/MM/yyyy"
                                         className="form-input custom-datepicker"
                                         showYearDropdown
                                         dropdownMode="select"
                                         maxDate={new Date()}
+                                        locale="es"
                                     />
                                 </div>
                             </div>
@@ -62,8 +130,16 @@ export function CrearPacientePage({ alVolver }) {
 
                         <div className="form-group">
                             <label>Hospital de Referencia</label>
-                            <select className="form-input select-styled">
-                                <option>Hospital del Mar</option>
+                            <select 
+                                name="hospitalReferencia"
+                                value={formData.hospitalReferencia}
+                                onChange={handleChange}
+                                className="form-input select-styled"
+                            >
+                                <option value="Hospital del Mar">Hospital del Mar</option>
+                                <option value="Hospital Clínic">Hospital Clínic</option>
+                                <option value="Hospital Vall d'Hebron">Hospital Vall d'Hebron</option>
+                                <option value="Hospital de Sant Pau">Hospital de Sant Pau</option>
                             </select>
                         </div>
                     </div>
@@ -75,23 +151,41 @@ export function CrearPacientePage({ alVolver }) {
                         
                         <div className="form-group">
                             <label>Tipos de Radioisótopo</label>
-                            <select className="form-input select-styled">
-                                <option>Selecciona un isótopo...</option>
-                                <option>Iode 131</option>
-                                <option>Lutenci 177</option>
+                            <select 
+                                name="radioisotopo"
+                                value={formData.radioisotopo}
+                                onChange={handleChange}
+                                className="form-input select-styled"
+                            >
+                                <option value="">Selecciona un isótopo...</option>
+                                <option value="Iode 131">Iode 131</option>
+                                <option value="Lutenci 177">Lutenci 177</option>
                             </select>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group half">
                                 <label>Dosis/Radiación</label>
-                                <input type="text" placeholder="0 - 10.000" className="form-input" />
+                                <input 
+                                    type="number" 
+                                    name="dosis"
+                                    value={formData.dosis}
+                                    onChange={handleChange}
+                                    placeholder="0 - 10.000" 
+                                    className="form-input" 
+                                />
                             </div>
                             <div className="form-group half">
                                 <label>Unidades</label>
-                                <select className="form-input select-styled">
-                                    <option>Curis (Ci)</option>
-                                    <option>Mega becquerels (MBq)</option>
+                                <select 
+                                    name="unidades"
+                                    value={formData.unidades}
+                                    onChange={handleChange}
+                                    className="form-input select-styled"
+                                >
+                                    <option value="MBq">Mega becquerels (MBq)</option>
+                                    <option value="Ci">Curis (Ci)</option>
+                                    <option value="mCi">Millicuris (mCi)</option>
                                 </select>
                             </div>
                         </div>
@@ -100,14 +194,13 @@ export function CrearPacientePage({ alVolver }) {
                             <label>Fecha de administración</label>
                             <div className="datepicker-wrapper">
                                 <DatePicker
-                                    selected={fechaAdministracion}
-                                    onChange={(date) => setFechaAdministracion(date)}
+                                    selected={formData.fechaAdministracion}
+                                    onChange={(date) => setFormData({...formData, fechaAdministracion: date})}
                                     showTimeSelect
                                     timeFormat="HH:mm"
                                     timeIntervals={15}
                                     dateFormat="dd/MM/yyyy HH:mm"
                                     className="form-input custom-datepicker"
-                                    popperClassName="custom-datepicker-popper"
                                     locale="es"
                                     timeCaption="Hora"
                                 />
@@ -129,14 +222,14 @@ export function CrearPacientePage({ alVolver }) {
                         
                         <div className="sync-box">
                             <div className="nfc-icon-wrapper">
-                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#9ca3af" strokeWidth="1.5" fill="none">
+                                <svg viewBox="0 0 24 24" width="48" height="48" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M4 8.2a10.9 10.9 0 0 1 16 0"></path>
                                     <path d="M7 11.5a6.5 6.5 0 0 1 10 0"></path>
                                     <path d="M10 14.8a2.1 2.1 0 0 1 4 0"></path>
                                     <circle cx="12" cy="18" r="1"></circle>
                                 </svg>
                             </div>
-                            <button className="btn-blue-sync">
+                            <button className="btn-blue-sync" type="button">
                                 Buscar dispositivo via NFC/Bluetooth
                             </button>
                         </div>
@@ -144,16 +237,31 @@ export function CrearPacientePage({ alVolver }) {
 
                     <div className="card-resumen-green">
                         <h3>Resumen del Alta</h3>
+                        
+                        {mensaje.texto && (
+                            <div className={`mensaje-status ${mensaje.tipo}`} style={{
+                                padding: '10px',
+                                borderRadius: '6px',
+                                marginBottom: '15px',
+                                fontSize: '0.9rem',
+                                backgroundColor: mensaje.tipo === 'exito' ? '#dcfce7' : mensaje.tipo === 'error' ? '#fee2e2' : '#e0f2fe',
+                                color: mensaje.tipo === 'exito' ? '#166534' : mensaje.tipo === 'error' ? '#991b1b' : '#075985',
+                                border: `1px solid ${mensaje.tipo === 'exito' ? '#bbf7d0' : mensaje.tipo === 'error' ? '#fecaca' : '#bae6fd'}`
+                            }}>
+                                {mensaje.texto}
+                            </div>
+                        )}
+
                         <ul className="resumen-lista">
                             <li>Registro del consentimiento informado para el uso de datos digitales.</li>
                             <li>Sincronización automática de rutinas de actividad física diaria.</li>
                             <li>Validación del plan de seguimiento personalizado post-alta.</li>
                         </ul>
                         
-                        <button className="btn-confirmar-verde">
+                        <button className="btn-confirmar-verde" onClick={manejarAlta}>
                             <i className="fi fi-sr-disk"></i> Confirmar alta i iniciar Monitorització
                         </button>
-                        <p className="warning-red">Cal vincular un dispositiu</p>
+                        {!formData.radioisotopo && <p className="warning-red">Falta seleccionar isòtop</p>}
                     </div>
 
                 </div>
