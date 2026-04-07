@@ -17,6 +17,7 @@ function Root() {
           <Route path="/paciente" element={<App />} />
           <Route path="/configuracion" element={<App />} />
           <Route path="/admin" element={<App />} /> 
+          <Route path="/auditoria" element={<App />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

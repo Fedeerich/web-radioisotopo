@@ -1,13 +1,40 @@
+import { useEffect } from "react";
 import "../styles/PerfilPaciente.css";
 import moleculaImg from "../assets/molecula.png";
+import { loginService } from "../services/api";
 
 export function PerfilPacientePage({ paciente, alVolver }) {
+    
+    // 1. Registro de actividad al entrar
+    useEffect(() => {
+        if (paciente && paciente.cip) {
+            loginService.registrarVisitaPaciente(paciente.cip);
+        }
+    }, [paciente]);
+
     const patientData = paciente || {
         nombre: "Paciente no seleccionado",
         cip: "N/A",
         tratamiento: "Sin tratamiento",
         progreso: 0,
-        color: "gray"
+        color: "gray",
+        watchEstado: "No vinculado",
+        watchUltimaSinc: null,
+        valorEmocional: 50
+    };
+
+    // Función para manejar el envío de consejos (Card 3)
+    const manejarEnvioConsejo = async () => {
+        const select = document.querySelector(".select-input");
+        const consejo = select.value;
+        if (consejo && consejo !== "Seleccionar consejo predefinido...") {
+            try {
+                await loginService.enviarInstruccionReloj(patientData.cip, consejo);
+                alert("Consejo enviado al Smartwatch con éxito");
+            } catch (error) {
+                alert("Error al enviar el consejo");
+            }
+        }
     };
 
     return (
@@ -40,11 +67,15 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                             <i className="fi fi-sr-watch-smart"></i>
                         </div>
                         <div className="watch-info">
-                            <strong>Galaxy Watch 8</strong>
+                            <strong>{patientData.watchSerie || "Galaxy Watch 8"}</strong>
                             <div className="status-row">
-                                <span className="status-text green">Conectado y transmitiendo</span>
+                                <span className={`status-text ${patientData.watchEstado === 'No vinculado' ? 'red' : 'green'}`}>
+                                    {patientData.watchEstado === 'No vinculado' ? 'No vinculado' : 'Conectado y transmitiendo'}
+                                </span>
                             </div>
-                            <small>Batería 85% | Última sinc: Hace 5 min</small>
+                            <small>
+                                Batería 85% | Última sinc: {patientData.watchUltimaSinc ? new Date(patientData.watchUltimaSinc).toLocaleTimeString() : 'N/A'}
+                            </small>
                         </div>
                     </div>
                     <div className="watch-actions">
@@ -59,7 +90,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <p className="watch-note">La descarga de biometría es automática desde el dispositivo del paciente.</p>
                 </div>
 
-                {/* CARD 2: PROGRESO RADIACTIVO ( DINÁMICO ) */}
+                {/* CARD 2: PROGRESO RADIACTIVO */}
                 <div className="card">
                     <h4 className="card-title">Progreso Radioterapia</h4>
                     <div className="atom-container">
@@ -81,7 +112,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     </div>
 
                     <div className="progress-bar-container">
-                        {/* La barra de progreso ahora se mueve con el decaimiento real del Excel */}
                         <div 
                             className={`progress-bar-fill ${patientData.color}`} 
                             style={{ width: `${patientData.progreso}%` }}
@@ -106,7 +136,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                         <option>Beber abundante líquido</option>
                         <option>Usar baño exclusivo</option>
                     </select>
-                    <button className="btn-outline">Enviar al SmartWatch</button>
+                    <button className="btn-outline" onClick={manejarEnvioConsejo}>Enviar al SmartWatch</button>
                 </div>
 
                 {/* FILA INFERIOR: EMOCIONAL Y CHAT */}
@@ -163,10 +193,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                         <h4 className="card-title">Centro de comunicación directa</h4>
                         <div className="message-list">
                             {[
-                                { sub: "Reloj Roto", pre: "Buenos días, necesito que me revisen el reloj..." },
-                                { sub: "Mal estar", pre: "Buenas tardes, últimamente estoy sintiendo mal..." },
-                                { sub: "Reloj Roto", pre: "Buenos días, necesito que me revisen el reloj..." },
-                                { sub: "Mal estar", pre: "Buenas tardes, últimamente estoy sintiendo mal..." }
+                                { sub: "Consulta General", pre: "No se han recibido mensajes nuevos hoy." }
                             ].map((msg, i) => (
                                 <div className="msg-item" key={i}>
                                     <div className="msg-icon"><i className="fi fi-rs-envelope"></i></div>

@@ -6,7 +6,6 @@ import { useAuth } from "../context/AuthContext";
 
 export function SideBar() {
     const navigate = useNavigate();
-    
     const { logout, usuario } = useAuth();
     
     const [activeTab, setActiveTab] = useState("inicio");
@@ -62,17 +61,31 @@ export function SideBar() {
                         <i className="fi fi-rs-users"></i> <span>Pacientes</span>
                     </button>
 
+                    {/* SECCIÓN ADMINISTRADOR */}
                     {usuario?.rol === "ADMIN" && (
-                        <button 
-                            className={`menu-item ${activeTab === "admin" ? "active" : ""}`}
-                            onClick={() => {
-                                setActiveTab("admin");
-                                navigate("/admin");
-                            }}
-                        >
-                            <i className="fi fi-rs-user-add"></i> 
-                            <span>Gestión Usuarios</span>
-                        </button>
+                        <>
+                            <button 
+                                className={`menu-item ${activeTab === "admin" ? "active" : ""}`}
+                                onClick={() => {
+                                    setActiveTab("admin");
+                                    navigate("/admin");
+                                }}
+                            >
+                                <i className="fi fi-rs-user-add"></i> 
+                                <span>Gestión Usuarios</span>
+                            </button>
+
+                            <button 
+                                className={`menu-item ${activeTab === "auditoria" ? "active" : ""}`}
+                                onClick={() => {
+                                    setActiveTab("auditoria");
+                                    navigate("/auditoria");
+                                }}
+                            >
+                                <i className="fi fi-rs-shield-check"></i>
+                                <span>Auditoría</span>
+                            </button>
+                        </>
                     )}
                 </nav>
 

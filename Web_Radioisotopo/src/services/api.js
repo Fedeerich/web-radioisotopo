@@ -127,5 +127,82 @@ export const loginService = {
             throw new Error(errorTexto || "Error al enviar el mensaje al reloj");
         }
         return await respuesta.text();
+    },
+
+    obtenerConteoNotificaciones: async () => {
+        const respuesta = await fetch(`${API_URL}/notifications/count`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!respuesta.ok) return 0;
+        const datos = await respuesta.json();
+        return datos.unreadCount;
+    },
+
+    obtenerListaNotificaciones: async () => {
+        const respuesta = await fetch(`${API_URL}/notifications/me`, { 
+            method: "GET",
+            headers: getHeaders() 
+        });
+
+        const texto = await respuesta.text();
+        
+        try {
+            return JSON.parse(texto);
+        } catch (e) {
+            console.error("EL SERVIDOR ENVIÓ ESTO (NO ES JSON):", texto.substring(0, 500));
+            return [];
+        }
+    },
+
+    marcarNotificacionLeida: async (id) => {
+        const respuesta = await fetch(`${API_URL}/notifications/${id}/read`, {
+            method: "PUT",
+            headers: getHeaders()
+        });
+
+        if (!respuesta.ok) throw new Error("No se pudo actualizar la notificación");
+        return await respuesta.text();
+    },
+
+    obtenerAlertasHoy: async () => {
+        const respuesta = await fetch(`${API_URL}/notifications/count-today`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+
+        if (!respuesta.ok) return 0;
+        const datos = await respuesta.json();
+        return datos.todayCount;
+    },
+
+    registrarVisitaPaciente: async (cip) => {
+        return await fetch(`${API_URL}/patients/${cip}/register-view`, {
+            method: "POST",
+            headers: getHeaders()
+        });
+    },
+
+    obtenerPacientesRecientes: async () => {
+        const respuesta = await fetch(`${API_URL}/patients/recent-patients`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!respuesta.ok) return [];
+        return await respuesta.json();
+    },
+
+    listarDoctoresAdmin: async () => {
+        const resp = await fetch(`${API_URL}/auth/doctores`, { headers: getHeaders() });
+        if (!resp.ok) return [];
+        return await resp.json();
+    },
+
+    actualizarEstadoUsuario: async (id, estado) => {
+        return await fetch(`${API_URL}/auth/doctor/${id}/status`, {
+            method: "PATCH",
+            headers: getHeaders(),
+            body: JSON.stringify({ estado })
+        });
     }
 };
