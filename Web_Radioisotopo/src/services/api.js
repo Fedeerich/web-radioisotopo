@@ -89,5 +89,43 @@ export const loginService = {
         });
         if (!response.ok) throw new Error("Error al obtener la lista de gestión");
         return await response.json();
+    },
+    
+    descargarInformePDF: async (cip) => {
+        try {
+            const respuesta = await fetch(`${API_URL}/patients/${cip}/informe-alta`, {
+                method: "GET",
+                headers: getHeaders(),
+            });
+
+            if (!respuesta.ok) throw new Error("No se pudo generar el PDF");
+
+            const blob = await respuesta.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `Informe_Alta_${cip}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } catch (error) {
+            console.error("Error en la descarga:", error);
+            throw error;
+        }
+    },
+
+    enviarInstruccionReloj: async (cip, mensaje) => {
+        const respuesta = await fetch(`${API_URL}/patients/${cip}/send-instruction`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify({ mensaje: mensaje })
+        });
+
+        if (!respuesta.ok) {
+            const errorTexto = await respuesta.text();
+            throw new Error(errorTexto || "Error al enviar el mensaje al reloj");
+        }
+        return await respuesta.text();
     }
 };

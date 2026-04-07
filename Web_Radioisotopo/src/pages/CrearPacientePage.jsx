@@ -30,12 +30,12 @@ export function CrearPacientePage({ alVolver }) {
     };
 
     const manejarAlta = async () => {
-        if (!formData.nombreCompleto || !formData.cip || !formData.radioisotopo) {
-            setMensaje({ texto: "Por favor, completa los campos obligatorios.", tipo: "error" });
+        if (!formData.nombreCompleto || !formData.cip || !formData.radioisotopo || !formData.dosis) {
+            setMensaje({ texto: "Por favor, completa todos los campos técnicos.", tipo: "error" });
             return;
         }
 
-        setMensaje({ texto: "Sincronizando con CatSalut...", tipo: "info" });
+        setMensaje({ texto: "Sincronizando con CatSalut y generando informe...", tipo: "info" });
 
         try {
             const payload = {
@@ -43,24 +43,26 @@ export function CrearPacientePage({ alVolver }) {
                     nombreCompleto: formData.nombreCompleto,
                     cip: formData.cip,
                     fechaNacimiento: formData.fechaNacimiento.toISOString().split('T')[0],
-                    hospitalReferencia: formData.hospitalReferencia,
-                    doctor: { id: usuario?.id } 
+                    hospitalReferencia: formData.hospitalReferencia
                 },
                 tratamiento: {
                     radioisotopo: formData.radioisotopo,
                     dosis: parseFloat(formData.dosis),
-                    unidad: formData.unidades, // Se envía 'unidad' para que el Backend haga la conversión
+                    unidad: formData.unidades,
                     fechaAdministracion: formData.fechaAdministracion.toISOString()
                 }
             };
 
             await loginService.registrarAltaCompleta(payload);
-            setMensaje({ texto: "Alta i monitorització iniciada amb èxit.", tipo: "exito" });
+
+            await loginService.descargarInformePDF(formData.cip);
             
-            setTimeout(alVolver, 2000);
+            setMensaje({ texto: "Alta completada e informe descargado con éxito.", tipo: "exito" });
+            
+            setTimeout(alVolver, 3000);
 
         } catch (error) {
-            setMensaje({ texto: error.message || "Error al procesar el alta", tipo: "error" });
+            setMensaje({ texto: error.message || "Error en el proceso de alta", tipo: "error" });
         }
     };
 
@@ -158,8 +160,9 @@ export function CrearPacientePage({ alVolver }) {
                                 className="form-input select-styled"
                             >
                                 <option value="">Selecciona un isòtop...</option>
-                                <option value="I-131">I-131 (Iode)</option>
-                                <option value="Lu-177">Lu-177 (Lutenci)</option>
+                                <option value="I-131">Iodo-131</option>
+                                <option value="Lu-177">Lutecio-177</option>
+                                <option value="Co-60">Cobalto-60</option>
                             </select>
                         </div>
 
@@ -169,9 +172,10 @@ export function CrearPacientePage({ alVolver }) {
                                 <input 
                                     type="number" 
                                     name="dosis"
+                                    step="0.01"
                                     value={formData.dosis}
                                     onChange={handleChange}
-                                    placeholder="0 - 10000" 
+                                    placeholder="Ej: 370" 
                                     className="form-input" 
                                 />
                             </div>
@@ -183,9 +187,9 @@ export function CrearPacientePage({ alVolver }) {
                                     onChange={handleChange}
                                     className="form-input select-styled"
                                 >
-                                    <option value="MBq">MBq</option>
-                                    <option value="mCi">mCi</option>
-                                    <option value="Ci">Ci</option>
+                                    <option value="MBq">Mega becquerels (MBq)</option>
+                                    <option value="mCi">Milicurio (mCi)</option>
+                                    <option value="Ci">Curis (Ci)</option>
                                 </select>
                             </div>
                         </div>
@@ -219,7 +223,6 @@ export function CrearPacientePage({ alVolver }) {
                         </p>
                         
                         <div className="sync-box">
-                            {/* RESTAURADO EL ICONO NFC AQUÍ */}
                             <div className="nfc-icon-wrapper">
                                 <svg viewBox="0 0 24 24" width="48" height="48" stroke="#9ca3af" strokeWidth="1.5" fill="none" strokeLinecap="round" strokeLinejoin="round">
                                     <path d="M4 8.2a10.9 10.9 0 0 1 16 0"></path>

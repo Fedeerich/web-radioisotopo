@@ -65,12 +65,16 @@ export function PacientePage() {
                 </div>
                 <div className="filter-group">
                     <select className="filter-select">
-                        <option>Estado Emocional (Todos)</option>
+                        <option>Estado (Todos)</option>
+                        <option>Estable / Positivo</option>
+                        <option>Ansiedad / Depresion</option>
                     </select>
                 </div>
                 <div className="filter-group">
                     <select className="filter-select">
                         <option>Tratamiento (Todos)</option>
+                        <option>Iodo</option>
+                        <option>Cobalto</option>
                     </select>
                 </div>
             </div>
@@ -80,7 +84,7 @@ export function PacientePage() {
                     <thead>
                         <tr>
                             <th>PACIENTE</th>
-                            <th>ESTADO EMOCIONAL</th>
+                            <th>ESTADO</th>
                             <th>TRATAMIENTO</th>
                             <th>PROGRESO</th>
                             <th>ACCIONES</th>
@@ -102,13 +106,11 @@ export function PacientePage() {
                                         </div>
                                     </td>
                                     <td>
-                                        {/* p.color dinámico: red/yellow/green según el cálculo del Excel */}
                                         <span className={`badge ${p.color || 'green'}`}>
                                             {p.estado || 'ESTABLE'}
                                         </span>
                                     </td>
                                     <td className="treatment-cell">
-                                        {/* Muestra el isótopo y la dosis actual (A(t)) calculada en Java */}
                                         {p.tratamiento}
                                     </td>
                                     <td>
