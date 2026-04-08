@@ -43,6 +43,23 @@ export const loginService = {
     },
 
     /**
+     * CONFIGURACIÓN Y PREFERENCIAS (NUEVO)
+     */
+    guardarPreferencias: async (preferencias) => {
+        const respuesta = await fetch(`${API_URL}/auth/preferencias`, {
+            method: "PUT",
+            headers: getHeaders(),
+            body: JSON.stringify(preferencias)
+        });
+
+        if (!respuesta.ok) {
+            const error = await respuesta.json();
+            throw new Error(error.message || "Error al actualizar preferencias");
+        }
+        return await respuesta.json();
+    },
+
+    /**
      * GESTIÓN DE MÉDICOS (ADMIN)
      */
     registrarMedico: async (datosFormulario) => {
