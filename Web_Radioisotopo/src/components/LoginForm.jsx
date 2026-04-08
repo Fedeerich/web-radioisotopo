@@ -1,7 +1,7 @@
 import "../styles/Login.css";
 import logo from "../assets/logo.png"; 
 import { loginService } from "../services/api";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -12,22 +12,38 @@ export function LoginForm() {
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [recordarme, setRecordarme] = useState(false);
     const [mensajeError, setMensajeError] = useState(""); 
 
-    const manejarCambioEmail = (event) => {
-        setEmail(event.target.value);
-    };
-
-    const manejarCambioPassword = (event) => {
-        setPassword(event.target.value);
-    };
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        const mantener = localStorage.getItem("mantenerSesion");
+        
+        if (token && mantener === "true") {
+            navigate("/main-page");
+        }
+    }, [navigate]);
 
     const manejarLogin = async (e) => {
         e.preventDefault();
+        setMensajeError("");
+
         try {
             const respuesta = await loginService.iniciarSesion(email, password);
+            
+            if (recordarme) {
+                localStorage.setItem("mantenerSesion", "true");
+            } else {
+                localStorage.removeItem("mantenerSesion");
+            }
+
             login(respuesta); 
-            navigate("/main-page");
+
+            if (respuesta.requiereCambioPassword) {
+                navigate("/cambiar-password");
+            } else {
+                navigate("/main-page");
+            }
         } catch (error) {
             setMensajeError(error.message); 
         }
@@ -45,7 +61,7 @@ export function LoginForm() {
                 id="email" 
                 type="email" 
                 value={ email }
-                onChange={ manejarCambioEmail }
+                onChange={(e) => setEmail(e.target.value)}
                 placeholder="Correo electrónico..." 
                 required 
                 className={ mensajeError ? "input-error" : "" }
@@ -56,7 +72,7 @@ export function LoginForm() {
                     id="passId" 
                     type={mostrarPassword ? "text" : "password"} 
                     value={ password }
-                    onChange={ manejarCambioPassword }
+                    onChange={(e) => setPassword(e.target.value)}
                     placeholder="Contraseña..." 
                     required 
                     className={ mensajeError ? "input-error" : "" }
@@ -66,13 +82,17 @@ export function LoginForm() {
                     className="show-password-btn"
                     onClick={() => setMostrarPassword(!mostrarPassword)}
                 >
-                    {mostrarPassword ? <i className="fi-rs-crossed-eye"></i> : <i className="fi fi-rs-eye"></i>}
+                    {mostrarPassword ? "🙈" : "👁️"}
                 </button>
             </div>
 
             <div className="addons">
                 <label className="remember-me">
-                    <input type="checkbox" />
+                    <input 
+                        type="checkbox" 
+                        checked={recordarme}
+                        onChange={(e) => setRecordarme(e.target.checked)}
+                    />
                     <span>Recordarme</span>
                 </label>
                 <span 
