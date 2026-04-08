@@ -235,7 +235,7 @@ export const loginService = {
     cambiarPasswordPerfil: async (oldPassword, newPassword) => {
         const respuesta = await fetch(`${API_URL}/auth/update-password`, {
             method: "POST",
-            headers: getHeaders(), // Ya incluye el Token para saber quién es el usuario
+            headers: getHeaders(),
             body: JSON.stringify({ oldPassword, newPassword })
         });
 
