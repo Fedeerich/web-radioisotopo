@@ -6,6 +6,9 @@ const getHeaders = () => ({
 });
 
 export const loginService = {
+    /**
+     * AUTENTICACIÓN
+     */
     iniciarSesion: async (email, password) => {
         const respuesta = await fetch(`${API_URL}/auth/login`, {
             method: "POST",
@@ -23,6 +26,25 @@ export const loginService = {
         return datos;
     },
 
+    obtenerPerfilActual: async () => {
+        const token = localStorage.getItem("token");
+        if (!token) return null;
+
+        const respuesta = await fetch(`${API_URL}/auth/me`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+
+        if (!respuesta.ok) {
+            localStorage.removeItem("token");
+            return null;
+        }
+        return await respuesta.json();
+    },
+
+    /**
+     * GESTIÓN DE MÉDICOS (ADMIN)
+     */
     registrarMedico: async (datosFormulario) => {
         const respuesta = await fetch(`${API_URL}/users/register-doctor`, { 
             method: "POST",
@@ -40,8 +62,39 @@ export const loginService = {
             if (!respuesta.ok) throw new Error(contenido || "Error crítico del servidor (no JSON)");
             return contenido;
         }
-        },
+    },
 
+    listarDoctoresAdmin: async () => {
+        const resp = await fetch(`${API_URL}/auth/doctores`, { headers: getHeaders() });
+        if (!resp.ok) return [];
+        return await resp.json();
+    },
+
+    actualizarEstadoUsuario: async (id, estado) => {
+        const respuesta = await fetch(`${API_URL}/auth/doctor/${id}/status`, {
+            method: "POST", 
+            headers: getHeaders(),
+            body: JSON.stringify({ estado })
+        });
+        if (!respuesta.ok) throw new Error("No se pudo cambiar el estado");
+        return await respuesta.json();
+    },
+
+    resetPasswordAdmin: async (id, nuevaPassword) => {
+        const respuesta = await fetch(`${API_URL}/auth/doctor/${id}/password`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify({ password: nuevaPassword })
+        });
+
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.message || "Error al resetear contraseña");
+        return datos;
+    },
+
+    /**
+     * GESTIÓN DE PACIENTES
+     */
     registrarAltaCompleta: async (datosAlta) => {
         const respuesta = await fetch(`${API_URL}/patients/register-full`, { 
             method: "POST",
@@ -52,22 +105,6 @@ export const loginService = {
         const datos = await respuesta.json();
         if (!respuesta.ok) throw new Error(datos.error || "Error en el alta clínica");
         return datos;
-    },
-
-    obtenerPerfilActual: async () => {
-        const token = localStorage.getItem("token");
-        if (!token) return null;
-
-        const respuesta = await fetch(`${API_URL}/auth/me`, {
-            method: "GET",
-            headers: getHeaders()
-        });
-
-        if (!respuesta.ok) {
-            localStorage.removeItem("token");
-            return null;
-        }
-        return await respuesta.json();
     },
 
     obtenerTotalPacientes: async () => {
@@ -92,44 +129,30 @@ export const loginService = {
             return [];
         }
     },
-    
-    descargarInformePDF: async (cip) => {
+
+    obtenerPacientesRecientes: async () => {
         try {
-            const respuesta = await fetch(`${API_URL}/patients/${cip}/informe-alta`, {
+            const respuesta = await fetch(`${API_URL}/patients/recent-patients`, {
                 method: "GET",
-                headers: getHeaders(),
+                headers: getHeaders()
             });
-
-            if (!respuesta.ok) throw new Error("No se pudo generar el PDF");
-
-            const blob = await respuesta.blob();
-            const url = window.URL.createObjectURL(blob);
-            
-            const link = document.createElement("a");
-            link.href = url;
-            link.setAttribute("download", `Informe_Alta_${cip}.pdf`);
-            document.body.appendChild(link);
-            link.click();
-            link.parentNode.removeChild(link);
-            window.URL.revokeObjectURL(url);
-        } catch (error) {
-            console.error("Error en la descarga:", error);
-            throw error;
+            if (!respuesta.ok) return [];
+            return await respuesta.json();
+        } catch (e) {
+            return [];
         }
     },
 
-    enviarInstruccionReloj: async (cip, mensaje) => {
-        const respuesta = await fetch(`${API_URL}/patients/${cip}/send-instruction`, {
+    registrarVisitaPaciente: async (cip) => {
+        return await fetch(`${API_URL}/patients/${cip}/register-view`, {
             method: "POST",
-            headers: getHeaders(),
-            body: JSON.stringify({ mensaje })
+            headers: getHeaders()
         });
-
-        const datos = await respuesta.json();
-        if (!respuesta.ok) throw new Error(datos.error || "Error al enviar mensaje");
-        return datos;
     },
 
+    /**
+     * NOTIFICACIONES Y ALERTAS
+     */
     obtenerConteoNotificaciones: async () => {
         const respuesta = await fetch(`${API_URL}/notifications/count`, {
             method: "GET",
@@ -169,39 +192,57 @@ export const loginService = {
         return datos.todayCount || 0;
     },
 
-    registrarVisitaPaciente: async (cip) => {
-        return await fetch(`${API_URL}/patients/${cip}/register-view`, {
-            method: "POST",
-            headers: getHeaders()
-        });
-    },
-
-    obtenerPacientesRecientes: async () => {
+    /**
+     * OTROS SERVICIOS
+     */
+    descargarInformePDF: async (cip) => {
         try {
-            const respuesta = await fetch(`${API_URL}/patients/recent-patients`, {
+            const respuesta = await fetch(`${API_URL}/patients/${cip}/informe-alta`, {
                 method: "GET",
-                headers: getHeaders()
+                headers: getHeaders(),
             });
-            if (!respuesta.ok) return [];
-            return await respuesta.json();
-        } catch (e) {
-            return [];
+
+            if (!respuesta.ok) throw new Error("No se pudo generar el PDF");
+
+            const blob = await respuesta.blob();
+            const url = window.URL.createObjectURL(blob);
+            
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", `Informe_Alta_${cip}.pdf`);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
+        } catch (error) {
+            console.error("Error en la descarga:", error);
+            throw error;
         }
     },
 
-    listarDoctoresAdmin: async () => {
-        const resp = await fetch(`${API_URL}/auth/doctores`, { headers: getHeaders() });
-        if (!resp.ok) return [];
-        return await resp.json();
+    enviarInstruccionReloj: async (cip, mensaje) => {
+        const respuesta = await fetch(`${API_URL}/patients/${cip}/send-instruction`, {
+            method: "POST",
+            headers: getHeaders(),
+            body: JSON.stringify({ mensaje })
+        });
+
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || "Error al enviar mensaje");
+        return datos;
     },
 
-    actualizarEstadoUsuario: async (id, estado) => {
-        const respuesta = await fetch(`${API_URL}/auth/doctor/${id}/status`, {
-            method: "POST", // <--- IMPORTANTE
-            headers: getHeaders(),
-            body: JSON.stringify({ estado })
+    cambiarPasswordPerfil: async (oldPassword, newPassword) => {
+        const respuesta = await fetch(`${API_URL}/auth/update-password`, {
+            method: "POST",
+            headers: getHeaders(), // Ya incluye el Token para saber quién es el usuario
+            body: JSON.stringify({ oldPassword, newPassword })
         });
-        if (!respuesta.ok) throw new Error("No se pudo cambiar el estado");
+
+        if (!respuesta.ok) {
+            const error = await respuesta.text();
+            throw new Error(error || "No se pudo cambiar la contraseña");
+        }
         return await respuesta.json();
     }
 };

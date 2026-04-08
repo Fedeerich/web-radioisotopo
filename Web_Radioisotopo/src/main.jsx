@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { LoginPage } from './pages/LoginPage';
 import { App } from './App';
 import { AuthProvider } from "./context/AuthContext";
+import { CambiarPasswordPage } from './pages/CambiarPasswordPage';
 
 function Root() {
   return (
@@ -18,6 +19,7 @@ function Root() {
           <Route path="/configuracion" element={<App />} />
           <Route path="/admin" element={<App />} /> 
           <Route path="/auditoria" element={<App />} />
+          <Route path="/cambiar-password" element={<CambiarPasswordPage />} />
 
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

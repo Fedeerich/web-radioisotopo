@@ -75,9 +75,13 @@ export function LoginForm() {
                     <input type="checkbox" />
                     <span>Recordarme</span>
                 </label>
-                <a href="#" className="forgot-password">
-                    ¿Olvidaste tu contraseña?
-                </a>
+                <span 
+                    className="forgot-password" 
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => navigate('/cambiar-password')}
+                >
+                    ¿Quieres cambiar tu contraseña?
+                </span>
             </div>
 
             {mensajeError && (

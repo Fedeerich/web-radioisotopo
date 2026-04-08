@@ -5,7 +5,6 @@ import "../styles/Paciente.css";
 export function AuditoriaPage() {
     const [medicos, setMedicos] = useState([]);
     const [cargando, setCargando] = useState(true);
-    // Estado para controlar el envío (opcional, para feedback visual)
     const [procesando, setProcesando] = useState(false);
 
     const cargarDatosAuditoria = async () => {
@@ -36,32 +35,20 @@ export function AuditoriaPage() {
         }
     };
 
-    // --- NUEVA FUNCIÓN PARA EL RESET DE PASSWORD ---
     const manejarResetPassword = async (id, nombre) => {
         const nuevaPass = window.prompt(`Asigna una nueva contraseña temporal para ${nombre}:`, "Temp1234!");
         
         if (nuevaPass && nuevaPass.trim().length > 0) {
             setProcesando(true);
             try {
-                // Llamamos a la API que acabamos de configurar en Java
-                const respuesta = await fetch(`https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev/api/auth/doctor/${id}/password`, {
-                    method: "PATCH",
-                    headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${localStorage.getItem("token")}`
-                    },
-                    body: JSON.stringify({ password: nuevaPass })
-                });
-
-                if (respuesta.ok) {
-                    alert(`✅ Éxito: Contraseña de ${nombre} actualizada. El correo se enviará en segundo plano.`);
-                } else {
-                    const errorMsg = await respuesta.text();
-                    throw new Error(errorMsg);
-                }
+                const respuesta = await loginService.resetPasswordAdmin(id, nuevaPass);
+                
+                alert(`Éxito: Contraseña de ${nombre} actualizada. El correo se enviará en segundo plano.`);
+                
+                await cargarDatosAuditoria();
             } catch (error) {
                 console.error("Error en reset:", error);
-                alert("❌ Error: No se pudo actualizar la contraseña o enviar el correo.");
+                alert(`Error: ${error.message || "No se pudo actualizar la contraseña."}`);
             } finally {
                 setProcesando(false);
             }
