@@ -5,7 +5,7 @@ import { loginService } from "../services/api";
 
 export function NavBar() {
     const { usuario } = useAuth();
-    const [notificacionesCount, setNotificacionesCount] = useState(0);
+    const [notificacionesCount, setNotificacionesCount] = useState(0); // Este es tu estado
     const [listaNotificaciones, setListaNotificaciones] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
 
@@ -13,17 +13,19 @@ export function NavBar() {
 
     const actualizarNotificaciones = async () => {
         try {
-            const count = await loginService.obtenerConteoNotificaciones();
-            setNotificacionesCount(count);
+            // El servicio ya devuelve el número (unreadCount) gracias al cambio anterior
+            const conteo = await loginService.obtenerConteoNotificaciones();
+            setNotificacionesCount(conteo); 
         } catch (error) {
             console.error("Error cargando conteo:", error);
-        }
+            setNotificacionesCount(0);
+        } // <--- AQUÍ FALTABA CERRAR
     };
 
     const cargarListaCompleta = async () => {
         try {
             const datos = await loginService.obtenerListaNotificaciones();
-            setListaNotificaciones(datos);
+            setListaNotificaciones(Array.isArray(datos) ? datos : []);
         } catch (error) {
             console.error("Error cargando lista:", error);
             setListaNotificaciones([]);
@@ -32,13 +34,8 @@ export function NavBar() {
 
     const marcarComoLeida = async (id) => {
         try {
-            // Llamamos al endpoint PUT /api/notifications/{id}/read
             await loginService.marcarNotificacionLeida(id);
-            
-            // Actualizamos visualmente sin esperar al polling
             setNotificacionesCount(prev => Math.max(0, prev - 1));
-            
-            // Refrescamos la lista para que cambie el estilo CSS o desaparezca
             cargarListaCompleta();
         } catch (error) {
             console.error("Error al marcar como leída:", error);
@@ -101,7 +98,7 @@ export function NavBar() {
                                             <div className="notif-content">
                                                 <p>{n.mensaje}</p>
                                                 <span className="notif-time">
-                                                    {new Date(n.fechaEnvio).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                                                    {n.fechaEnvio ? new Date(n.fechaEnvio).toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'}) : '--:--'}
                                                 </span>
                                             </div>
                                         </div>
@@ -117,7 +114,7 @@ export function NavBar() {
                 <div className="user-profile">
                     <div className="user-info">
                         <span className="user-name">Dr. {nombre}</span>
-                        <span className="user-role">{usuario?.especialidad || "Oncología Radioterápica"}</span>
+                        <span className="user-role">{usuario?.especialidad || "Especialista"}</span>
                     </div>
                     <div className="user-avatar">
                         {nombre.substring(0, 2).toUpperCase()}

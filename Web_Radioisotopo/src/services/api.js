@@ -10,18 +10,15 @@ export const loginService = {
         const respuesta = await fetch(`${API_URL}/auth/login`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                email: email,
-                password: password 
-            })
+            body: JSON.stringify({ email, password })
         });
 
         if (!respuesta.ok) throw new Error("Credenciales incorrectas");
         
         const datos = await respuesta.json();
-        
         if (datos.token) {
             localStorage.setItem("token", datos.token);
+            localStorage.setItem("rol", datos.rol);
         }
         return datos;
     },
@@ -33,12 +30,17 @@ export const loginService = {
             body: JSON.stringify(datosFormulario)
         });
 
-        if (!respuesta.ok) {
-            const errorTexto = await respuesta.text();
-            throw new Error(errorTexto || "Error al registrar el médico");
+        const contenido = await respuesta.text();
+
+        try {
+            const datos = JSON.parse(contenido);
+            if (!respuesta.ok) throw new Error(datos.error || datos.message || "Error en el servidor");
+            return datos;
+        } catch (e) {
+            if (!respuesta.ok) throw new Error(contenido || "Error crítico del servidor (no JSON)");
+            return contenido;
         }
-        return await respuesta.text();
-    },
+        },
 
     registrarAltaCompleta: async (datosAlta) => {
         const respuesta = await fetch(`${API_URL}/patients/register-full`, { 
@@ -47,11 +49,9 @@ export const loginService = {
             body: JSON.stringify(datosAlta)
         });
 
-        if (!respuesta.ok) {
-            const errorTexto = await respuesta.text();
-            throw new Error(errorTexto || "Error en el alta clínica");
-        }
-        return await respuesta.text();
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || "Error en el alta clínica");
+        return datos;
     },
 
     obtenerPerfilActual: async () => {
@@ -67,28 +67,30 @@ export const loginService = {
             localStorage.removeItem("token");
             return null;
         }
-
         return await respuesta.json();
     },
 
     obtenerTotalPacientes: async () => {
-        const token = localStorage.getItem("token");
         const response = await fetch(`${API_URL}/patients/count-total`, {
             method: "GET",
             headers: getHeaders()
         });
         if (!response.ok) throw new Error("Error al obtener el conteo");
-        return await response.json();
+        const datos = await response.json();
+        return datos.count;
     },
 
     obtenerListaPacientes: async () => {
-        const token = localStorage.getItem("token");
-        const response = await fetch(`${API_URL}/patients/lista-gestion`, {
-            method: "GET",
-            headers: getHeaders()
-        });
-        if (!response.ok) throw new Error("Error al obtener la lista de gestión");
-        return await response.json();
+        try {
+            const response = await fetch(`${API_URL}/patients/lista-gestion`, {
+                method: "GET",
+                headers: getHeaders()
+            });
+            if (!response.ok) return []; 
+            return await response.json();
+        } catch (e) {
+            return [];
+        }
     },
     
     descargarInformePDF: async (cip) => {
@@ -109,6 +111,7 @@ export const loginService = {
             document.body.appendChild(link);
             link.click();
             link.parentNode.removeChild(link);
+            window.URL.revokeObjectURL(url);
         } catch (error) {
             console.error("Error en la descarga:", error);
             throw error;
@@ -119,14 +122,12 @@ export const loginService = {
         const respuesta = await fetch(`${API_URL}/patients/${cip}/send-instruction`, {
             method: "POST",
             headers: getHeaders(),
-            body: JSON.stringify({ mensaje: mensaje })
+            body: JSON.stringify({ mensaje })
         });
 
-        if (!respuesta.ok) {
-            const errorTexto = await respuesta.text();
-            throw new Error(errorTexto || "Error al enviar el mensaje al reloj");
-        }
-        return await respuesta.text();
+        const datos = await respuesta.json();
+        if (!respuesta.ok) throw new Error(datos.error || "Error al enviar mensaje");
+        return datos;
     },
 
     obtenerConteoNotificaciones: async () => {
@@ -136,7 +137,7 @@ export const loginService = {
         });
         if (!respuesta.ok) return 0;
         const datos = await respuesta.json();
-        return datos.unreadCount;
+        return datos.unreadCount || 0;
     },
 
     obtenerListaNotificaciones: async () => {
@@ -144,15 +145,8 @@ export const loginService = {
             method: "GET",
             headers: getHeaders() 
         });
-
-        const texto = await respuesta.text();
-        
-        try {
-            return JSON.parse(texto);
-        } catch (e) {
-            console.error("EL SERVIDOR ENVIÓ ESTO (NO ES JSON):", texto.substring(0, 500));
-            return [];
-        }
+        if (!respuesta.ok) return [];
+        return await respuesta.json();
     },
 
     marcarNotificacionLeida: async (id) => {
@@ -161,8 +155,8 @@ export const loginService = {
             headers: getHeaders()
         });
 
-        if (!respuesta.ok) throw new Error("No se pudo actualizar la notificación");
-        return await respuesta.text();
+        if (!respuesta.ok) throw new Error("No se pudo actualizar");
+        return await respuesta.json();
     },
 
     obtenerAlertasHoy: async () => {
@@ -170,10 +164,9 @@ export const loginService = {
             method: "GET",
             headers: getHeaders()
         });
-
         if (!respuesta.ok) return 0;
         const datos = await respuesta.json();
-        return datos.todayCount;
+        return datos.todayCount || 0;
     },
 
     registrarVisitaPaciente: async (cip) => {
@@ -184,12 +177,16 @@ export const loginService = {
     },
 
     obtenerPacientesRecientes: async () => {
-        const respuesta = await fetch(`${API_URL}/patients/recent-patients`, {
-            method: "GET",
-            headers: getHeaders()
-        });
-        if (!respuesta.ok) return [];
-        return await respuesta.json();
+        try {
+            const respuesta = await fetch(`${API_URL}/patients/recent-patients`, {
+                method: "GET",
+                headers: getHeaders()
+            });
+            if (!respuesta.ok) return [];
+            return await respuesta.json();
+        } catch (e) {
+            return [];
+        }
     },
 
     listarDoctoresAdmin: async () => {
@@ -199,10 +196,12 @@ export const loginService = {
     },
 
     actualizarEstadoUsuario: async (id, estado) => {
-        return await fetch(`${API_URL}/auth/doctor/${id}/status`, {
-            method: "PATCH",
+        const respuesta = await fetch(`${API_URL}/auth/doctor/${id}/status`, {
+            method: "POST", // <--- IMPORTANTE
             headers: getHeaders(),
             body: JSON.stringify({ estado })
         });
+        if (!respuesta.ok) throw new Error("No se pudo cambiar el estado");
+        return await respuesta.json();
     }
 };

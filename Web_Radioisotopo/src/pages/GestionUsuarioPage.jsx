@@ -6,10 +6,10 @@ import { loginService } from "../services/api";
 export function GestionUsuarioPage() {
     const { usuario } = useAuth(); 
 
-    const [formData, setFormData] = useState({
+    const estadoInicial = {
         nombreCompleto: "",
         email: "",
-        password: "",
+        password: "", // Asegúrate de que se llame password como en Java
         rol: "MEDICO",
         estado: "ACTIVO",
         hospitalRef: "",
@@ -17,9 +17,11 @@ export function GestionUsuarioPage() {
             especialidad: "",
             colegiadoNum: ""
         }
-    });
+    };
 
+    const [formData, setFormData] = useState(estadoInicial);
     const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
+    const [enviando, setEnviando] = useState(false); // Estado para bloquear el botón
 
     const handleChangeUser = (e) => {
         setFormData({
@@ -40,26 +42,33 @@ export function GestionUsuarioPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setEnviando(true); // Bloquea el botón
         setMensaje({ texto: "Conectando con el servidor de Render...", tipo: "info" });
 
         try {
-            const respuestaServidor = await loginService.registrarMedico(formData);
+            const respuesta = await loginService.registrarMedico(formData);
             
+            // Si llegamos aquí, el backend respondió un 200 OK
+            console.log("Respuesta del servidor:", respuesta);
+
             setMensaje({ 
-                texto: respuestaServidor || "Médico registrado correctamente.", 
+                texto: respuesta.message || "Médico registrado correctamente.", 
                 tipo: "exito" 
             });
             
-            setFormData({
-                nombreCompleto: "", email: "", contraseña: "", rol: "MEDICO", estado: "ACTIVO", hospitalRef: "",
-                doctor: { especialidad: "", colegiadoNum: "" }
-            });
+            setFormData(estadoInicial); 
 
         } catch (error) {
+            console.error("Error capturado en el submit:", error);
             setMensaje({ 
                 texto: error.message || "Error al comunicar con el servidor.", 
                 tipo: "error" 
             });
+        } finally {
+            // ESTA ES LA CLAVE: 
+            // Si la petición en la consola está en verde, este código SE TIENE QUE EJECUTAR.
+            // Al ponerlo aquí, el botón VOLVERÁ A LA NORMALIDAD pase lo que pase.
+            setEnviando(false); 
         }
     };
 
@@ -102,8 +111,8 @@ export function GestionUsuarioPage() {
                         <label>Contraseña Temporal</label>
                         <input 
                             type="password" 
-                            name="password"
-                            value={formData.contraseña} 
+                            name="password" // <--- CORREGIDO (Antes decía contraseña)
+                            value={formData.password} 
                             onChange={handleChangeUser} 
                             placeholder="Asigna una contraseña" 
                             required 
@@ -163,8 +172,8 @@ export function GestionUsuarioPage() {
                 )}
 
                 <div className="form-footer">
-                    <button type="submit" className="btn-green-submit">
-                        Registrar Médico en el Sistema
+                    <button type="submit" className="btn-green-submit" disabled={enviando}>
+                        {enviando ? "Procesando..." : "Registrar Médico en el Sistema"}
                     </button>
                 </div>
             </form>
