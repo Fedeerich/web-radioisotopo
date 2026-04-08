@@ -25,6 +25,9 @@ export function ConfiguracionPage() {
         // Actualizar inmediatamente el estado local para feedback visual instantáneo
         if (campo !== 'idioma' && campo !== 'zonaHoraria') {
             actualizarUsuario({ [mapeoCampos[campo]]: valor });
+        } else {
+            // Actualizar inmediatamente también idioma y zona horaria
+            actualizarUsuario(campo === 'idioma' ? { idioma: valor } : { zonaHoraria: valor });
         }
 
         try {
