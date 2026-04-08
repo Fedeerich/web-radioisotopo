@@ -1,7 +1,7 @@
 import "../styles/Login.css";
 import logo from "../assets/logo.png"; 
 import { loginService } from "../services/api";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 
@@ -15,10 +15,10 @@ export function LoginForm() {
     const [recordarme, setRecordarme] = useState(false);
     const [mensajeError, setMensajeError] = useState(""); 
 
+    // Auto-login si "Recordarme" estaba marcado y hay token
     useEffect(() => {
         const token = localStorage.getItem("token");
         const mantener = localStorage.getItem("mantenerSesion");
-        
         if (token && mantener === "true") {
             navigate("/main-page");
         }
@@ -26,19 +26,24 @@ export function LoginForm() {
 
     const manejarLogin = async (e) => {
         e.preventDefault();
-        setMensajeError("");
+        setMensajeError(""); 
 
         try {
+            // 1. Llamada al servicio
             const respuesta = await loginService.iniciarSesion(email, password);
             
+            // 2. Persistencia de la elección "Recordarme"
             if (recordarme) {
                 localStorage.setItem("mantenerSesion", "true");
             } else {
                 localStorage.removeItem("mantenerSesion");
             }
 
+            // 3. Guardar datos en el Contexto de Autenticación
             login(respuesta); 
 
+            // 4. LÓGICA DE REDIRECCIÓN (El "salto" que buscamos)
+            // Si el backend envía requiereCambioPassword: true, vamos a la página aparte
             if (respuesta.requiereCambioPassword) {
                 navigate("/cambiar-password");
             } else {
@@ -82,7 +87,12 @@ export function LoginForm() {
                     className="show-password-btn"
                     onClick={() => setMostrarPassword(!mostrarPassword)}
                 >
-                    {mostrarPassword ? "🙈" : "👁️"}
+                    {/* Restaurados tus iconos originales de la imagen */}
+                    {mostrarPassword ? (
+                        <i className="fi-rs-crossed-eye"></i>
+                    ) : (
+                        <i className="fi fi-rs-eye"></i>
+                    )}
                 </button>
             </div>
 
