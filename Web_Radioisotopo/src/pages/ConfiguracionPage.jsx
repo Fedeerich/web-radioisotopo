@@ -12,28 +12,52 @@ export function ConfiguracionPage() {
 
     // Función para enviar los cambios al servidor
     const actualizarPreferencia = async (campo, valor) => {
+        // Mapeo de campos del formulario a campos del usuario
+        const mapeoCampos = {
+            bateriaBaja: 'notifBateria',
+            desconexionBiometrica: 'notifDesconexion',
+            resumenSemanal: 'notifResumen',
+            radiacionSegura: 'notifRadiacion',
+            anomaliaVitales: 'notifVitales',
+            falloSincronizacion: 'notifSincro'
+        };
+        
+        // Actualizar inmediatamente el estado local para feedback visual instantáneo
+        if (campo !== 'idioma' && campo !== 'zonaHoraria') {
+            actualizarUsuario({ [mapeoCampos[campo]]: valor });
+        }
+
         try {
-            // Estructura del DTO que espera Java
             const nuevosAjustes = {
-                idioma: campo === 'idioma' ? valor : (usuario.idioma || "Castellano"),
-                zonaHoraria: campo === 'zonaHoraria' ? valor : (usuario.zonaHoraria || "Europa/Madrid (CET)"),
-                bateriaBaja: campo === 'bateriaBaja' ? valor : usuario.notifBateria,
-                desconexionBiometrica: campo === 'desconexionBiometrica' ? valor : usuario.notifDesconexion,
-                resumenSemanal: campo === 'resumenSemanal' ? valor : usuario.notifResumen,
-                radiacionSegura: campo === 'radiacionSegura' ? valor : usuario.notifRadiacion,
-                anomaliaVitales: campo === 'anomaliaVitales' ? valor : usuario.notifVitales,
-                falloSincronizacion: campo === 'falloSincronizacion' ? valor : usuario.notifSincro
+                idioma: campo === 'idioma' ? valor : (usuario?.idioma || "Castellano"),
+                zonaHoraria: campo === 'zonaHoraria' ? valor : (usuario?.zonaHoraria || "Europa/Madrid (CET)"),
+                bateriaBaja: campo === 'bateriaBaja' ? valor : usuario?.notifBateria,
+                desconexionBiometrica: campo === 'desconexionBiometrica' ? valor : usuario?.notifDesconexion,
+                resumenSemanal: campo === 'resumenSemanal' ? valor : usuario?.notifResumen,
+                radiacionSegura: campo === 'radiacionSegura' ? valor : usuario?.notifRadiacion,
+                anomaliaVitales: campo === 'anomaliaVitales' ? valor : usuario?.notifVitales,
+                falloSincronizacion: campo === 'falloSincronizacion' ? valor : usuario?.notifSincro
             };
 
-            // Llamada al backend (AuthController -> @PutMapping("/preferencias"))
-            const exito = await loginService.guardarPreferencias(nuevosAjustes);
+            await loginService.guardarPreferencias(nuevosAjustes);
             
-            if (exito) {
-                // Actualizamos el contexto global para que los switches se muevan visualmente
-                actualizarUsuario({ ...usuario, ...nuevosAjustes });
-            }
+            // Actualizar contexto
+            actualizarUsuario({
+                idioma: nuevosAjustes.idioma,
+                zonaHoraria: nuevosAjustes.zonaHoraria,
+                notifBateria: nuevosAjustes.bateriaBaja,
+                notifDesconexion: nuevosAjustes.desconexionBiometrica,
+                notifResumen: nuevosAjustes.resumenSemanal,
+                notifRadiacion: nuevosAjustes.radiacionSegura,
+                notifVitales: nuevosAjustes.anomaliaVitales,
+                notifSincro: nuevosAjustes.falloSincronizacion
+            });
         } catch (error) {
             console.error("Error al guardar preferencia:", error);
+            // Revertir cambio local si falla el servidor
+            if (campo !== 'idioma' && campo !== 'zonaHoraria') {
+                actualizarUsuario({ [mapeoCampos[campo]]: !valor });
+            }
         }
     };
 
@@ -87,9 +111,9 @@ export function ConfiguracionPage() {
                                 value={usuario?.idioma || "Castellano"}
                                 onChange={(e) => actualizarPreferencia('idioma', e.target.value)}
                             >
-                                <option>Castellano</option>
-                                <option>Català</option>
-                                <option>English</option>
+                                <option value="Castellano">Castellano</option>
+                                <option value="Catala">Català</option>
+                                <option value="English">English</option>
                             </select>
                         </div>
                         <div className="form-group">
