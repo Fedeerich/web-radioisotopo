@@ -1,12 +1,14 @@
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { loginService } from "../services/api"; // Asegúrate de tener aquí tus llamadas fetch
+import { loginService } from "../services/api";
 import "../styles/Configuracion.css";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function ConfiguracionPage() {
     const { usuario, actualizarUsuario, logout } = useAuth(); 
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     // Función para enviar los cambios al servidor
     const actualizarPreferencia = async (campo, valor) => {
@@ -50,36 +52,36 @@ export function ConfiguracionPage() {
         <div className="configuracion-container">
             <div className="header-seccion">
                 <div className="header-textos">
-                    <h1>Configuración del Sistema</h1>
-                    <p>Ajustes de cuenta, alertas y preferencias del entorno clínico</p>
+                    <h1>{t('configuracionSistema')}</h1>
+                    <p>{t('ajustesCuentaAlertas')}</p>
                 </div>
             </div>
 
             <div className="grid-configuracion">
                 <div className="columna-ajustes">
                     <div className="formulario-card">
-                        <div className="card-header-icon"><h3>Datos de la Cuenta</h3></div>
+                        <div className="card-header-icon"><h3>{t('datosCuenta')}</h3></div>
                         <div className="form-group">
-                            <label>Nombre del Profesional</label>
+                            <label>{t('nombreProfesional')}</label>
                             <input type="text" value={usuario?.nombreCompleto || ""} className="form-input" readOnly />
                         </div>
                         <div className="form-group">
-                            <label>Correo Electrónico</label>
+                            <label>{t('correoElectronicoInput')}</label>
                             <input type="text" value={usuario?.email || ""} className="form-input" readOnly />
                         </div>
                         <div className="form-group">
-                            <label>Especialidad</label>
+                            <label>{t('especialidadInput')}</label>
                             <input type="text" value={obtenerEspecialidadInicial()} className="form-input" readOnly />
                         </div>
                         <button className="btn-blue-outline" onClick={() => navigate('/cambiar-password')}>
-                            Cambiar contraseña
+                            {t('cambiarContrasena')}
                         </button>
                     </div>
 
                     <div className="formulario-card">
-                        <div className="card-header-icon"><h3>Preferencias del Sistema</h3></div>
+                        <div className="card-header-icon"><h3>{t('preferenciasSistema')}</h3></div>
                         <div className="form-group">
-                            <label>Idioma de la interfaz</label>
+                            <label>{t('idiomaInterfaz')}</label>
                             <select 
                                 className="form-input select-styled" 
                                 value={usuario?.idioma || "Castellano"}
@@ -91,14 +93,14 @@ export function ConfiguracionPage() {
                             </select>
                         </div>
                         <div className="form-group">
-                            <label>Zona Horaria</label>
+                            <label>{t('zonaHoraria')}</label>
                             <select 
                                 className="form-input select-styled" 
                                 value={usuario?.zonaHoraria || "Europa/Madrid (CET)"}
                                 onChange={(e) => actualizarPreferencia('zonaHoraria', e.target.value)}
                             >
-                                <option>Europa/Madrid (CET)</option>
-                                <option>Europa/Londres (GMT)</option>
+                                <option>{t('europaMadrid')}</option>
+                                <option>{t('europaLondres')}</option>
                             </select>
                         </div>
                     </div>
@@ -106,14 +108,14 @@ export function ConfiguracionPage() {
 
                 <div className="columna-ajustes">
                     <div className="formulario-card">
-                        <div className="card-header-icon"><h3>Notificaciones Clínicas</h3></div>
+                        <div className="card-header-icon"><h3>{t('notificacionesClinicas')}</h3></div>
                         <div className="toggle-list">
                             
                             {/* Batería */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Batería baja en dispositivos</strong>
-                                    <p>Avisar cuando un SmartWatch baje del 15%</p>
+                                    <strong>{t('bateriaBajaDispositivos')}</strong>
+                                    <p>{t('avisarSmartWatchBaja')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -128,8 +130,8 @@ export function ConfiguracionPage() {
                             {/* Desconexión */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Desconexión biométrica</strong>
-                                    <p>Alerta inmediata si se pierde la señal</p>
+                                    <strong>{t('desconexionBiometrica')}</strong>
+                                    <p>{t('alertaPerdidaSenal')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -144,8 +146,8 @@ export function ConfiguracionPage() {
                             {/* Resumen */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Resumen semanal</strong>
-                                    <p>Recibir informe de evolución por correo</p>
+                                    <strong>{t('resumenSemanal')}</strong>
+                                    <p>{t('recibirInformeCorreo')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -160,8 +162,8 @@ export function ConfiguracionPage() {
                             {/* Radiación */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Alerta de Radiación Segura</strong>
-                                    <p>Avisar cuando el paciente alcance niveles seguros</p>
+                                    <strong>{t('alertaRadiacionSegura')}</strong>
+                                    <p>{t('avisarPacienteNiveles')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -176,8 +178,8 @@ export function ConfiguracionPage() {
                             {/* Constantes Vitales */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Anomalía en Constantes Vitales</strong>
-                                    <p>Notificar alteraciones graves cardíacas</p>
+                                    <strong>{t('anomaliaConstantesVitales')}</strong>
+                                    <p>{t('notificarAlteraciones')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -192,8 +194,8 @@ export function ConfiguracionPage() {
                             {/* Sincronización */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
-                                    <strong>Fallo de sincronización</strong>
-                                    <p>Avisar si un reloj no envía datos (12h)</p>
+                                    <strong>{t('falloSincronizacion')}</strong>
+                                    <p>{t('avisarRelojNoEnvia')}</p>
                                 </div>
                                 <label className="switch">
                                     <input 
@@ -208,11 +210,11 @@ export function ConfiguracionPage() {
                     </div>
 
                     <div className="card-resumen-green danger-zone">
-                        <h3 className="warning-red">Zona de Seguridad</h3>
-                        <p className="security-desc">Gestiona las sesiones activas y los permisos de acceso.</p>
+                        <h3 className="warning-red">{t('zonaSeguridad')}</h3>
+                        <p className="security-desc">{t('gestionarSesionesPermisos')}</p>
                         <button className="btn-danger-outline" onClick={manejarCerrarSesionGlobal}>
                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" strokeLinejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                            Cerrar sesión en todos los terminales
+                            {t('cerrarSesionTodosTerminales')}
                         </button>
                     </div>
                 </div>

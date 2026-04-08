@@ -3,6 +3,7 @@ import DatePicker, { registerLocale } from "react-datepicker";
 import { es } from "date-fns/locale";
 import { useAuth } from "../context/AuthContext";
 import { loginService } from "../services/api";
+import { useTranslation } from "../hooks/useTranslation";
 
 registerLocale("es", es);
 
@@ -11,6 +12,7 @@ import "../styles/CrearPaciente.css";
 
 export function CrearPacientePage({ alVolver }) {
     const { usuario } = useAuth(); 
+    const { t } = useTranslation();
 
     const [formData, setFormData] = useState({
         nombreCompleto: "",
@@ -31,11 +33,11 @@ export function CrearPacientePage({ alVolver }) {
 
     const manejarAlta = async () => {
         if (!formData.nombreCompleto || !formData.cip || !formData.radioisotopo || !formData.dosis) {
-            setMensaje({ texto: "Por favor, completa todos los campos técnicos.", tipo: "error" });
+            setMensaje({ texto: t('porFavorCompletaCampos'), tipo: "error" });
             return;
         }
 
-        setMensaje({ texto: "Sincronizando con CatSalut y generando informe...", tipo: "info" });
+        setMensaje({ texto: t('sincronizandoCatsalut'), tipo: "info" });
 
         try {
             const payload = {
@@ -57,12 +59,12 @@ export function CrearPacientePage({ alVolver }) {
 
             await loginService.descargarInformePDF(formData.cip);
             
-            setMensaje({ texto: "Alta completada e informe descargado con éxito.", tipo: "exito" });
+            setMensaje({ texto: t('altaCompletada'), tipo: "exito" });
             
             setTimeout(alVolver, 3000);
 
         } catch (error) {
-            setMensaje({ texto: error.message || "Error en el proceso de alta", tipo: "error" });
+            setMensaje({ texto: error.message || t('errorProcesoAlta'), tipo: "error" });
         }
     };
 
@@ -76,8 +78,8 @@ export function CrearPacientePage({ alVolver }) {
                     </svg>
                 </button>
                 <div className="header-textos">
-                    <h1>Alta de pacient nou i tractament</h1>
-                    <p>Registre al fitxer de Salut de Catalunya (CatSalut)</p>
+                    <h1>{t('altaPacienteNuevo')}</h1>
+                    <p>{t('registroSalutCatalunya')}</p>
                 </div>
             </div>
 
@@ -86,35 +88,35 @@ export function CrearPacientePage({ alVolver }) {
                     
                     <div className="formulario-card">
                         <div className="card-header-icon">
-                            <h3>Dades Personals (CatSalut)</h3>
+                            <h3>{t('datosPersonales')}</h3>
                         </div>
                         
                         <div className="form-group">
-                            <label>Nom i Cognoms</label>
+                            <label>{t('nomCognoms')}</label>
                             <input 
                                 type="text" 
                                 name="nombreCompleto"
                                 value={formData.nombreCompleto}
                                 onChange={handleChange}
-                                placeholder="Ej: Marcos Góngora" 
+                                placeholder={t('ejemploNombre')} 
                                 className="form-input" 
                             />
                         </div>
 
                         <div className="form-row">
                             <div className="form-group half">
-                                <label>CIP (Targeta Sanitària)</label>
+                                <label>{t('cipTargetaSanitaria')}</label>
                                 <input 
                                     type="text" 
                                     name="cip"
                                     value={formData.cip}
                                     onChange={handleChange}
-                                    placeholder="FARR000000000" 
+                                    placeholder={t('ejemploCIP')} 
                                     className="form-input" 
                                 />
                             </div>
                             <div className="form-group half">
-                                <label>Data de naixement</label>
+                                <label>{t('dataNaixement')}</label>
                                 <div className="datepicker-wrapper">
                                     <DatePicker
                                         selected={formData.fechaNacimiento}
@@ -131,7 +133,7 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
 
                         <div className="form-group">
-                            <label>Hospital de Referència</label>
+                            <label>{t('hospitalReferencia')}</label>
                             <select 
                                 name="hospitalReferencia"
                                 value={formData.hospitalReferencia}
@@ -148,54 +150,54 @@ export function CrearPacientePage({ alVolver }) {
 
                     <div className="formulario-card">
                         <div className="card-header-icon">
-                            <h3>Tractament de Radioisòtops</h3>
+                            <h3>{t('tractamentRadioisotops')}</h3>
                         </div>
                         
                         <div className="form-group">
-                            <label>Tipus de Radioisòtop</label>
+                            <label>{t('tipusRadioisotop')}</label>
                             <select 
                                 name="radioisotopo"
                                 value={formData.radioisotopo}
                                 onChange={handleChange}
                                 className="form-input select-styled"
                             >
-                                <option value="">Selecciona un isòtop...</option>
-                                <option value="I-131">Iodo-131</option>
-                                <option value="Lu-177">Lutecio-177</option>
-                                <option value="Co-60">Cobalto-60</option>
+                                <option value="">{t('seleccionaIsotopo')}</option>
+                                <option value="I-131">{t('iodo131')}</option>
+                                <option value="Lu-177">{t('lutecio177')}</option>
+                                <option value="Co-60">{t('cobalto60')}</option>
                             </select>
                         </div>
 
                         <div className="form-row">
                             <div className="form-group half">
-                                <label>Dosi Administrada</label>
+                                <label>{t('dosiAdministrada')}</label>
                                 <input 
                                     type="number" 
                                     name="dosis"
                                     step="0.01"
                                     value={formData.dosis}
                                     onChange={handleChange}
-                                    placeholder="Ej: 370" 
+                                    placeholder={t('ejemploDosis')} 
                                     className="form-input" 
                                 />
                             </div>
                             <div className="form-group half">
-                                <label>Unitats</label>
+                                <label>{t('unitats')}</label>
                                 <select 
                                     name="unidades"
                                     value={formData.unidades}
                                     onChange={handleChange}
                                     className="form-input select-styled"
                                 >
-                                    <option value="MBq">Mega becquerels (MBq)</option>
-                                    <option value="mCi">Milicurio (mCi)</option>
-                                    <option value="Ci">Curis (Ci)</option>
+                                    <option value="MBq">{t('megaBecquerels')}</option>
+                                    <option value="mCi">{t('milicurio')}</option>
+                                    <option value="Ci">{t('curis')}</option>
                                 </select>
                             </div>
                         </div>
 
                         <div className="form-group">
-                            <label>Data i hora d'administració</label>
+                            <label>{t('dataHoraAdministracio')}</label>
                             <div className="datepicker-wrapper">
                                 <DatePicker
                                     selected={formData.fechaAdministracion}
@@ -216,10 +218,10 @@ export function CrearPacientePage({ alVolver }) {
                 <div className="columna-acciones">
                     <div className="formulario-card card-sync">
                         <div className="card-header-icon">
-                            <h3>Sincronització de Dispositius</h3>
+                            <h3>{t('sincronitzacioDispositius')}</h3>
                         </div>
                         <p className="sync-desc">
-                            Apropa el SmartWatch compatible del pacient per iniciar la vinculació.
+                            {t('aprobaSmartWatch')}
                         </p>
                         
                         <div className="sync-box">
@@ -232,13 +234,13 @@ export function CrearPacientePage({ alVolver }) {
                                 </svg>
                             </div>
                             <button className="btn-blue-sync" type="button">
-                                Buscar dispositiu NFC
+                                {t('buscarDispositiuNFC')}
                             </button>
                         </div>
                     </div>
 
                     <div className="card-resumen-green">
-                        <h3>Resum de l'Alta</h3>
+                        <h3>{t('resumAlta')}</h3>
                         {mensaje.texto && (
                             <div className={`mensaje-status ${mensaje.tipo}`} style={{
                                 padding: '10px',
@@ -253,12 +255,12 @@ export function CrearPacientePage({ alVolver }) {
                             </div>
                         )}
                         <ul className="resumen-lista">
-                            <li>Consentiment informat registrat.</li>
-                            <li>Monitorització Zero-Config activa.</li>
-                            <li>Càlcul de decaïment segons Te efectiu.</li>
+                            <li>{t('consentimentInformat')}</li>
+                            <li>{t('monitoritzacioZeroConfig')}</li>
+                            <li>{t('calculDecayefectiu')}</li>
                         </ul>
                         <button className="btn-confirmar-verde" onClick={manejarAlta}>
-                            <i className="fi fi-sr-disk"></i> Confirmar i Iniciar
+                            <i className="fi fi-sr-disk"></i> {t('confirmarIniciar')}
                         </button>
                     </div>
                 </div>

@@ -3,22 +3,24 @@ import { loginService } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/CambiarPassword.css";
 import logo from "../assets/logo.png"; 
+import { useTranslation } from "../hooks/useTranslation";
 
 export function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const manejarCambio = async (e) => {
         e.preventDefault();
         
         if (passwords.nueva !== passwords.confirmar) {
-            setEstado({ ...estado, error: "Las contraseñas nuevas no coinciden", exito: "" });
+            setEstado({ ...estado, error: t('contrasenasNoCoinciden'), exito: "" });
             return;
         }
 
         if (passwords.nueva.length < 6) {
-            setEstado({ ...estado, error: "La nueva contraseña debe tener al menos 6 caracteres", exito: "" });
+            setEstado({ ...estado, error: t('contrasenaMinimoCaracteres'), exito: "" });
             return;
         }
 
@@ -26,7 +28,7 @@ export function CambiarPasswordPage() {
         
         try {
             await loginService.cambiarPasswordPerfil(passwords.actual, passwords.nueva);
-            setEstado({ cargando: false, exito: "¡Contraseña actualizada con éxito!", error: "" });
+            setEstado({ cargando: false, exito: t('contrasenaActualizadaExito'), error: "" });
             
             setTimeout(() => navigate("/"), 2000); 
         } catch (err) {
@@ -43,8 +45,8 @@ export function CambiarPasswordPage() {
                     </div>
                 </div>
 
-                <h2>Seguridad de la Cuenta</h2>
-                <p>Introduce tu contraseña actual y la nueva que deseas utilizar.</p>
+                <h2>{t('seguridadCuenta')}</h2>
+                <p>{t('introduceContrasenaActual')}</p>
 
                 <form onSubmit={manejarCambio} style={{width: '100%'}}>
                     {estado.error && <div className="mensaje-error">{estado.error}</div>}
@@ -52,33 +54,33 @@ export function CambiarPasswordPage() {
                     
                     <input 
                         type="password" 
-                        placeholder="Contraseña actual" 
+                        placeholder={t('contrasenaActual')} 
                         required 
                         value={passwords.actual}
                         onChange={e => setPasswords({...passwords, actual: e.target.value})}
                     />
                     <input 
                         type="password" 
-                        placeholder="Nueva contraseña" 
+                        placeholder={t('nuevaContrasena')} 
                         required 
                         value={passwords.nueva}
                         onChange={e => setPasswords({...passwords, nueva: e.target.value})}
                     />
                     <input 
                         type="password" 
-                        placeholder="Confirmar nueva contraseña" 
+                        placeholder={t('confirmarNuevaContrasena')} 
                         required 
                         value={passwords.confirmar}
                         onChange={e => setPasswords({...passwords, confirmar: e.target.value})}
                     />
                     
                     <button type="submit" className="btn-update" disabled={estado.cargando}>
-                        {estado.cargando ? "Procesando..." : "Actualizar Contraseña"}
+                        {estado.cargando ? t('procesar') : t('actualizarContrasena')}
                     </button>
                 </form>
 
                 <button type="button" onClick={() => navigate(-1)} className="btn-cancel">
-                    Volver atrás
+                    {t('volverAtras')}
                 </button>
             </div>
         </div>

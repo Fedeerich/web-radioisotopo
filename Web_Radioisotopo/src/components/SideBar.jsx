@@ -3,10 +3,12 @@ import "../styles/SideBar.css";
 import logo from "../assets/logo.png"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function SideBar() {
     const navigate = useNavigate();
     const { logout, usuario } = useAuth();
+    const { t } = useTranslation();
     
     const [activeTab, setActiveTab] = useState("inicio");
     const [avisoSalir, setAvisoSalir] = useState(false);
@@ -34,7 +36,7 @@ export function SideBar() {
                 <div className="sidebar-top">
                     <div className="logo-box">
                         <img src={logo} alt="Logo" className="logo"/>
-                        <span>Radioisótopos</span>
+                        <span>{t('radioisotopos')}</span>
                     </div>
                 </div>
 
@@ -48,7 +50,7 @@ export function SideBar() {
                             navigate("/main-page");   
                         }}
                     >
-                        <i className="fi fi-rs-home"></i> <span>Página Principal</span>
+                        <i className="fi fi-rs-home"></i> <span>{t('paginaPrincipal')}</span>
                     </button>
 
                     <button 
@@ -58,7 +60,7 @@ export function SideBar() {
                             navigate("/paciente"); 
                         }}
                     >
-                        <i className="fi fi-rs-users"></i> <span>Pacientes</span>
+                        <i className="fi fi-rs-users"></i> <span>{t('pacientes')}</span>
                     </button>
 
                     {/* SECCIÓN ADMINISTRADOR */}
@@ -72,7 +74,7 @@ export function SideBar() {
                                 }}
                             >
                                 <i className="fi fi-rs-user-add"></i> 
-                                <span>Gestión Usuarios</span>
+                                <span>{t('gestionUsuarios')}</span>
                             </button>
 
                             <button 
@@ -83,7 +85,7 @@ export function SideBar() {
                                 }}
                             >
                                 <i className="fi fi-rs-shield-check"></i>
-                                <span>Auditoría</span>
+                                <span>{t('auditoria')}</span>
                             </button>
                         </>
                     )}
@@ -97,13 +99,13 @@ export function SideBar() {
                             navigate("/configuracion");
                         }}
                     >
-                        <i className="fi fi-rs-settings"></i> <span>Configuración</span>
+                        <i className="fi fi-rs-settings"></i> <span>{t('configuracion')}</span>
                     </button>
 
                     <hr className="sidebar-divider" />
 
                     <button className="menu-item logout" onClick={() => setAvisoSalir(true)}>
-                        <i className="fi fi-rs-exit"></i> <span>Cerrar Sesión</span>
+                        <i className="fi fi-rs-exit"></i> <span>{t('cerrarSesion')}</span>
                     </button>
                 </div>
             </aside>
@@ -111,10 +113,10 @@ export function SideBar() {
             {avisoSalir && (
                 <div className="modal-overlay">
                     <div className="modal-caja">
-                        <h3>¿Seguro que quieres cerrar sesión?</h3>
+                        <h3>{t('seguroCerrarSesion')}</h3>
                         <div className="modal-botones">
-                            <button onClick={() => setAvisoSalir(false)}>Cancelar</button>
-                            <button className="btn-confirmar" onClick={manejarCierreSesion}>Confirmar</button>
+                            <button onClick={() => setAvisoSalir(false)}>{t('cancelar')}</button>
+                            <button className="btn-confirmar" onClick={manejarCierreSesion}>{t('confirmar')}</button>
                         </div>
                     </div>
                 </div>

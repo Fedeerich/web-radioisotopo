@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import "../styles/Paciente.css";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function AuditoriaPage() {
+    const { t } = useTranslation();
     const [medicos, setMedicos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [procesando, setProcesando] = useState(false);
@@ -25,59 +27,63 @@ export function AuditoriaPage() {
 
     const manejarCambioEstado = async (id, estadoActual) => {
         const nuevoEstado = estadoActual === "ACTIVO" ? "INACTIVO" : "ACTIVO";
-        if (window.confirm(`¿Seguro que quieres cambiar el estado a ${nuevoEstado}?`)) {
+        if (window.confirm(t('seguroCambiarEstado').replace('{nuevoEstado}', nuevoEstado))) {
             try {
                 await loginService.actualizarEstadoUsuario(id, nuevoEstado);
                 await cargarDatosAuditoria();
             } catch (error) {
-                alert("Error al cambiar el estado.");
+                alert(t('errorCambiarEstado'));
             }
         }
     };
 
     const manejarResetPassword = async (id, nombre) => {
-        const nuevaPass = window.prompt(`Asigna una nueva contraseña temporal para ${nombre}:`, "Temp1234!");
+        const nuevaPass = window.prompt(t('asignarNuevaContrasena').replace('{nombre}', nombre), "Temp1234!");
         
         if (nuevaPass && nuevaPass.trim().length > 0) {
             setProcesando(true);
             try {
                 const respuesta = await loginService.resetPasswordAdmin(id, nuevaPass);
                 
-                alert(`Éxito: Contraseña de ${nombre} actualizada. El correo se enviará en segundo plano.`);
+                alert(t('exitoContrasenaActualizada').replace('{nombre}', nombre));
                 
                 await cargarDatosAuditoria();
             } catch (error) {
                 console.error("Error en reset:", error);
-                alert(`Error: ${error.message || "No se pudo actualizar la contraseña."}`);
+                alert(`Error: ${error.message || t('errorCambiarEstado')}`);
             } finally {
                 setProcesando(false);
             }
         }
     };
 
+    useEffect(() => {
+        cargarDatosAuditoria();
+    }, []);
+
     return (
         <div className="pacientes-container">
             <header className="content-header">
-                <h1>Panel de Auditoría</h1>
-                <p>Control de acceso, seguridad y gestión de personal médico</p>
+                <h1>{t('panelAuditoria')}</h1>
+                <p>{t('controlAccesoSeguridad')}</p>
             </header>
 
             <div className="table-card">
                 <table className="patients-table">
                     <thead>
                         <tr>
-                            <th>FACULTATIVO</th>
-                            <th>ESPECIALIDAD</th>
-                            <th>HOSPITAL</th>
-                            <th>ESTADO</th>
-                            <th style={{ textAlign: 'center' }}>ACCIONES SEGURIDAD</th>
+                            <th>{t('facultativo')}</th>
+                            <th>{t('especialidadHeader')}</th>
+                            <th>{t('hospital')}</th>
+                            <th>{t('estadoHeader')}</th>
+                            <th style={{ textAlign: 'center' }}>{t('accionesSeguridad')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cargando ? (
-                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>Accediendo a registros de seguridad...</td></tr>
+                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>{t('accediendoRegistros')}</td></tr>
                         ) : medicos.length === 0 ? (
-                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>No hay facultativos registrados.</td></tr>
+                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>{t('noHayFacultativos')}</td></tr>
                         ) : (
                             medicos.map((m) => (
                                 <tr key={m.id}>
@@ -104,7 +110,7 @@ export function AuditoriaPage() {
                                                 onClick={() => manejarCambioEstado(m.id, m.estado)}
                                                 disabled={procesando}
                                             >
-                                                {m.estado === "ACTIVO" ? "Suspender" : "Activar"}
+                                                {m.estado === "ACTIVO" ? t('suspend') : t('activar')}
                                             </button>
                                             
                                             <button 
@@ -113,7 +119,7 @@ export function AuditoriaPage() {
                                                 onClick={() => manejarResetPassword(m.id, m.nombreCompleto)}
                                                 disabled={procesando}
                                             >
-                                                {procesando ? "Enviando..." : "Reset PWD"}
+                                                {procesando ? t('enviando') : t('resetPWD')}
                                             </button>
                                         </div>
                                     </td>

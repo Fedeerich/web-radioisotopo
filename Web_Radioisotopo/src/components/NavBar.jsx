@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import "../styles/NavBar.css";
 import { useAuth } from "../context/AuthContext";
 import { loginService } from "../services/api";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function NavBar() {
     const { usuario } = useAuth();
-    const [notificacionesCount, setNotificacionesCount] = useState(0); // Este es tu estado
+    const { t } = useTranslation();
+    const [notificacionesCount, setNotificacionesCount] = useState(0);
     const [listaNotificaciones, setListaNotificaciones] = useState([]);
     const [showDropdown, setShowDropdown] = useState(false);
 
@@ -60,10 +62,10 @@ export function NavBar() {
     return (
         <header className="navbar-main">
             <div className="navbar-left">
-                <h1>Sistema Central Clínico</h1>
+                <h1>{t('sistemaCentralClinico')}</h1>
                 <div className="connection-status">
                     <i className="fi fi-rs-lock"></i>
-                    <span>Conexión cifrada de extremo a extremo</span>
+                    <span>{t('conexionCifrada')}</span>
                 </div>
             </div>
 
@@ -79,12 +81,12 @@ export function NavBar() {
                     {showDropdown && (
                         <div className="notifications-dropdown">
                             <div className="notif-header">
-                                <span>Avisos del Sistema</span>
-                                <span className="notif-count">{notificacionesCount} nuevos</span>
+                                <span>{t('avisosDelSistema')}</span>
+                                <span className="notif-count">{notificacionesCount} {t('nuevos')}</span>
                             </div>
                             <div className="notif-list">
                                 {listaNotificaciones.length === 0 ? (
-                                    <div className="notif-empty">No hay notificaciones pendientes</div>
+                                    <div className="notif-empty">{t('noHayNotificaciones')}</div>
                                 ) : (
                                     listaNotificaciones.map((n) => (
                                         <div 
@@ -113,8 +115,8 @@ export function NavBar() {
 
                 <div className="user-profile">
                     <div className="user-info">
-                        <span className="user-name">Dr. {nombre}</span>
-                        <span className="user-role">{usuario?.especialidad || "Especialista"}</span>
+                        <span className="user-name">{t('dr')} {nombre}</span>
+                        <span className="user-role">{usuario?.especialidad || t('especialista')}</span>
                     </div>
                     <div className="user-avatar">
                         {nombre.substring(0, 2).toUpperCase()}

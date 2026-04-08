@@ -4,10 +4,12 @@ import { loginService } from "../services/api";
 import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function LoginForm() {
     const { login } = useAuth();
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const [mostrarPassword, setMostrarPassword] = useState(false);
     const [email, setEmail] = useState("");
@@ -58,8 +60,8 @@ export function LoginForm() {
         <form className="login-form" onSubmit={manejarLogin}>
             <div className="header-container">
                 <img src={ logo } alt="Logo" className="logo" />
-                <h1>Bienvenido/a a la Área Privada</h1>
-                <p>Accede a tu cuenta de gestión</p>
+                <h1>{t('bienvenidoAreaPrivada')}</h1>
+                <p>{t('accederCuentaGestion')}</p>
             </div>
 
             <input 
@@ -67,7 +69,7 @@ export function LoginForm() {
                 type="email" 
                 value={ email }
                 onChange={(e) => setEmail(e.target.value)}
-                placeholder="Correo electrónico..." 
+                placeholder={t('correoElectronico')} 
                 required 
                 className={ mensajeError ? "input-error" : "" }
             />
@@ -78,7 +80,7 @@ export function LoginForm() {
                     type={mostrarPassword ? "text" : "password"} 
                     value={ password }
                     onChange={(e) => setPassword(e.target.value)}
-                    placeholder="Contraseña..." 
+                    placeholder={t('contrasena')} 
                     required 
                     className={ mensajeError ? "input-error" : "" }
                 />
@@ -87,7 +89,6 @@ export function LoginForm() {
                     className="show-password-btn"
                     onClick={() => setMostrarPassword(!mostrarPassword)}
                 >
-                    {/* Restaurados tus iconos originales de la imagen */}
                     {mostrarPassword ? (
                         <i className="fi-rs-crossed-eye"></i>
                     ) : (
@@ -103,14 +104,14 @@ export function LoginForm() {
                         checked={recordarme}
                         onChange={(e) => setRecordarme(e.target.checked)}
                     />
-                    <span>Recordarme</span>
+                    <span>{t('recordarme')}</span>
                 </label>
                 <span 
                     className="forgot-password" 
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate('/cambiar-password')}
                 >
-                    ¿Quieres cambiar tu contraseña?
+                    {t('quieresCambiarContrasena')}
                 </span>
             </div>
 
@@ -121,7 +122,7 @@ export function LoginForm() {
             )}
 
             <button type="submit" className="submit-btn">
-                Iniciar sesión
+                {t('iniciarSesion')}
             </button>
         </form>
     );

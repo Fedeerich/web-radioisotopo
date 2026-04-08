@@ -34,6 +34,10 @@ export const AuthProvider = ({ children }) => {
     setUsuario(null);
   };
 
+  const actualizarUsuario = (nuevosDatos) => {
+    setUsuario(prev => ({ ...prev, ...nuevosDatos }));
+  };
+
   if (cargando) {
     return (
       <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -43,7 +47,7 @@ export const AuthProvider = ({ children }) => {
   }
 
   return (
-    <AuthContext.Provider value={{ usuario, login, logout, isAuthenticated: !!usuario }}>
+    <AuthContext.Provider value={{ usuario, login, logout, actualizarUsuario, isAuthenticated: !!usuario }}>
       {children}
     </AuthContext.Provider>
   );

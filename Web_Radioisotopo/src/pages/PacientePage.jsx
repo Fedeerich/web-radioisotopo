@@ -4,8 +4,10 @@ import "../styles/Paciente.css";
 import { PerfilPacientePage } from './PerfilPacientePage';
 import { CrearPacientePage } from './CrearPacientePage';
 import { loginService } from "../services/api";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function PacientePage() {
+    const { t } = useTranslation();
     const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
     const [creandoPaciente, setCreandoPaciente] = useState(false);
     
@@ -45,11 +47,11 @@ export function PacientePage() {
         <div className="pacientes-container">
             <header className="content-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <h1>Gestión de pacientes</h1>
-                    <p>Gestión de dispositivos y supervisión de tratamientos</p>
+                    <h1>{t('gestionDePacientes')}</h1>
+                    <p>{t('gestionDispositivosTratamientos')}</p>
                 </div>
                 <button className="btn-add-patient" onClick={() => setCreandoPaciente(true)}>
-                    <i className="fi fi-sr-user-add"></i> Añadir Paciente
+                    <i className="fi fi-sr-user-add"></i> {t('anadirPaciente')}
                 </button>
             </header>
 
@@ -58,23 +60,23 @@ export function PacientePage() {
                     <i className="fi fi-rs-search"></i>
                     <input 
                         type="text" 
-                        placeholder="Buscar por tarjeta sanitaria del paciente o nombre..." 
+                        placeholder={t('buscarPorTarjetaSanitaria')} 
                         value={busqueda}
                         onChange={(e) => setBusqueda(e.target.value)}
                     />
                 </div>
                 <div className="filter-group">
                     <select className="filter-select">
-                        <option>Estado (Todos)</option>
-                        <option>Estable / Positivo</option>
-                        <option>Ansiedad / Depresion</option>
+                        <option>{t('estadoTodos')}</option>
+                        <option>{t('establePositivo')}</option>
+                        <option>{t('ansiedadDepresion')}</option>
                     </select>
                 </div>
                 <div className="filter-group">
                     <select className="filter-select">
-                        <option>Tratamiento (Todos)</option>
-                        <option>Iodo</option>
-                        <option>Cobalto</option>
+                        <option>{t('tratamientoTodos')}</option>
+                        <option>{t('iodo')}</option>
+                        <option>{t('cobalto')}</option>
                     </select>
                 </div>
             </div>
@@ -83,16 +85,16 @@ export function PacientePage() {
                 <table className="patients-table">
                     <thead>
                         <tr>
-                            <th>PACIENTE</th>
-                            <th>ESTADO</th>
-                            <th>TRATAMIENTO</th>
-                            <th>PROGRESO</th>
-                            <th>ACCIONES</th>
+                            <th>{t('paciente')}</th>
+                            <th>{t('estado')}</th>
+                            <th>{t('tratamiento')}</th>
+                            <th>{t('progreso')}</th>
+                            <th>{t('acciones')}</th>
                         </tr>
                     </thead>
                     <tbody>
                         {cargando ? (
-                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>Cargando datos clínicos reales...</td></tr>
+                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>{t('cargandoDatosClinicos')}</td></tr>
                         ) : (
                             pacientesFiltrados.map((p, index) => (
                                 <tr key={p.cip || index}>
@@ -107,7 +109,7 @@ export function PacientePage() {
                                     </td>
                                     <td>
                                         <span className={`badge ${p.color || 'green'}`}>
-                                            {p.estado || 'ESTABLE'}
+                                            {p.estado || t('estable')}
                                         </span>
                                     </td>
                                     <td className="treatment-cell">
@@ -131,7 +133,7 @@ export function PacientePage() {
                                             className="btn-perfil" 
                                             onClick={() => setPacienteSeleccionado(p)}
                                         >
-                                            Ver Perfil
+                                            {t('verPerfil')}
                                         </button>
                                     </td>
                                 </tr>

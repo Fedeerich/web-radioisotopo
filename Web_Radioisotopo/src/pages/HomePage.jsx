@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import "../styles/Home.css";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function HomePage({ alSeleccionarPaciente }) {
+    const { t } = useTranslation();
     const [totalPacientes, setTotalPacientes] = useState("...");
     const [alertasHoy, setAlertasHoy] = useState(0);
     const [actividadReciente, setActividadReciente] = useState([]);
@@ -12,10 +14,10 @@ export function HomePage({ alSeleccionarPaciente }) {
         const registro = new Date(fecha);
         const diffInMinutes = Math.floor((ahora - registro) / 60000);
 
-        if (diffInMinutes < 1) return "Ahora mismo";
-        if (diffInMinutes < 60) return `Hace ${diffInMinutes}min`;
+        if (diffInMinutes < 1) return t('ahoraMismo');
+        if (diffInMinutes < 60) return t('haceMin').replace('{min}', diffInMinutes);
         const diffInHours = Math.floor(diffInMinutes / 60);
-        if (diffInHours < 24) return `Hace ${diffInHours}h`;
+        if (diffInHours < 24) return t('haceH').replace('{horas}', diffInHours);
         return registro.toLocaleDateString();
     };
 
@@ -43,8 +45,8 @@ export function HomePage({ alSeleccionarPaciente }) {
     return (
         <>
             <header className="content-header">
-                <h1>Inicio</h1>
-                <p>Resumen del estado de los dispositivos y pacientes en tratamiento</p>
+                <h1>{t('inicio')}</h1>
+                <p>{t('resumenDispositivosPacientes')}</p>
             </header>
 
             <div className="stats-grid">
@@ -54,7 +56,7 @@ export function HomePage({ alSeleccionarPaciente }) {
                     </div>
                     <div className="stat-details">
                         <span className="stat-number">{totalPacientes}</span>
-                        <span className="stat-label">Pacientes Activos</span>
+                        <span className="stat-label">{t('pacientesActivos')}</span>
                     </div>
                 </div>
 
@@ -64,7 +66,7 @@ export function HomePage({ alSeleccionarPaciente }) {
                     </div>
                     <div className="stat-details">
                         <span className="stat-number">{alertasHoy}</span>
-                        <span className="stat-label">Alertas de hoy</span>
+                        <span className="stat-label">{t('alertasDeHoy')}</span>
                     </div>
                 </div>
 
@@ -74,19 +76,19 @@ export function HomePage({ alSeleccionarPaciente }) {
                     </div>
                     <div className="stat-details">
                         <span className="stat-number">100%</span>
-                        <span className="stat-label">Sincronización</span>
+                        <span className="stat-label">{t('sincronizacion')}</span>
                     </div>
                 </div>
             </div>
 
             <div className="activity-card">
                 <div className="activity-header">
-                    <h3><i className="fi fi-rs-clock-three"></i> Pacientes revisados recientemente</h3>
+                    <h3><i className="fi fi-rs-clock-three"></i> {t('pacientesRevisadosRecientemente')}</h3>
                 </div>
                 
                 <div className="activity-list">
                     {actividadReciente.length === 0 ? (
-                        <p className="notif-empty" style={{padding: '20px'}}>No has revisado pacientes recientemente.</p>
+                        <p className="notif-empty" style={{padding: '20px'}}>{t('noHasRevisadoPacientes')}</p>
                     ) : (
                         actividadReciente.map((act, index) => (
                             <div 

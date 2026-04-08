@@ -2,9 +2,11 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/GestionUsuario.css";
 import { loginService } from "../services/api";
+import { useTranslation } from "../hooks/useTranslation";
 
 export function GestionUsuarioPage() {
     const { usuario } = useAuth(); 
+    const { t } = useTranslation();
 
     const estadoInicial = {
         nombreCompleto: "",
@@ -42,17 +44,16 @@ export function GestionUsuarioPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        setEnviando(true); // Bloquea el botón
-        setMensaje({ texto: "Conectando con el servidor de Render...", tipo: "info" });
+        setEnviando(true);
+        setMensaje({ texto: t('conectandoServidor'), tipo: "info" });
 
         try {
             const respuesta = await loginService.registrarMedico(formData);
             
-            // Si llegamos aquí, el backend respondió un 200 OK
             console.log("Respuesta del servidor:", respuesta);
 
             setMensaje({ 
-                texto: respuesta.message || "Médico registrado correctamente.", 
+                texto: respuesta.message || t('medicoRegistrado'), 
                 tipo: "exito" 
             });
             
@@ -61,13 +62,10 @@ export function GestionUsuarioPage() {
         } catch (error) {
             console.error("Error capturado en el submit:", error);
             setMensaje({ 
-                texto: error.message || "Error al comunicar con el servidor.", 
+                texto: error.message || t('errorComunicarServidor'), 
                 tipo: "error" 
             });
         } finally {
-            // ESTA ES LA CLAVE: 
-            // Si la petición en la consola está en verde, este código SE TIENE QUE EJECUTAR.
-            // Al ponerlo aquí, el botón VOLVERÁ A LA NORMALIDAD pase lo que pase.
             setEnviando(false); 
         }
     };
@@ -75,58 +73,58 @@ export function GestionUsuarioPage() {
     return (
         <div className="gestion-container">
             <div className="gestion-header">
-                <h1>Alta de Nuevo Personal Médico</h1>
-                <p>Completa los datos para registrar un nuevo especialista en el sistema.</p>
+                <h1>{t('altaNuevoPersonalMedico')}</h1>
+                <p>{t('completaDatosRegistrar')}</p>
             </div>
 
             <form className="gestion-form-caja" onSubmit={handleSubmit}>
                 
-                <h3 className="section-title">Datos de Acceso (Usuario)</h3>
+                <h3 className="section-title">{t('datosAcceso')}</h3>
                 <div className="form-grid">
                     <div className="input-group">
-                        <label>Nombre Completo</label>
+                        <label>{t('nombreCompleto')}</label>
                         <input 
                             type="text" 
                             name="nombreCompleto"
                             value={formData.nombreCompleto} 
                             onChange={handleChangeUser} 
-                            placeholder="Ej. Carlos Ruiz" 
+                            placeholder={t('ejemploNombreCompleto')} 
                             required 
                         />
                     </div>
                     
                     <div className="input-group">
-                        <label>Correo Electrónico Corporativo</label>
+                        <label>{t('correoCorporativo')}</label>
                         <input 
                             type="email" 
                             name="email"
                             value={formData.email} 
                             onChange={handleChangeUser} 
-                            placeholder="carlos.ruiz@hospital.com" 
+                            placeholder={t('ejemploCorreo')} 
                             required 
                         />
                     </div>
 
                     <div className="input-group">
-                        <label>Contraseña Temporal</label>
+                        <label>{t('contrasenaTemporal')}</label>
                         <input 
                             type="password" 
-                            name="password" // <--- CORREGIDO (Antes decía contraseña)
+                            name="password"
                             value={formData.password} 
                             onChange={handleChangeUser} 
-                            placeholder="Asigna una contraseña" 
+                            placeholder={t('asignaContrasena')} 
                             required 
                         />
                     </div>
 
                     <div className="input-group">
-                        <label>Hospital de Referencia</label>
+                        <label>{t('hospitalReferenciaInput')}</label>
                         <input 
                             type="text" 
                             name="hospitalRef"
                             value={formData.hospitalRef} 
                             onChange={handleChangeUser} 
-                            placeholder="Ej. Hospital Clínic" 
+                            placeholder={t('ejemploHospital')} 
                             required 
                         />
                     </div>
@@ -134,32 +132,32 @@ export function GestionUsuarioPage() {
 
                 <hr className="form-divider" />
 
-                <h3 className="section-title">Datos Profesionales (Médico)</h3>
+                <h3 className="section-title">{t('datosProfesionales')}</h3>
                 <div className="form-grid">
                     <div className="input-group">
-                        <label>Especialidad</label>
+                        <label>{t('especialidad')}</label>
                         <select 
                             name="especialidad" 
                             value={formData.doctor.especialidad} 
                             onChange={handleChangeDoctor}
                             required
                         >
-                            <option value="">Selecciona una especialidad...</option>
-                            <option value="Oncología Radioterápica">Oncología Radioterápica</option>
-                            <option value="Medicina Nuclear">Medicina Nuclear</option>
-                            <option value="Radiología">Radiología</option>
-                            <option value="Física Médica">Física Médica</option>
+                            <option value="">{t('seleccionaEspecialidad')}</option>
+                            <option value="Oncología Radioterápica">{t('oncologiaRadioterapica')}</option>
+                            <option value="Medicina Nuclear">{t('medicinaNuclear')}</option>
+                            <option value="Radiología">{t('radiologia')}</option>
+                            <option value="Física Médica">{t('fisicaMedica')}</option>
                         </select>
                     </div>
 
                     <div className="input-group">
-                        <label>Número de Colegiado</label>
+                        <label>{t('numeroColegiado')}</label>
                         <input 
                             type="text" 
                             name="colegiadoNum"
                             value={formData.doctor.colegiadoNum} 
                             onChange={handleChangeDoctor} 
-                            placeholder="Ej. 282893939" 
+                            placeholder={t('ejemploColegiado')} 
                             required 
                         />
                     </div>
@@ -173,7 +171,7 @@ export function GestionUsuarioPage() {
 
                 <div className="form-footer">
                     <button type="submit" className="btn-green-submit" disabled={enviando}>
-                        {enviando ? "Procesando..." : "Registrar Médico en el Sistema"}
+                        {enviando ? t('procesar') : t('registrarMedicoSistema')}
                     </button>
                 </div>
             </form>
