@@ -1,3 +1,4 @@
+/* --- ESTILOS EXISTENTES --- */
 .navbar-main {
     position: fixed;
     top: 0;
@@ -72,7 +73,7 @@
     border: 2px solid white;
 }
 
-/* Dropdown */
+/* Dropdown Notificaciones */
 .notifications-dropdown {
     position: absolute;
     top: 55px;
@@ -95,43 +96,32 @@
     font-size: 0.9rem;
 }
 
-.notif-count { color: #4299e1; font-size: 0.8rem; }
+.notif-empty {
+    padding: 40px 20px;
+    text-align: center;
+    color: #718096;
+    font-size: 0.9rem;
+}
 
-.notif-list { max-height: 400px; overflow-y: auto; }
+/* --- NUEVOS ESTILOS PARA PERFIL Y DESPLEGABLE --- */
 
-.notif-item {
-    display: flex;
-    gap: 12px;
-    padding: 15px;
-    border-bottom: 1px solid #f7fafc;
+.user-profile-container {
+    position: relative;
+}
+
+.user-profile { 
+    display: flex; 
+    align-items: center; 
+    gap: 15px; 
+    cursor: pointer;
+    padding: 5px 10px;
+    border-radius: 10px;
     transition: background 0.2s;
 }
 
-.notif-item:hover { background: #f8fafc; }
-
-.notif-item.unread { background: #f0f7ff; }
-
-.notif-icon { color: #4299e1; padding-top: 2px; }
-
-.notif-content p {
-    margin: 0;
-    font-size: 0.85rem;
-    color: #2d3748;
-    line-height: 1.4;
+.user-profile:hover {
+    background-color: #f8fafc;
 }
-
-.notif-time { font-size: 0.75rem; color: #a0aec0; }
-
-.notif-empty { padding: 20px; text-align: center; color: #a0aec0; font-size: 0.85rem; }
-
-/* Divider y Perfil */
-.navbar-divider-vertical {
-    width: 1px;
-    height: 35px;
-    background-color: #e2e8f0;
-}
-
-.user-profile { display: flex; align-items: center; gap: 15px; }
 
 .user-info { display: flex; flex-direction: column; text-align: right; }
 
@@ -150,9 +140,159 @@
     justify-content: center;
     font-weight: 600;
     font-size: 0.85rem;
+    line-height: 40px;
+    overflow: hidden;
+    border: 2px solid transparent;
+    transition: border-color 0.2s;
+}
+
+.user-profile:hover .user-avatar {
+    border-color: #4299e1;
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%; 
+    object-fit: cover; 
+}
+
+/* Dropdown de Perfil */
+.profile-dropdown {
+    position: absolute;
+    top: 60px;
+    right: 0;
+    width: 260px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+    border: 1px solid #e2e8f0;
+    z-index: 1001;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeIn 0.2s ease-out;
+}
+
+.profile-dropdown-header {
+    width: 100%;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.profile-dropdown-header p {
+    margin: 0;
+    font-weight: 700;
+    color: #1e293b;
+    font-size: 0.9rem;
+    text-align: center;
+}
+
+/* Edición de Avatar en Dropdown */
+.avatar-edit-container {
+    position: relative;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.avatar-large {
+    width: 90px;
+    height: 90px;
+    background-color: #4299e1;
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    line-height: 90px;
+    overflow: hidden;
+    position: relative;
+    border: 4px solid #f1f5f9;
+}
+
+.profile-dropdown-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.avatar-large img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.avatar-overlay {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 35%;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+.avatar-edit-container:hover .avatar-overlay {
+    opacity: 1;
+}
+
+.avatar-overlay i { font-size: 1rem; }
+
+.uploading-text {
+    font-size: 0.7rem;
+    color: #4299e1;
+    margin-top: 5px;
+    font-weight: 600;
+}
+
+/* Botón de Logout */
+.logout-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #fff1f2;
+    color: #e11d48;
+    border: 1px solid #fecdd3;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logout-btn:hover {
+    background-color: #e11d48;
+    color: white;
+}
+
+/* Animaciones y Otros */
+.navbar-divider-vertical {
+    width: 1px;
+    height: 35px;
+    background-color: #e2e8f0;
 }
 
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+/* Scrollbar personalizado para la lista de notis */
+.notif-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.notif-list::-webkit-scrollbar-thumb {
+    background: #e2e8f0;
+    border-radius: 10px;
 }

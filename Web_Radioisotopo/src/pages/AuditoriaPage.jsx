@@ -3,16 +3,42 @@ import { loginService } from "../services/api";
 import "../styles/Paciente.css";
 import { useTranslation } from "../hooks/useTranslation";
 
+const BASE_HOST = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev";
+
+const cargarImagenComoBlob = async (url) => {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) throw new Error("Error cargando imagen");
+        const blob = await response.blob();
+        return URL.createObjectURL(blob);
+    } catch {
+        return null;
+    }
+};
+
 export function AuditoriaPage() {
     const { t } = useTranslation();
     const [medicos, setMedicos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [procesando, setProcesando] = useState(false);
+    const [avatares, setAvatares] = useState({}); // ✅ mapa id -> blobUrl
 
     const cargarDatosAuditoria = async () => {
         try {
             const data = await loginService.listarDoctoresAdmin();
-            setMedicos(Array.isArray(data) ? data : []);
+            const lista = Array.isArray(data) ? data : [];
+            setMedicos(lista);
+
+            const nuevosAvatares = {};
+            await Promise.all(
+                lista
+                    .filter(m => m.profilePicUrl)
+                    .map(async (m) => {
+                        const blobUrl = await cargarImagenComoBlob(`${BASE_HOST}${m.profilePicUrl}`);
+                        if (blobUrl) nuevosAvatares[m.id] = blobUrl;
+                    })
+            );
+            setAvatares(nuevosAvatares);
         } catch (error) {
             console.error("Error en auditoría:", error);
             setMedicos([]);
@@ -39,14 +65,12 @@ export function AuditoriaPage() {
 
     const manejarResetPassword = async (id, nombre) => {
         const nuevaPass = window.prompt(t('asignarNuevaContrasena').replace('{nombre}', nombre), "Temp1234!");
-        
+
         if (nuevaPass && nuevaPass.trim().length > 0) {
             setProcesando(true);
             try {
-                const respuesta = await loginService.resetPasswordAdmin(id, nuevaPass);
-                
+                await loginService.resetPasswordAdmin(id, nuevaPass);
                 alert(t('exitoContrasenaActualizada').replace('{nombre}', nombre));
-                
                 await cargarDatosAuditoria();
             } catch (error) {
                 console.error("Error en reset:", error);
@@ -56,10 +80,6 @@ export function AuditoriaPage() {
             }
         }
     };
-
-    useEffect(() => {
-        cargarDatosAuditoria();
-    }, []);
 
     return (
         <div className="pacientes-container">
@@ -81,15 +101,23 @@ export function AuditoriaPage() {
                     </thead>
                     <tbody>
                         {cargando ? (
-                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>{t('accediendoRegistros')}</td></tr>
+                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '30px' }}>{t('accediendoRegistros')}</td></tr>
                         ) : medicos.length === 0 ? (
-                            <tr><td colSpan="5" style={{textAlign: 'center', padding: '30px'}}>{t('noHayFacultativos')}</td></tr>
+                            <tr><td colSpan="5" style={{ textAlign: 'center', padding: '30px' }}>{t('noHayFacultativos')}</td></tr>
                         ) : (
                             medicos.map((m) => (
                                 <tr key={m.id}>
                                     <td className="user-cell">
-                                        <div className="avatar" style={{backgroundColor: '#eef2ff', color: '#4f46e5'}}>
-                                            {m.nombreCompleto ? m.nombreCompleto.substring(0,2).toUpperCase() : "??"}
+                                        <div className="avatar" style={{ backgroundColor: '#eef2ff', color: '#4f46e5', overflow: 'hidden' }}>
+                                            {avatares[m.id] ? (
+                                                <img
+                                                    src={avatares[m.id]}
+                                                    alt=""
+                                                    style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }}
+                                                />
+                                            ) : (
+                                                m.nombreCompleto ? m.nombreCompleto.substring(0, 2).toUpperCase() : "??"
+                                            )}
                                         </div>
                                         <div>
                                             <div className="user-name">{m.nombreCompleto}</div>
@@ -105,16 +133,16 @@ export function AuditoriaPage() {
                                     </td>
                                     <td>
                                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
-                                            <button 
-                                                className="btn-sync" 
+                                            <button
+                                                className="btn-sync"
                                                 onClick={() => manejarCambioEstado(m.id, m.estado)}
                                                 disabled={procesando}
                                             >
                                                 {m.estado === "ACTIVO" ? t('suspend') : t('activar')}
                                             </button>
-                                            
-                                            <button 
-                                                className="btn-perfil" 
+
+                                            <button
+                                                className="btn-perfil"
                                                 style={{ backgroundColor: '#f59e0b', opacity: procesando ? 0.6 : 1 }}
                                                 onClick={() => manejarResetPassword(m.id, m.nombreCompleto)}
                                                 disabled={procesando}

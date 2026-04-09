@@ -143,12 +143,14 @@
     display: block;
     color: #1a202c;
     font-size: 0.95rem;
+    margin-bottom: 6px;
 }
 
 .toggle-text p {
     margin: 0;
     font-size: 0.85rem;
     color: #718096;
+    line-height: 1.4;
 }
 
 .switch {

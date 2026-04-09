@@ -29,6 +29,7 @@ export const textos = {
         noHayNotificaciones: "No hay notificaciones pendientes",
         dr: "Dr.",
         especialista: "Especialista",
+        perfilDelUsuario : "Perfil de Usuario",
         
         // HOMEPAGE
         inicio: "Inicio",
@@ -255,6 +256,7 @@ export const textos = {
         noHayNotificaciones: "No hi ha notificacions pendents",
         dr: "Dr.",
         especialista: "Especialista",
+        perfilDelUsuario: "Perfil d'Usuari",
         
         // HOMEPAGE
         inicio: "Inici",
@@ -406,7 +408,7 @@ export const textos = {
         resumenSemanal: "Resum setmanal",
         recibirInformeCorreo: "Rebre informe per correu",
         alertaRadiacionSegura: "Alerta de Radiació Segura",
-        avisarPacienteNivells: "Avisar en nivells segurs",
+        avisarPacienteNiveles: "Avisar en nivells segurs",
         anomaliaConstantesVitales: "Anomalia en Constants Vitals",
         notificarAlteraciones: "Notificar alteracions cardíaques",
         falloSincronizacion: "Fallada de sincronització",
@@ -482,6 +484,7 @@ export const textos = {
         noHayNotificaciones: "No pending notifications",
         dr: "Dr.",
         especialista: "Specialist",
+        perfilDelUsuario: "User profile",
         
         // HOMEPAGE
         inicio: "Home",

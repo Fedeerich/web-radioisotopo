@@ -261,5 +261,44 @@ export const loginService = {
             throw new Error(error || "No se pudo cambiar la contraseña");
         }
         return await respuesta.json();
-    }
+    },
+
+    /**
+     * ACTUALIZAR PERFIL (incluye avatar)
+     */
+    actualizarPerfil: async (datosPerfil) => {
+        const respuesta = await fetch(`${API_URL}/auth/profile`, {
+            method: "PUT",
+            headers: getHeaders(),
+            body: JSON.stringify(datosPerfil)
+        });
+
+        if (!respuesta.ok) {
+            const error = await respuesta.json();
+            throw new Error(error.message || "Error al actualizar el perfil");
+        }
+        return await respuesta.json();
+    },
+
+    /**
+     * AVATAR
+     */
+    subirAvatar: async (userId, file) => {
+        const formData = new FormData();
+        formData.append('file', file);
+
+        const respuesta = await fetch(`${API_URL}/users/${userId}/upload-avatar`, {
+            method: "POST",
+            headers: {
+                "Authorization": `Bearer ${localStorage.getItem("token")}`
+            },
+            body: formData
+        });
+
+        if (!respuesta.ok) {
+            const error = await respuesta.json();
+            throw new Error(error.error || "Error al subir la imagen");
+        }
+        return await respuesta.json();
+    },
 };
