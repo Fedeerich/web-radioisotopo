@@ -16,37 +16,44 @@ export function NavBar() {
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef(null);
 
+    // URL de tu Cloudflare Worker para rutas locales antiguas
     const BASE_HOST = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev";
     const nombre = usuario?.nombreCompleto || "Invitado";
 
-    const cargarImagenComoBlob = async (urlRelativa) => {
-        try {
-            const response = await fetch(`${BASE_HOST}${urlRelativa}`);
-            if (!response.ok) throw new Error("Error cargando imagen");
-            const blob = await response.blob();
-            return URL.createObjectURL(blob);
-        } catch (error) {
-            console.error("Error cargando avatar:", error);
-            return null;
-        }
+    /**
+     * LÓGICA DE URL INTELIGENTE:
+     * Si la imagen viene de Cloudinary (empieza por http), se usa directa.
+     * Si es una ruta antigua (/uploads/...), pasa por el proxy de Cloudflare.
+     */
+    const obtenerUrlFinal = (urlOriginal) => {
+        if (!urlOriginal) return null;
+        if (urlOriginal.startsWith('http')) return urlOriginal;
+        return `${BASE_HOST}${urlOriginal}`;
     };
 
     const handleAvatarChange = async (event) => {
         const file = event.target.files[0];
         if (!file) return;
 
+        // Preview local instantánea para mejorar la experiencia de usuario
         const previewUrl = URL.createObjectURL(file);
         setUserAvatar(previewUrl);
 
         try {
             setIsUploading(true);
             const data = await loginService.subirAvatar(usuario.id, file);
-            const blobUrl = await cargarImagenComoBlob(data.url);
-            if (blobUrl) setUserAvatar(blobUrl);
+            
+            // data.url es la URL de Cloudinary (https://res.cloudinary.com...)
+            const urlFinal = obtenerUrlFinal(data.url);
+            setUserAvatar(urlFinal);
+            
+            // Actualizamos el contexto global
             actualizarUsuario({ profilePicUrl: data.url });
         } catch (error) {
             console.error("Fallo en la subida:", error);
             alert(t('errorSubidaImagen'));
+            // Si falla, volvemos a poner la que había
+            setUserAvatar(obtenerUrlFinal(usuario?.profilePicUrl));
         } finally {
             setIsUploading(false);
         }
@@ -95,11 +102,11 @@ export function NavBar() {
         if (usuario) {
             actualizarNotificaciones();
             const interval = setInterval(actualizarNotificaciones, 30000);
+            
             if (usuario.profilePicUrl) {
-                cargarImagenComoBlob(usuario.profilePicUrl).then(url => {
-                    if (url) setUserAvatar(url);
-                });
+                setUserAvatar(obtenerUrlFinal(usuario.profilePicUrl));
             }
+            
             return () => clearInterval(interval);
         }
     }, [usuario]);
@@ -180,7 +187,13 @@ export function NavBar() {
                                     </div>
                                     {isUploading && <span className="uploading-text">{t('subiendo')}...</span>}
                                 </div>
-                                <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept="image/*" onChange={handleAvatarChange} />
+                                <input 
+                                    type="file" 
+                                    ref={fileInputRef} 
+                                    style={{ display: 'none' }} 
+                                    accept="image/*" 
+                                    onChange={handleAvatarChange} 
+                                />
                                 <button className="logout-btn">{t('cerrarSesion')}</button>
                             </div>
                         </div>
