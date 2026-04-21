@@ -178,6 +178,15 @@ export const loginService = {
         return data.filter(n => n.patient && n.patient.dni === cip);
     },
 
+    obtenerMensajesPaciente: async (cip) => {
+        const respuesta = await fetch(`${API_URL}/notifications/patient/${cip}`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!respuesta.ok) return [];
+        return await respuesta.json();
+    },
+
     /**
      * NOTIFICACIONES Y ALERTAS
      */
