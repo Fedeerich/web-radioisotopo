@@ -18,11 +18,18 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
     const cargarHistorialConsultas = async () => {
         try {
-            // Llamada al endpoint de historial que creamos en el NotificationController
+            // Llamada al endpoint de historial que devuelve las notificaciones del paciente
             const data = await loginService.obtenerConsultasPaciente(paciente.cip);
-            setMensajes(data);
+            
+            // Validamos que la data sea un array antes de setearla
+            if (data && Array.isArray(data)) {
+                setMensajes(data);
+            } else {
+                setMensajes([]);
+            }
         } catch (error) {
             console.error("Error cargando mensajes:", error);
+            setMensajes([]);
         }
     };
 
@@ -141,32 +148,33 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <div className="card chat-card">
                         <h4 className="card-title">{t('centroComunicacion')}</h4>
                         <div className="message-list" style={{ maxHeight: '300px', overflowY: 'auto' }}>
-                            {mensajes.length > 0 ? (
+                            {mensajes && mensajes.length > 0 ? (
                                 mensajes.map((msg, i) => (
-                                    <div className={`msg-item ${msg.leida ? 'read' : 'unread'}`} key={i}>
+                                    <div className={`msg-item ${msg.leida ? 'read' : 'unread'}`} key={msg.id || i}>
                                         <div className="msg-icon">
                                             <i className={msg.leida ? "fi fi-rr-envelope-open" : "fi fi-sr-envelope"}></i>
                                         </div>
                                         <div className="msg-content">
                                             <div className="msg-left">
                                                 <strong>{patientData.nombre}</strong>
-                                                <span className="msg-subject">{msg.asunto}</span>
+                                                <span className="msg-subject">Asunto: {msg.asunto || 'Sin asunto'}</span>
                                             </div>
                                             <span className="msg-preview">{msg.mensaje}</span>
-                                            <small className="msg-date">{new Date(msg.fechaEnvio).toLocaleString()}</small>
+                                            <small className="msg-date">
+                                                {msg.fechaEnvio ? new Date(msg.fechaEnvio).toLocaleString() : 'Fecha no disponible'}
+                                            </small>
                                         </div>
                                     </div>
                                 ))
                             ) : (
                                 <div className="msg-item empty">
-                                    <p style={{ textAlign: 'center', width: '100%', color: '#999' }}>
+                                    <p style={{ textAlign: 'center', width: '100%', color: '#999', padding: '20px' }}>
                                         {t('noHayMensajesNuevos')}
                                     </p>
                                 </div>
                             )}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
