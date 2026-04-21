@@ -167,6 +167,15 @@ export const loginService = {
         });
     },
 
+    obtenerConsultasPaciente: async (cip) => {
+        const respuesta = await fetch(`${API_URL}/notifications/history/${cip}`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!respuesta.ok) return [];
+        return await respuesta.json();
+    },
+
     /**
      * NOTIFICACIONES Y ALERTAS
      */
