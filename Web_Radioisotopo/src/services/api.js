@@ -173,7 +173,9 @@ export const loginService = {
             headers: getHeaders()
         });
         if (!respuesta.ok) return [];
-        return await respuesta.json();
+        const data = await respuesta.json();
+
+        return data.filter(n => n.patient && n.patient.dni === cip);
     },
 
     /**
