@@ -22,7 +22,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         color: "gray",
         watchEstado: t('noVinculado'),
         watchUltimaSinc: null,
-        valorEmocional: 50
+        valorEmocional: 2 // Por defecto neutral
     };
 
     // Función para manejar el envío de consejos (Card 3)
@@ -147,17 +147,17 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                         <h4 className="card-title">{t('monitorEmocional')}</h4>
                         <div className="emot-content">
                             <div className="emoji-row">
-                                <div className={`emoji-item green-emoji ${patientData.valorEmocional >= 75 ? 'active' : ''}`}>
+                                <div className={`emoji-item green-emoji ${patientData.valorEmocional === 1 ? 'active' : ''}`}>
                                     <span>😃</span>
                                 </div>
-                                <div className={`emoji-item yellow-emoji ${patientData.valorEmocional >= 50 && patientData.valorEmocional < 75 ? 'active' : ''}`}>
+                                <div className={`emoji-item yellow-emoji ${patientData.valorEmocional === 2 ? 'active' : ''}`}>
                                     <span>😐</span>
                                 </div>
-                                <div className={`emoji-item orange-emoji ${patientData.valorEmocional >= 25 && patientData.valorEmocional < 50 ? 'active' : ''}`}>
-                                    <span>😒</span>
+                                <div className={`emoji-item orange-emoji ${patientData.valorEmocional === 3 ? 'active' : ''}`}>
+                                    <span>😑</span>
                                 </div>
-                                <div className={`emoji-item red-emoji ${patientData.valorEmocional < 25 ? 'active' : ''}`}>
-                                    <span>😡</span>
+                                <div className={`emoji-item red-emoji ${patientData.valorEmocional === 4 ? 'active' : ''}`}>
+                                    <span>😟</span>
                                 </div>
                             </div>
 
@@ -171,7 +171,12 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
                                 <div 
                                     className="mood-pointer" 
-                                    style={{ left: `${100 - (patientData.valorEmocional || 50)}%` }}
+                                    style={{ 
+                                        left: patientData.valorEmocional === 1 ? '12%' : 
+                                              patientData.valorEmocional === 2 ? '37%' : 
+                                              patientData.valorEmocional === 3 ? '62%' : 
+                                              patientData.valorEmocional === 4 ? '87%' : '50%' 
+                                    }}
                                 >
                                     ▼
                                 </div>
