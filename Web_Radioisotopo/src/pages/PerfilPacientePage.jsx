@@ -18,12 +18,12 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
     const cargarHistorialConsultas = async () => {
         try {
-            // Llamada al endpoint de historial que devuelve las notificaciones del paciente
+            // Llamada al servicio
             const data = await loginService.obtenerConsultasPaciente(paciente.cip);
             
-            // Validamos que la data sea un array antes de setearla
+            // Forzamos la actualización del estado asegurando que sea un array
             if (data && Array.isArray(data)) {
-                setMensajes(data);
+                setMensajes([...data]); 
             } else {
                 setMensajes([]);
             }
@@ -157,24 +157,23 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                                         <div className="msg-content">
                                             <div className="msg-left">
                                                 <strong>{patientData.nombre}</strong>
-                                                <span className="msg-subject">Asunto: {msg.asunto || 'Sin asunto'}</span>
+                                                <span className="msg-subject">{msg.asunto}</span>
                                             </div>
                                             <span className="msg-preview">{msg.mensaje}</span>
-                                            <small className="msg-date">
-                                                {msg.fechaEnvio ? new Date(msg.fechaEnvio).toLocaleString() : 'Fecha no disponible'}
-                                            </small>
+                                            <small className="msg-date">{new Date(msg.fechaEnvio).toLocaleString()}</small>
                                         </div>
                                     </div>
                                 ))
                             ) : (
                                 <div className="msg-item empty">
-                                    <p style={{ textAlign: 'center', width: '100%', color: '#999', padding: '20px' }}>
+                                    <p style={{ textAlign: 'center', width: '100%', color: '#999' }}>
                                         {t('noHayMensajesNuevos')}
                                     </p>
                                 </div>
                             )}
                         </div>
                     </div>
+
                 </div>
             </div>
         </div>
