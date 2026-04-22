@@ -19,10 +19,13 @@ export function PerfilPacientePage({ paciente, alVolver }) {
     });
 
     useEffect(() => {
+        // 1. Solo ejecutamos si hay paciente y CIP
         if (paciente && paciente.cip) {
+            
+            // Registrar visita (esto solo una vez al entrar)
             loginService.registrarVisitaPaciente(paciente.cip);
             
-            // Cargamos los datos reales del servidor nada más entrar
+            // Cargar datos dinámicos (Reloj, Batería, etc.)
             loginService.obtenerPerfilPaciente(paciente.cip)
                 .then(data => {
                     setDatosDinamicos({
@@ -30,8 +33,10 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                         watchUltimaSinc: data.watchUltimaSinc,
                         watchEstado: data.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
                     });
-                });
+                })
+                .catch(err => console.error("Error cargando perfil:", err));
 
+            // Cargar mensajes/consultas
             loginService.obtenerConsultasPaciente(paciente.cip)
                 .then(data => {
                     const soloConsultasPaciente = data.filter(msg => 
@@ -43,7 +48,11 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 })
                 .catch(() => setMensajes([]));
         }
-    }, [paciente, t]);
+        
+        // IMPORTANTE: Ponemos [paciente.cip] como dependencia única.
+        // Esto evita que cualquier cambio en 'paciente' (objeto completo) o en los 
+        // estados internos vuelva a disparar el bucle.
+    }, [paciente?.cip]);
 
     const patientData = paciente || {
         nombre: t('patientNoSeleccionado'),
