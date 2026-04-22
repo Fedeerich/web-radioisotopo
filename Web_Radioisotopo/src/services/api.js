@@ -168,13 +168,12 @@ export const loginService = {
     },
 
     obtenerConsultasPaciente: async (cip) => {
-        const respuesta = await fetch(`${API_URL}/notifications/history/${cip}`, {
+        const respuesta = await fetch(`${API_URL}/notifications/consultas`, { 
             method: "GET",
-            headers: getHeaders()
+            headers: getHeaders() 
         });
         if (!respuesta.ok) return [];
         const data = await respuesta.json();
-
         return data.filter(n => n.patient && n.patient.dni === cip);
     },
 
@@ -257,11 +256,11 @@ export const loginService = {
         }
     },
 
-    enviarInstruccionReloj: async (cip, mensaje) => {
-        const respuesta = await fetch(`${API_URL}/patients/${cip}/send-instruction`, {
+    enviarInstruccionReloj: async (cip, clave) => {
+        const respuesta = await fetch(`${API_URL}/notifications/patient/${cip}/send-instruction`, {
             method: "POST",
             headers: getHeaders(),
-            body: JSON.stringify({ mensaje })
+            body: JSON.stringify({ clave: clave }) 
         });
 
         const datos = await respuesta.json();
