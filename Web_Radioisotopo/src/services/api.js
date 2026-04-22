@@ -43,7 +43,7 @@ export const loginService = {
     },
 
     /**
-     * CONFIGURACIÓN Y PREFERENCIAS (NUEVO)
+     * CONFIGURACIÓN Y PREFERENCIAS
      */
     guardarPreferencias: async (preferencias) => {
         const respuesta = await fetch(`${API_URL}/auth/preferencias`, {
@@ -122,6 +122,16 @@ export const loginService = {
         const datos = await respuesta.json();
         if (!respuesta.ok) throw new Error(datos.error || "Error en el alta clínica");
         return datos;
+    },
+
+    // NUEVO: Obtener detalle completo del paciente (incluyendo watchId y batería)
+    obtenerPerfilPaciente: async (cip) => {
+        const respuesta = await fetch(`${API_URL}/patients/perfil/${cip}`, {
+            method: "GET",
+            headers: getHeaders()
+        });
+        if (!respuesta.ok) throw new Error("No se pudo obtener el perfil detallado");
+        return await respuesta.json();
     },
 
     obtenerTotalPacientes: async () => {
@@ -282,9 +292,6 @@ export const loginService = {
         return await respuesta.json();
     },
 
-    /**
-     * ACTUALIZAR PERFIL (incluye avatar)
-     */
     actualizarPerfil: async (datosPerfil) => {
         const respuesta = await fetch(`${API_URL}/auth/profile`, {
             method: "PUT",
@@ -299,9 +306,6 @@ export const loginService = {
         return await respuesta.json();
     },
 
-    /**
-     * AVATAR
-     */
     subirAvatar: async (userId, file) => {
         const formData = new FormData();
         formData.append('file', file);

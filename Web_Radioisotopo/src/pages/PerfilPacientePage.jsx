@@ -10,17 +10,28 @@ export function PerfilPacientePage({ paciente, alVolver }) {
     const [ultimoConsejo, setUltimoConsejo] = useState(null);
     const [sincronizando, setSincronizando] = useState(false);
     
-    // Estado local para los datos del paciente que pueden actualizarse al sincronizar
+    // Estado dinámico corregido: 
+    // Ahora comprueba si existe 'watchId' para determinar el estado inicial
     const [datosDinamicos, setDatosDinamicos] = useState({
         watchBattery: paciente?.watchBattery || null,
         watchUltimaSinc: paciente?.watchUltimaSinc || null,
-        watchEstado: paciente?.watchEstado || t('noVinculado')
+        watchEstado: paciente?.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
     });
 
     useEffect(() => {
         if (paciente && paciente.cip) {
             loginService.registrarVisitaPaciente(paciente.cip);
             
+            // Cargamos los datos reales del servidor nada más entrar
+            loginService.obtenerPerfilPaciente(paciente.cip)
+                .then(data => {
+                    setDatosDinamicos({
+                        watchBattery: data.watchBattery,
+                        watchUltimaSinc: data.watchUltimaSinc,
+                        watchEstado: data.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
+                    });
+                });
+
             loginService.obtenerConsultasPaciente(paciente.cip)
                 .then(data => {
                     const soloConsultasPaciente = data.filter(msg => 
@@ -43,27 +54,25 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         valorEmocional: 2 
     };
 
-    // FUNCIÓN DE SINCRONIZACIÓN DIRECTA (Enfoque Reloj Autónomo)
     const manejarSincronizacionReloj = async () => {
-        if (!paciente?.cip || datosDinamicos.watchEstado === t('noVinculado')) {
+        // Corrección aquí: comprobamos el ID o el estado real
+        if (!paciente?.cip || !paciente?.watchId) {
             alert(t('noHayRelojVinculado'));
             return;
         }
 
         setSincronizando(true);
         try {
-            // Consultamos al servidor la última telemetría que el reloj haya subido directamente
             const dataActualizada = await loginService.obtenerPerfilPaciente(paciente.cip);
             
             setDatosDinamicos({
                 watchBattery: dataActualizada.watchBattery,
                 watchUltimaSinc: dataActualizada.watchUltimaSinc,
-                watchEstado: dataActualizada.watchEstado
+                watchEstado: dataActualizada.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
             });
 
             if (dataActualizada.watchUltimaSinc) {
-                const horaSinc = new Date(dataActualizada.watchUltimaSinc).toLocaleTimeString();
-                alert(`${t('sincronizacionExitosa')} ${horaSinc}`);
+                alert(`${t('sincronizacionExitosa')} ${new Date(dataActualizada.watchUltimaSinc).toLocaleTimeString()}`);
             } else {
                 alert(t('relojSinDatosAun'));
             }
@@ -117,16 +126,15 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
             <div className="grid-cards">
                 
-                {/* CARD 1: SMARTWATCH (AUTÓNOMO) */}
                 <div className="card">
                     <h4 className="card-title">{t('dispositivoSmartwatch')}</h4>
                     <div className="watch-content">
                         <div className="watch-icon-box"><i className="fi fi-sr-watch-smart"></i></div>
                         <div className="watch-info">
-                            <strong>{paciente?.watchSerie || "Galaxy Watch 8"}</strong>
+                            <strong>{paciente?.watchModel || "Galaxy Watch 8"}</strong>
                             <div className="status-row">
                                 <span className={`status-text ${datosDinamicos.watchEstado === t('noVinculado') ? 'red' : 'green'}`}>
-                                    {datosDinamicos.watchEstado === t('noVinculado') ? t('noVinculadoStatus') : t('conectadoTransmitiendo')}
+                                    {datosDinamicos.watchEstado}
                                 </span>
                             </div>
                             <small>
@@ -150,7 +158,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <p className="watch-note">{t('descargaBiometriaAutomatica')}</p>
                 </div>
 
-                {/* CARD 2: PROGRESO */}
                 <div className="card">
                     <h4 className="card-title">{t('progresoRadioterapia')}</h4>
                     <div className="atom-container">
@@ -174,7 +181,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     </div>
                 </div>
 
-                {/* CARD 3: CONSEJOS */}
                 <div className="card">
                     <h4 className="card-title">{t('consonanciaSalud')}</h4>
                     <p className="card-desc">{t('empujarConsejosReloj')}</p>
