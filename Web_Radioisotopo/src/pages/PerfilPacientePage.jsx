@@ -7,19 +7,32 @@ import { useTranslation } from "../hooks/useTranslation";
 export function PerfilPacientePage({ paciente, alVolver }) {
     const { t } = useTranslation();
     const [mensajes, setMensajes] = useState([]);
-    // Estado para la caja verde de "último consejo enviado"
     const [ultimoConsejo, setUltimoConsejo] = useState(null);
+    const [sincronizando, setSincronizando] = useState(false);
     
-    // 1. Registro de actividad y carga de mensajes
+    // Estado local para los datos del paciente que pueden actualizarse al sincronizar
+    const [datosDinamicos, setDatosDinamicos] = useState({
+        watchBattery: paciente?.watchBattery || null,
+        watchUltimaSinc: paciente?.watchUltimaSinc || null,
+        watchEstado: paciente?.watchEstado || t('noVinculado')
+    });
+
     useEffect(() => {
         if (paciente && paciente.cip) {
             loginService.registrarVisitaPaciente(paciente.cip);
-            // Usamos la función que filtra consultas (mensajes de soporte/instrucciones)
+            
             loginService.obtenerConsultasPaciente(paciente.cip)
-                .then(setMensajes)
+                .then(data => {
+                    const soloConsultasPaciente = data.filter(msg => 
+                        msg.asunto !== "Consonancia de Salud" && 
+                        msg.asunto !== "Consonancia" && 
+                        msg.asunto !== "Instrucción"
+                    );
+                    setMensajes(soloConsultasPaciente);
+                })
                 .catch(() => setMensajes([]));
         }
-    }, [paciente]);
+    }, [paciente, t]);
 
     const patientData = paciente || {
         nombre: t('patientNoSeleccionado'),
@@ -27,24 +40,51 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         tratamiento: t('sinTratamiento'),
         progreso: 0,
         color: "gray",
-        watchEstado: t('noVinculado'),
-        watchUltimaSinc: null,
         valorEmocional: 2 
     };
 
-    // Función para manejar el envío de consejos (Card 3)
+    // FUNCIÓN DE SINCRONIZACIÓN DIRECTA (Enfoque Reloj Autónomo)
+    const manejarSincronizacionReloj = async () => {
+        if (!paciente?.cip || datosDinamicos.watchEstado === t('noVinculado')) {
+            alert(t('noHayRelojVinculado'));
+            return;
+        }
+
+        setSincronizando(true);
+        try {
+            // Consultamos al servidor la última telemetría que el reloj haya subido directamente
+            const dataActualizada = await loginService.obtenerPerfilPaciente(paciente.cip);
+            
+            setDatosDinamicos({
+                watchBattery: dataActualizada.watchBattery,
+                watchUltimaSinc: dataActualizada.watchUltimaSinc,
+                watchEstado: dataActualizada.watchEstado
+            });
+
+            if (dataActualizada.watchUltimaSinc) {
+                const horaSinc = new Date(dataActualizada.watchUltimaSinc).toLocaleTimeString();
+                alert(`${t('sincronizacionExitosa')} ${horaSinc}`);
+            } else {
+                alert(t('relojSinDatosAun'));
+            }
+        } catch (error) {
+            alert(t('errorAlConectarServidorReloj'));
+        } finally {
+            setSincronizando(false);
+        }
+    };
+
     const manejarEnvioConsejo = async () => {
         const select = document.querySelector(".select-input");
         const claveSeleccionada = select.value;
 
         if (claveSeleccionada && claveSeleccionada !== t('seleccionarConsejo')) {
             try {
-                // Enviamos la clave al backend
                 await loginService.enviarInstruccionReloj(patientData.cip, claveSeleccionada);
                 
-                // Actualizamos la caja verde localmente
                 setUltimoConsejo({
-                    texto: claveSeleccionada, // Aquí podrías mapear la clave a un texto amigable
+                    texto: claveSeleccionada === 'FASE_ALTA' ? 'Dosi > 400MBq' : 
+                           claveSeleccionada === 'FASE_DECAIMIENTO' ? '400MBq - 2MBq' : 'Exempció (0MBq)',
                     hora: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
                 });
 
@@ -77,23 +117,32 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
             <div className="grid-cards">
                 
-                {/* CARD 1: SMARTWATCH */}
+                {/* CARD 1: SMARTWATCH (AUTÓNOMO) */}
                 <div className="card">
                     <h4 className="card-title">{t('dispositivoSmartwatch')}</h4>
                     <div className="watch-content">
                         <div className="watch-icon-box"><i className="fi fi-sr-watch-smart"></i></div>
                         <div className="watch-info">
-                            <strong>{patientData.watchSerie || "Galaxy Watch 8"}</strong>
+                            <strong>{paciente?.watchSerie || "Galaxy Watch 8"}</strong>
                             <div className="status-row">
-                                <span className={`status-text ${patientData.watchEstado === t('noVinculado') ? 'red' : 'green'}`}>
-                                    {patientData.watchEstado === t('noVinculado') ? t('noVinculadoStatus') : t('conectadoTransmitiendo')}
+                                <span className={`status-text ${datosDinamicos.watchEstado === t('noVinculado') ? 'red' : 'green'}`}>
+                                    {datosDinamicos.watchEstado === t('noVinculado') ? t('noVinculadoStatus') : t('conectadoTransmitiendo')}
                                 </span>
                             </div>
-                            <small>{t('bateria')} 85% | {t('ultimaSinc')}: {patientData.watchUltimaSinc ? new Date(patientData.watchUltimaSinc).toLocaleTimeString() : 'N/A'}</small>
+                            <small>
+                                {t('bateria')} {datosDinamicos.watchBattery ? `${datosDinamicos.watchBattery}%` : 'N/A'} | 
+                                {t('ultimaSinc')}: {datosDinamicos.watchUltimaSinc ? new Date(datosDinamicos.watchUltimaSinc).toLocaleTimeString() : 'N/A'}
+                            </small>
                         </div>
                     </div>
                     <div className="watch-actions">
-                        <button className="btn-sync">{t('sincronizacionRemota')}</button>
+                        <button 
+                            className={`btn-sync ${sincronizando ? 'loading' : ''}`} 
+                            onClick={manejarSincronizacionReloj}
+                            disabled={sincronizando || datosDinamicos.watchEstado === t('noVinculado')}
+                        >
+                            {sincronizando ? t('actualizando') : t('sincronizacionRemota')}
+                        </button>
                         <button className="btn-disconnect">
                              <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path><line x1="4" y1="4" x2="20" y2="20"></line></svg>
                         </button>
@@ -113,7 +162,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <div className="progress-stats">
                         <div className="stat-left">
                             <span className={`stat-value ${patientData.color}`}>{t('estado')}</span>
-                            <span className="stat-label">{patientData.estado || t('estable')}</span>
+                            <span className="stat-label">{paciente?.estado || t('estable')}</span>
                         </div>
                         <div className="stat-right">
                             <span className="stat-value black">{patientData.progreso}%</span>
@@ -125,17 +174,16 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     </div>
                 </div>
 
-                {/* CARD 3: CONSEJOS (CON CAJA VERDE DINÁMICA) */}
+                {/* CARD 3: CONSEJOS */}
                 <div className="card">
                     <h4 className="card-title">{t('consonanciaSalud')}</h4>
                     <p className="card-desc">{t('empujarConsejosReloj')}</p>
                     
-                    {/* Solo mostramos la caja si hay un consejo enviado o cargado */}
                     {ultimoConsejo && (
                         <div className="alert-green">
                             <div className="alert-header">
                                 <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
-                                <strong>{ultimoConsejo.texto === 'FASE_ALTA' ? 'Dosi > 400MBq' : ultimoConsejo.texto}</strong>
+                                <strong>{ultimoConsejo.texto}</strong>
                             </div>
                             <span className="alert-time">{t('enviadoALes')} {ultimoConsejo.hora}h</span>
                         </div>
@@ -150,9 +198,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <button className="btn-outline" onClick={manejarEnvioConsejo}>{t('enviarSmartWatch')}</button>
                 </div>
 
-                {/* FILA INFERIOR */}
                 <div className="bottom-row" style={{ gridColumn: 'span 3', display: 'grid', gridTemplateColumns: '1.2fr 1fr', gap: '24px' }}>
-                    
                     <div className="card emot-card">
                         <h4 className="card-title">{t('monitorEmocional')}</h4>
                         <div className="emot-content">
@@ -185,26 +231,22 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                                     <div className="msg-icon"><i className="fi fi-rs-envelope"></i></div>
                                     <div className="msg-content">
                                         <div className="msg-left">
-                                            <strong>{msg.asunto || t('mensajeMedico')}</strong>
-                                            <span className="msg-subject">{msg.mensaje}</span>
+                                            <strong style={{fontSize: '1.05rem', display: 'block'}}>{msg.asunto}</strong>
+                                            <span className="msg-subject" style={{color: '#555'}}>{msg.mensaje}</span>
                                         </div>
-                                        <span className="msg-preview">{msg.fechaEnvio ? new Date(msg.fechaEnvio).toLocaleString() : ''}</span>
+                                        <small className="msg-preview">{msg.fechaEnvio ? new Date(msg.fechaEnvio).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'}) : ''}</small>
                                     </div>
                                 </div>
                             )) : (
-                                <div className="msg-item">
-                                    <div className="msg-icon"><i className="fi fi-rs-envelope"></i></div>
+                                <div className="msg-item empty-state">
+                                    <div className="msg-icon"><i className="fi fi-rs-envelope-open"></i></div>
                                     <div className="msg-content">
-                                        <div className="msg-left">
-                                            <strong>{t('consultaGeneral')}</strong>
-                                            <span className="msg-subject">{t('noHayMensajesNuevos')}</span>
-                                        </div>
+                                        <p>{t('noHayMensajesNuevos')}</p>
                                     </div>
                                 </div>
                             )}
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>

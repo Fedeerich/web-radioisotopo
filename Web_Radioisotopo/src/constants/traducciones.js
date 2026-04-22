@@ -97,7 +97,14 @@ export const textos = {
         sincronizandoCatsalut: "Sincronizando con CatSalut y generando informe...",
         altaCompletada: "Alta completada e informe descargado con éxito.",
         errorProcesoAlta: "Error en el proceso de alta",
-        
+        aprobaSmartWatch: "Acerca el SmartWatch compatible del paciente para iniciar la vinculación.",
+        buscandoDispositivo: "Buscando dispositivo...",
+        relojVinculado: "Reloj vinculado",
+        errorVinculacionBluetooth: "Error al vincular Bluetooth",
+        buscando: "Buscando...",
+        cambiarReloj: "Cambiar Reloj",
+        vincularBluetooth: "Vincular Bluetooth",
+         
         // PERFIL PACIENTE
         patientNoSeleccionado: "Paciente no seleccionado",
         sinTratamiento: "Sin tratamiento",
@@ -450,7 +457,13 @@ export const textos = {
         altaCompletada: "Alta completada i informe descarregat amb èxit.",
         errorProcesoAlta: "Error en el procés d'alta",
         aprobaSmartWatch: "Apropa el SmartWatch compatible del pacient per iniciar la vinculació.",
-        
+        buscandoDispositivo: "Cercant dispositiu...",
+        relojVinculat: "Rellotge vinculat",
+        errorVinculacioBluetooth: "Error al vincular Bluetooth",
+        buscando: "Cercant...",
+        cambiarRellotge: "Canviar Rellotge",
+        vincularBluetooth: "Vincular Bluetooth",
+         
         // PERFIL PACIENTE
         patientNoSeleccionado: "Pacient no seleccionat",
         sinTratamiento: "Sense tractament",
@@ -800,9 +813,16 @@ privacidadCookiesTexto: "Aquest lloc fa servir cookies pròpies:",
         confirmarIniciar: "Confirm and Start",
         porFavorCompletaCampos: "Please complete all technical fields.",
         sincronizandoCatsalut: "Synchronizing with CatSalut and generating report...",
-        altaCompletada: "Admission completed and report downloaded successfully.",
+altaCompletada: "Admission completed and report downloaded successfully.",
         errorProcesoAlta: "Error in admission process",
-        
+        aprobaSmartWatch: "Bring the patient's compatible SmartWatch close to start pairing.",
+        buscandoDispositivo: "Searching for device...",
+        relojVinculado: "Watch linked",
+        errorVinculacionBluetooth: "Error linking Bluetooth",
+        buscando: "Searching...",
+        cambiarReloj: "Change Watch",
+        vincularBluetooth: "Link Bluetooth",
+         
         // PERFIL PACIENTE
         patientNoSeleccionado: "No patient selected",
         sinTratamiento: "No treatment",
