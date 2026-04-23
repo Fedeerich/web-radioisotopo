@@ -12,6 +12,7 @@ UPDATED:       [23/04/2026]
 import React, { useEffect, useState } from 'react';
 import '../styles/Landing.css';
 import imgMedicos from '../assets/images/medicos.jpg';
+import logo from '../assets/logo.png';
 import imgPanellPacients from '../assets/images-demo/gestion-pacientes.png';
 import imgPerfilPacients from '../assets/images-demo/perfil-usuario.png';
 import imgAuditoriaAdmin from '../assets/images-demo/auditoria-admin.png';
@@ -81,7 +82,7 @@ export function LandingPage() {
             <header className={`landing-header ${scrolled ? 'scrolled' : ''}`}>
                 <a href="#top" className="landing-logo">
                     <div className="landing-logo-icon">
-                        <AtomIcon />
+                        <img src={logo} alt="Radioisòtop" />
                     </div>
                     <span>{t('radioisotopos')}</span>
                 </a>
