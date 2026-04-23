@@ -1,6 +1,18 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para lectura de la privacidad de la pagina]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useTranslation } from '../hooks/useTranslation';
 import '../styles/Privacidad.css';
 
+// PAGE PRIVACIDAD
 export function PrivacidadPage() {
     const { t } = useTranslation();
 

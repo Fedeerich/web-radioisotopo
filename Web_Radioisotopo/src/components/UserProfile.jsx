@@ -1,5 +1,17 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Componente User Profile]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import React, { useState, useRef } from 'react';
 
+// COMPONENTE USERPROFILE
 const UserProfile = ({ userId }) => { 
   const [userAvatar, setUserAvatar] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
@@ -42,7 +54,6 @@ const UserProfile = ({ userId }) => {
 
   return (
     <div className="profile-section">
-      {/* Círculo del avatar */}
       <div className="avatar-circle" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
         {userAvatar ? (
           <img src={userAvatar} alt="Profile" style={{ width: 50, height: 50, borderRadius: '50%' }} />
@@ -53,7 +64,6 @@ const UserProfile = ({ userId }) => {
         {isUploading && <div className="loader">Cargando...</div>}
       </div>
 
-      {/* Input oculto */}
       <input 
         type="file" 
         ref={fileInputRef} 

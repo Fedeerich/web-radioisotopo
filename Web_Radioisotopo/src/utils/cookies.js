@@ -1,3 +1,12 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Cookies para tener guardada la sesion]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
 export function setCookie(name, value, days = 365) {
     const expires = new Date();
     expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);

@@ -1,8 +1,20 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para la gestion de los usuarios, a nivel de medicos]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/GestionUsuario.css";
 import { loginService } from "../services/api";
 
+// PAGE GESTION DE USUARIO
 export function GestionUsuarioPage() {
     const { usuario } = useAuth(); 
 

@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [La página principal para App.jsx]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useLocation, useNavigate } from "react-router-dom"; // Añadimos useNavigate
 import { SideBar } from './components/SideBar';
 import { NavBar } from './components/NavBar';
@@ -7,6 +18,7 @@ import { ConfiguracionPage } from './pages/ConfiguracionPage';
 import { GestionUsuarioPage } from './pages/GestionUsuarioPage';
 import { AuditoriaPage } from './pages/AuditoriaPage';
 
+// PAGINA PRINCIPAL APP
 export function App() {
     const location = useLocation();
     const navigate = useNavigate();

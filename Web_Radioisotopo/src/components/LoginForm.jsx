@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Componente LoginForm]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import "../styles/Login.css";
 import logo from "../assets/logo.png"; 
 import { loginService } from "../services/api";
@@ -6,6 +17,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "../hooks/useTranslation";
 
+// COMPONENTE LOGIN FORM
 export function LoginForm() {
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -17,7 +29,6 @@ export function LoginForm() {
     const [recordarme, setRecordarme] = useState(false);
     const [mensajeError, setMensajeError] = useState(""); 
 
-    // Auto-login si "Recordarme" estaba marcado y hay token
     useEffect(() => {
         const token = localStorage.getItem("token");
         const mantener = localStorage.getItem("mantenerSesion");
@@ -31,21 +42,16 @@ export function LoginForm() {
         setMensajeError(""); 
 
         try {
-            // 1. Llamada al servicio
             const respuesta = await loginService.iniciarSesion(email, password);
             
-            // 2. Persistencia de la elección "Recordarme"
             if (recordarme) {
                 localStorage.setItem("mantenerSesion", "true");
             } else {
                 localStorage.removeItem("mantenerSesion");
             }
 
-            // 3. Guardar datos en el Contexto de Autenticación
             login(respuesta); 
 
-            // 4. LÓGICA DE REDIRECCIÓN (El "salto" que buscamos)
-            // Si el backend envía requiereCambioPassword: true, vamos a la página aparte
             if (respuesta.requiereCambioPassword) {
                 navigate("/cambiar-password");
             } else {

@@ -1,3 +1,12 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Css para darle estilo a la página de CrearPacientePage.jsx]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
 .crear-paciente-container {
     padding: 20px;
     animation: fadeIn 0.4s ease-out;

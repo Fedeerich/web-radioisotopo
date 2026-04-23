@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Gestion de Root Routes]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
@@ -8,6 +19,7 @@ import { CambiarPasswordPage } from './pages/CambiarPasswordPage';
 import { LandingPage } from './pages/LandingPage';
 import { PrivacidadPage } from './pages/PrivacidadPage';
 
+// FUNCIÓN ROOT
 function Root() {
   return (
     <AuthProvider>

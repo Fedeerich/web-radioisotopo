@@ -1,14 +1,23 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Hook para el uso de las traducciones]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useAuth } from "../context/AuthContext";
 import { textos } from "../constants/traducciones";
 
+// HOOK USETRANSLATION
 export const useTranslation = () => {
     const { usuario } = useAuth();
     
-    // El idioma puede venir del backend como "Castellano", "Català", "English"
-    // Aseguramos que coincida con las keys del objeto textos
     let idioma = usuario?.idioma || "Castellano";
     
-    // Normalizar el idioma (asegurar que coincida con las keys)
     if (idioma === "Catala" || idioma === "Català") {
         idioma = "Catala";
     }

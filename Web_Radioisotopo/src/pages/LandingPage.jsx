@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Página principal que puedes ver si no tienes cuenta]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import React, { useEffect, useState } from 'react';
 import '../styles/Landing.css';
 import imgMedicos from '../assets/images/medicos.jpg';
@@ -8,6 +19,7 @@ import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, Che
 import { useTranslation } from '../hooks/useTranslation';
 import { getCookie, setCookie } from '../utils/cookies';
 
+// PAGE LANDING PAGE
 export function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
     const [darkMode, setDarkMode] = useState(false);

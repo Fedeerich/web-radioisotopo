@@ -1,3 +1,12 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Css para darle estilo a la página de PacientePage.jsx]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
 .pacientes-container {
     animation: fadeIn 0.4s ease-out;
 }
@@ -141,7 +150,6 @@ input[type="text"] {
 .user-name { font-weight: 700; color: #2d3748; font-size: 0.95rem; }
 .user-id { font-size: 0.75rem; color: #cbd5e0; }
 
-/* --- TUS BADGES MANTENIDOS --- */
 .badge {
     padding: 6px 14px;
     border-radius: 20px;

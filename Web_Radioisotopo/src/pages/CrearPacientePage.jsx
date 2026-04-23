@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para crear el paciente]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState } from "react";
 import DatePicker, { registerLocale } from "react-datepicker"; 
 import { es } from "date-fns/locale";
@@ -10,6 +21,7 @@ registerLocale("es", es);
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/CrearPaciente.css";
 
+// PAGE CREAR PACIENTE
 export function CrearPacientePage({ alVolver }) {
     const { usuario } = useAuth(); 
     const { t } = useTranslation();
@@ -23,7 +35,7 @@ export function CrearPacientePage({ alVolver }) {
         dosis: "",
         unidades: "MBq", 
         fechaAdministracion: new Date(),
-        watchId: "" // Nuevo campo para el ID del reloj
+        watchId: ""
     });
 
     const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
@@ -33,20 +45,16 @@ export function CrearPacientePage({ alVolver }) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    // FUNCIÓN PARA VINCULAR RELOJ VÍA BLUETOOTH
     const vincularRelojBluetooth = async () => {
         try {
             setConectando(true);
             setMensaje({ texto: t('buscandoDispositivo'), tipo: "info" });
 
-            // Pedimos permiso al navegador para buscar dispositivos Bluetooth
             const device = await navigator.bluetooth.requestDevice({
                 acceptAllDevices: true,
                 optionalServices: ['device_information']
             });
 
-            // Una vez seleccionado, guardamos el ID único del dispositivo
-            // Este ID es persistente para este navegador y dispositivo
             setFormData({ ...formData, watchId: device.id });
             setMensaje({ texto: `${t('relojVinculado')}: ${device.name || 'Galaxy Watch'}`, tipo: "exito" });
 
@@ -73,7 +81,7 @@ export function CrearPacientePage({ alVolver }) {
                     cip: formData.cip,
                     fechaNacimiento: formData.fechaNacimiento.toISOString().split('T')[0],
                     hospitalReferencia: formData.hospitalReferencia,
-                    watchId: formData.watchId // Enviamos el ID del reloj vinculado
+                    watchId: formData.watchId
                 },
                 tratamiento: {
                     radioisotopo: formData.radioisotopo,
@@ -111,7 +119,6 @@ export function CrearPacientePage({ alVolver }) {
 
             <div className="grid-crear-paciente">
                 <div className="columna-formularios">
-                    {/* CARD 1: DATOS PERSONALES */}
                     <div className="formulario-card">
                         <div className="card-header-icon">
                             <h3>{t('datosPersonales')}</h3>
@@ -141,7 +148,6 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
                     </div>
 
-                    {/* CARD 2: TRATAMIENTO */}
                     <div className="formulario-card">
                         <div className="card-header-icon">
                             <h3>{t('tractamentRadioisotops')}</h3>
@@ -177,7 +183,6 @@ export function CrearPacientePage({ alVolver }) {
                 </div>
 
                 <div className="columna-acciones">
-                    {/* CARD SYNC: BLUETOOTH */}
                     <div className="formulario-card card-sync">
                         <div className="card-header-icon">
                             <h3>{t('sincronitzacioDispositius')}</h3>
@@ -209,7 +214,6 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
                     </div>
 
-                    {/* CARD RESUMEN */}
                     <div className="card-resumen-green">
                         <h3>{t('resumAlta')}</h3>
                         {mensaje.texto && (

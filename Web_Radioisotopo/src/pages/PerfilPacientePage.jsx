@@ -1,17 +1,27 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para ver el perfil de cada paciente]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useEffect, useState } from "react";
 import "../styles/PerfilPaciente.css";
 import moleculaImg from "../assets/molecula.png";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
+// PAGER PERFIL PACIENTE
 export function PerfilPacientePage({ paciente, alVolver }) {
     const { t } = useTranslation();
     const [mensajes, setMensajes] = useState([]);
     const [ultimoConsejo, setUltimoConsejo] = useState(null);
     const [sincronizando, setSincronizando] = useState(false);
     
-    // Estado dinámico corregido: 
-    // Ahora comprueba si existe 'watchId' para determinar el estado inicial
     const [datosDinamicos, setDatosDinamicos] = useState({
         watchBattery: paciente?.watchBattery || null,
         watchUltimaSinc: paciente?.watchUltimaSinc || null,
@@ -19,13 +29,10 @@ export function PerfilPacientePage({ paciente, alVolver }) {
     });
 
     useEffect(() => {
-        // 1. Solo ejecutamos si hay paciente y CIP
         if (paciente && paciente.cip) {
             
-            // Registrar visita (esto solo una vez al entrar)
             loginService.registrarVisitaPaciente(paciente.cip);
             
-            // Cargar datos dinámicos (Reloj, Batería, etc.)
             loginService.obtenerPerfilPaciente(paciente.cip)
                 .then(data => {
                     setDatosDinamicos({
@@ -36,7 +43,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 })
                 .catch(err => console.error("Error cargando perfil:", err));
 
-            // Cargar mensajes/consultas
             loginService.obtenerConsultasPaciente(paciente.cip)
                 .then(data => {
                     const soloConsultasPaciente = data.filter(msg => 
@@ -49,9 +55,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 .catch(() => setMensajes([]));
         }
         
-        // IMPORTANTE: Ponemos [paciente.cip] como dependencia única.
-        // Esto evita que cualquier cambio en 'paciente' (objeto completo) o en los 
-        // estados internos vuelva a disparar el bucle.
     }, [paciente?.cip]);
 
     const patientData = paciente || {
@@ -64,7 +67,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
     };
 
     const manejarSincronizacionReloj = async () => {
-        // Corrección aquí: comprobamos el ID o el estado real
         if (!paciente?.cip || !paciente?.watchId) {
             alert(t('noHayRelojVinculado'));
             return;

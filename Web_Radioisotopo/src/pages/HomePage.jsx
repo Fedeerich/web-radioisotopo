@@ -1,7 +1,19 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Página principal despues de iniciar sesion]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import "../styles/Home.css";
 
+// PAGE HOME
 export function HomePage({ alSeleccionarPaciente }) {
     const [totalPacientes, setTotalPacientes] = useState("...");
     const [alertasHoy, setAlertasHoy] = useState(0);

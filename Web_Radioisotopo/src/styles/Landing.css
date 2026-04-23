@@ -1,3 +1,12 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Css para darle estilo a la página de LandingPage.jsx]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
 :root {
     --landing-bg: #f4f7f9;
     --landing-bg-card: #ffffff;
@@ -72,7 +81,6 @@ body.dark-mode .landing-logo span {
     -webkit-text-fill-color: white;
 }
 
-/* All icons in dark mode */
 body.dark-mode .landing-stat-icon,
 body.dark-mode .landing-stat-icon svg,
 body.dark-mode .feature-icon,
@@ -319,7 +327,6 @@ html {
     font-family: inherit;
 }
 
-/* ============ HEADER ============ */
 .landing-header {
     position: fixed;
     top: 0;
@@ -453,7 +460,6 @@ body.dark-mode .theme-toggle svg {
     background: var(--landing-primary-hover);
 }
 
-/* ============ HERO SECTION ============ */
 .landing-hero {
     padding: 160px 60px 100px;
     min-height: 100vh;
@@ -732,7 +738,6 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-text-muted);
 }
 
-/* ============ STATS SECTION ============ */
 .landing-stats {
     padding: 60px 60px;
     background: var(--landing-bg-card);
@@ -799,7 +804,6 @@ body.dark-mode .hero-bg-grid {
     height: 24px;
 }
 
-/* ============ FEATURES SECTION ============ */
 .landing-features {
     padding: 120px 60px;
     background: var(--landing-bg);
@@ -889,7 +893,6 @@ body.dark-mode .hero-bg-grid {
     line-height: 1.6;
 }
 
-/* ============ SHOWCASE SECTION ============ */
 .landing-showcase {
     padding: 120px 60px;
     background: var(--landing-bg-card);
@@ -1006,7 +1009,6 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-text-muted);
 }
 
-/* ============ CTA SECTION ============ */
 .landing-cta {
     padding: 140px 60px;
     background: var(--landing-bg-card);
@@ -1079,7 +1081,6 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-primary);
 }
 
-/* ============ FOOTER ============ */
 .landing-footer {
     background: var(--landing-bg-card);
     padding: 60px;
@@ -1158,7 +1159,6 @@ body.dark-mode .hero-bg-grid {
     color: white;
 }
 
-/* ============ HERO IMAGE ============ */
 .hero-image-overlay {
     position: absolute;
     inset: 0;
@@ -1167,7 +1167,6 @@ body.dark-mode .hero-bg-grid {
     pointer-events: none;
 }
 
-/* ============ FEATURE CARDS ============ */
 .feature-card {
     background: var(--landing-bg-card);
     padding: 40px 32px;
@@ -1211,7 +1210,6 @@ body.dark-mode .hero-bg-grid {
     line-height: 1.6;
 }
 
-/* ============ SHOWCASE ============ */
 .showcase-feature-item {
     display: flex;
     align-items: center;
@@ -1236,7 +1234,6 @@ body.dark-mode .hero-bg-grid {
     font-size: 1rem;
 }
 
-/* ============ CTA TRUST ============ */
 .cta-trust {
     display: flex;
     justify-content: center;
@@ -1259,7 +1256,6 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-accent);
 }
 
-/* ============ DEMO SECTION ============ */
 .landing-demo {
     padding: 120px 60px;
     background: var(--landing-bg);
@@ -1276,7 +1272,6 @@ body.dark-mode .hero-bg-grid {
     border: 1px solid var(--landing-border);
 }
 
-/* ============ FOOTER ============ */
 .landing-footer {
     background: var(--landing-bg-card);
     padding: 60px;
@@ -1381,7 +1376,6 @@ body.dark-mode .hero-bg-grid {
     line-height: 1.5;
 }
 
-/* ============ COOKIES BANNER ============ */
 .cookies-banner {
     position: fixed;
     bottom: 0;
@@ -1441,7 +1435,6 @@ body.dark-mode .hero-bg-grid {
     text-decoration: none;
 }
 
-/* ============ RESPONSIVE ============ */
 @media (max-width: 1024px) {
     .hero-container {
         grid-template-columns: 1fr;
@@ -1583,7 +1576,6 @@ body.dark-mode .hero-bg-grid {
     }
 }
 
-/* Animations */
 .fade-in-element {
     opacity: 0;
     transform: translateY(20px);
@@ -1630,7 +1622,6 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-primary);
 }
 
-/* ============ RESPONSIVE ============ */
 @media (max-width: 1024px) {
     .hero-container {
         grid-template-columns: 1fr;
@@ -1760,7 +1751,6 @@ body.dark-mode .hero-bg-grid {
     }
 }
 
-/* Animations */
 .fade-in-element {
     opacity: 0;
     transform: translateY(20px);

@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para Cambiar Contrasena]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState } from "react";
 import { loginService } from "../services/api";
 import { useNavigate } from "react-router-dom";
@@ -5,6 +16,7 @@ import "../styles/CambiarPassword.css";
 import logo from "../assets/logo.png"; 
 import { useTranslation } from "../hooks/useTranslation";
 
+// PAGE CAMBIAR PASSWORD
 export function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });

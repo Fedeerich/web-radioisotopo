@@ -1,3 +1,13 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Servicio para llamar al backend]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/ 
+
 const API_URL = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev/api"; 
 
 const getHeaders = () => ({
@@ -5,6 +15,7 @@ const getHeaders = () => ({
     "Authorization": `Bearer ${localStorage.getItem("token")}`
 });
 
+// Service Login (API TOTAL)
 export const loginService = {
     /**
      * AUTENTICACIÓN

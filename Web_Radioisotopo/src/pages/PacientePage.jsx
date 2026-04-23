@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para ver los pacientes activos]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState, useEffect } from "react";
 import "../styles/Paciente.css";
 
@@ -6,6 +17,7 @@ import { CrearPacientePage } from './CrearPacientePage';
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
+// PAGE PACIENTE PAGE
 export function PacientePage() {
     const { t } = useTranslation();
     const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
@@ -18,7 +30,6 @@ export function PacientePage() {
     useEffect(() => {
         const cargarDatos = async () => {
             try {
-                // Ahora recibe los datos calculados: tratamiento con MBq actual, progreso y color
                 const data = await loginService.obtenerListaPacientes();
                 setPacientes(data);
             } catch (error) {

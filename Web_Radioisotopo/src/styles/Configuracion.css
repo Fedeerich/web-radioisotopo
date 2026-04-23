@@ -1,3 +1,12 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Css para darle estilo a la página de ConfiguracionPage.jsx]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
 .configuracion-container {
     padding: 20px;
     animation: fadeIn 0.4s ease-out;
@@ -31,7 +40,6 @@
     align-items: start;
 }
 
-/* Para pantallas pequeñas, se pone en una sola columna */
 @media (max-width: 900px) {
     .grid-configuracion {
         grid-template-columns: 1fr;
@@ -97,7 +105,6 @@
     box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
 }
 
-/* Botón Cambiar Contraseña - Azul para que destaque pero no sature */
 .btn-blue-outline {
     width: 100%;
     padding: 12px;
@@ -117,7 +124,6 @@
     color: white;
 }
 
-/* --- Toggles / Switches --- */
 .toggle-list {
     display: flex;
     flex-direction: column;
@@ -182,7 +188,6 @@
 input:checked + .slider { background-color: #3b82f6; }
 input:checked + .slider:before { transform: translateX(20px); }
 
-/* --- Zona de Peligro --- */
 .danger-zone {
     background: #fff5f5;
     border: 1px solid #feb2b2;

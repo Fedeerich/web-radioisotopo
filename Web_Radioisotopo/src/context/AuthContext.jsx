@@ -1,6 +1,18 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Contexto para saber como logearse + uso de JWT]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORT
 import { createContext, useState, useContext, useEffect } from "react";
 import { loginService } from "../services/api";
 
+// CONTEXT AUTCH
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {

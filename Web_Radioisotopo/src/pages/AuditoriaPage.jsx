@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina Administrativa de Auditoria]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import "../styles/Paciente.css";
@@ -5,6 +16,7 @@ import { useTranslation } from "../hooks/useTranslation";
 
 const BASE_HOST = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev";
 
+// PAGE AUDITORIA PAGE (ADMIN)
 const cargarImagenComoBlob = async (url) => {
     try {
         const response = await fetch(url);
@@ -21,7 +33,7 @@ export function AuditoriaPage() {
     const [medicos, setMedicos] = useState([]);
     const [cargando, setCargando] = useState(true);
     const [procesando, setProcesando] = useState(false);
-    const [avatares, setAvatares] = useState({}); // ✅ mapa id -> blobUrl
+    const [avatares, setAvatares] = useState({});
 
     const cargarDatosAuditoria = async () => {
         try {

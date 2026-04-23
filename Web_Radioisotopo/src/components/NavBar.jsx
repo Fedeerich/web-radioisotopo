@@ -1,9 +1,21 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Componente NavBar]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState, useEffect, useRef } from "react";
 import "../styles/NavBar.css";
 import { useAuth } from "../context/AuthContext";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
+// COMPONENTE NAV BAR
 export function NavBar() {
     const { usuario, actualizarUsuario } = useAuth();
     const { t } = useTranslation();
@@ -16,15 +28,9 @@ export function NavBar() {
     const [isUploading, setIsUploading] = useState(false);
     const fileInputRef = useRef(null);
 
-    // URL de tu Cloudflare Worker para rutas locales antiguas
     const BASE_HOST = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev";
     const nombre = usuario?.nombreCompleto || "Invitado";
 
-    /**
-     * LÓGICA DE URL INTELIGENTE:
-     * Si la imagen viene de Cloudinary (empieza por http), se usa directa.
-     * Si es una ruta antigua (/uploads/...), pasa por el proxy de Cloudflare.
-     */
     const obtenerUrlFinal = (urlOriginal) => {
         if (!urlOriginal) return null;
         if (urlOriginal.startsWith('http')) return urlOriginal;
@@ -35,7 +41,6 @@ export function NavBar() {
         const file = event.target.files[0];
         if (!file) return;
 
-        // Preview local instantánea para mejorar la experiencia de usuario
         const previewUrl = URL.createObjectURL(file);
         setUserAvatar(previewUrl);
 
@@ -43,16 +48,13 @@ export function NavBar() {
             setIsUploading(true);
             const data = await loginService.subirAvatar(usuario.id, file);
             
-            // data.url es la URL de Cloudinary (https://res.cloudinary.com...)
             const urlFinal = obtenerUrlFinal(data.url);
             setUserAvatar(urlFinal);
             
-            // Actualizamos el contexto global
             actualizarUsuario({ profilePicUrl: data.url });
         } catch (error) {
             console.error("Fallo en la subida:", error);
             alert(t('errorSubidaImagen'));
-            // Si falla, volvemos a poner la que había
             setUserAvatar(obtenerUrlFinal(usuario?.profilePicUrl));
         } finally {
             setIsUploading(false);

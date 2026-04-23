@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Pagina para Configuración de la pagina como usuario]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import React from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -5,14 +16,13 @@ import { loginService } from "../services/api";
 import "../styles/Configuracion.css";
 import { useTranslation } from "../hooks/useTranslation";
 
+// PAGE CONFIGURACION
 export function ConfiguracionPage() {
     const { usuario, actualizarUsuario, logout } = useAuth(); 
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    // Función para enviar los cambios al servidor
     const actualizarPreferencia = async (campo, valor) => {
-        // Mapeo de campos del formulario a campos del usuario
         const mapeoCampos = {
             bateriaBaja: 'notifBateria',
             desconexionBiometrica: 'notifDesconexion',
@@ -22,11 +32,9 @@ export function ConfiguracionPage() {
             falloSincronizacion: 'notifSincro'
         };
         
-        // Actualizar inmediatamente el estado local para feedback visual instantáneo
         if (campo !== 'idioma' && campo !== 'zonaHoraria') {
             actualizarUsuario({ [mapeoCampos[campo]]: valor });
         } else {
-            // Actualizar inmediatamente también idioma y zona horaria
             actualizarUsuario(campo === 'idioma' ? { idioma: valor } : { zonaHoraria: valor });
         }
 
@@ -44,7 +52,6 @@ export function ConfiguracionPage() {
 
             await loginService.guardarPreferencias(nuevosAjustes);
             
-            // Actualizar contexto
             actualizarUsuario({
                 idioma: nuevosAjustes.idioma,
                 zonaHoraria: nuevosAjustes.zonaHoraria,
@@ -57,7 +64,6 @@ export function ConfiguracionPage() {
             });
         } catch (error) {
             console.error("Error al guardar preferencia:", error);
-            // Revertir cambio local si falla el servidor
             if (campo !== 'idioma' && campo !== 'zonaHoraria') {
                 actualizarUsuario({ [mapeoCampos[campo]]: !valor });
             }
@@ -138,7 +144,6 @@ export function ConfiguracionPage() {
                         <div className="card-header-icon"><h3>{t('notificacionesClinicas')}</h3></div>
                         <div className="toggle-list">
                             
-                            {/* Batería */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('bateriaBajaDispositivos')}</strong>
@@ -154,7 +159,6 @@ export function ConfiguracionPage() {
                                 </label>
                             </div>
 
-                            {/* Desconexión */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('desconexionBiometrica')}</strong>
@@ -170,7 +174,6 @@ export function ConfiguracionPage() {
                                 </label>
                             </div>
 
-                            {/* Resumen */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('resumenSemanal')}</strong>
@@ -186,7 +189,6 @@ export function ConfiguracionPage() {
                                 </label>
                             </div>
 
-                            {/* Radiación */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('alertaRadiacionSegura')}</strong>
@@ -202,7 +204,6 @@ export function ConfiguracionPage() {
                                 </label>
                             </div>
 
-                            {/* Constantes Vitales */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('anomaliaConstantesVitales')}</strong>
@@ -218,7 +219,6 @@ export function ConfiguracionPage() {
                                 </label>
                             </div>
 
-                            {/* Sincronización */}
                             <div className="toggle-item">
                                 <div className="toggle-text">
                                     <strong>{t('falloSincronizacion')}</strong>

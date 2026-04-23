@@ -1,3 +1,14 @@
+/*
+================================================================================
+PROJECT:       [RADIOISOTOPO]
+VERSION:       1.0.0
+DESCRIPTION:   [Componente Sidebar]
+AUTHOR:        [Marcos, Wael]
+UPDATED:       [23/04/2026]
+================================================================================
+*/
+
+// IMPORTS
 import { useState, useEffect } from "react";
 import "../styles/SideBar.css";
 import logo from "../assets/logo.png"; 
@@ -5,6 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "../hooks/useTranslation";
 
+// COMPONENTE SIDE BAR
 export function SideBar() {
     const navigate = useNavigate();
     const { logout, usuario } = useAuth();
@@ -63,7 +75,6 @@ export function SideBar() {
                         <i className="fi fi-rs-users"></i> <span>{t('pacientes')}</span>
                     </button>
 
-                    {/* SECCIÓN ADMINISTRADOR */}
                     {usuario?.rol === "ADMIN" && (
                         <>
                             <button 
