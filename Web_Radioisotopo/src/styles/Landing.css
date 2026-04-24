@@ -1441,6 +1441,10 @@ body.dark-mode .hero-bg-grid {
     text-decoration: none;
 }
 
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
 @media (max-width: 1024px) {
     .hero-container {
         grid-template-columns: 1fr;
