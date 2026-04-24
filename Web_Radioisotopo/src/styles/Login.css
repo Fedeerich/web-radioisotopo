@@ -137,30 +137,42 @@ input[type="text"] {
    DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
    ========================================================================== */
 
-   @media (max-width: 768px) {
-        .login-form {
-            padding: 10px;
-        }
+@media (max-width: 768px) {
+    .login-form {
+        box-sizing: border-box; 
+        padding: 25px 20px;
+        width: 80%;
+    }
 
-        .logo {
-            width: 120px;
-        }
+    .logo {
+        width: 120px;
+    }
 
-        h1 {
-            font-size: 18px;
-        }
+    h1 {
+        font-size: 20px;
+    }
 
-        p {
-            font-size: 12px;
-        }
+    p {
+        font-size: 13px;
+        margin-bottom: 20px;
+    }
 
-        input[type="email"], input[type="password"], input[type="text"] {
-            width: 95%;
-        }
+    input[type="email"], 
+    input[type="password"], 
+    input[type="text"] {
+        width: 100%; 
+        padding: 14px;
+    }
 
-        .submit-btn {
-            width: 50%;
-            padding: 10px;
-            font-size: 14px;
-        }
-   }
+    .addons {
+        flex-direction: column;
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .submit-btn {
+        width: 100%; 
+        padding: 14px;
+        font-size: 16px;
+    }
+}
