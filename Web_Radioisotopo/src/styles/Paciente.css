@@ -272,3 +272,101 @@ input[type="text"] {
         font-size: 14px;
     }
 }
+
+@media (max-width: 1024px) {
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .patients-table th, 
+    .patients-table td {
+        padding: 15px 10px; 
+    }
+
+    .progress-bar-bg {
+        width: 80px; 
+    }
+}
+
+@media (max-width: 768px) {
+    .content-header {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        align-items: flex-start;
+    }
+
+    .btn-add-patient {
+        justify-content: center;
+    }
+
+    .patients-table thead {
+        display: none;
+    }
+
+    .patients-table, 
+    .patients-table tbody {
+        display: block;
+        width: 100%;
+    }
+
+    .patients-table tbody::before {
+        content: "PACIENTE \A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0 ACCIÓN";
+        display: flex;
+        justify-content: space-between;
+        padding: 15px 35px 10px 15px;
+        font-size: 0.75rem;
+        font-weight: 800;
+        color: #a0aec0;
+        letter-spacing: 1px;
+    }
+
+    .patients-table tr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 15px;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        background: white;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.02);
+    }
+
+    .patients-table td {
+        display: none; 
+        padding: 0;
+        border: none;
+    }
+
+    .patients-table td:first-child,
+    .patients-table td:last-child {
+        display: block;
+    }
+
+    .user-cell {
+        gap: 10px;
+    }
+
+    .avatar {
+        display: none;
+    }
+
+    .filter-select {
+        display: none;
+    }
+
+    .search-input input {
+        padding: 0 10px 0 40px;
+    }
+
+    .user-name {
+        font-size: 0.9rem;
+    }
+
+    .btn-perfil {
+        padding: 8px 15px;
+        font-size: 0.8rem;
+    }
+}

@@ -189,3 +189,103 @@ UPDATED:       [23/04/2026]
     color: #8b9096; 
     font-size: 0.9rem;
 }
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles) PARA HOME
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .dashboard-main-area {
+        margin-left: 0; 
+    }
+
+    .dashboard-content {
+        padding: 30px;
+    }
+
+    .stats-grid {
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 20px;
+    }
+
+    .stat-number {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 850px) {
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+
+    .dashboard-main-area {
+        margin-left: 0;
+    }
+
+    .dashboard-content {
+        padding: 20px 15px;
+        margin-top: 60px;
+        padding-bottom: 90px;
+    }
+
+    .content-header {
+        margin-bottom: 25px;
+    }
+
+    .content-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .stat-card {
+        padding: 15px 20px;
+    }
+
+    .stat-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.4rem;
+        border-radius: 12px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .activity-card {
+        padding: 15px 20px;
+    }
+
+    .activity-header h3 {
+        font-size: 1.1rem;
+    }
+
+    .activity-item {
+        padding: 15px 0;
+        gap: 12px;
+    }
+
+    .patient-name {
+        font-size: 0.95rem;
+    }
+
+    .patient-status {
+        font-size: 0.8rem;
+    }
+
+    .time-ago {
+        font-size: 0.75rem;
+        margin-right: 5px;
+    }
+}

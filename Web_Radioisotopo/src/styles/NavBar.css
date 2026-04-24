@@ -361,3 +361,99 @@ UPDATED:       [23/04/2026]
     background: #e2e8f0;
     border-radius: 10px;
 }
+
+Para que el Navbar (la barra superior) de tu aplicación se comporte de manera fluida y se adapte a cualquier tamaño de pantalla (portátil, tablet o móvil), necesitamos añadir Media Queries.
+
+El reto principal con el Navbar es que ahora mismo tiene un ancho fijo calculado restándole 260px (que asumo es el ancho de tu barra lateral o menú de navegación izquierdo). Cuando la pantalla se hace pequeña, normalmente ese menú izquierdo desaparece o se oculta, y el Navbar debe expandirse para ocupar el 100% del ancho.
+
+Añade este bloque de código al final de tu archivo CSS del Navbar:
+CSS
+
+¡Ajá! Viendo la captura de pantalla de tu móvil, la Navbar (la barra superior blanca) está completamente escondida y empujada hacia la derecha, dejando un hueco blanco gigante.
+¿Por qué está pasando esto?
+
+El problema está en la combinación de position: fixed; con el cambio a width: 100%; sin restablecer la posición horizontal. Al decirle right: 0; en el diseño base, cuando pones width: 100%; en el móvil, la barra intenta ocupar el 100% hacia la izquierda desde el borde derecho, pero algo en la estructura de tu página la está bloqueando (probablemente el contenedor principal).
+La Solución
+
+Tenemos que ser muy explícitos con el navegador en las pantallas pequeñas y decirle exactamente de dónde a dónde va la barra.
+
+Sustituye todo tu bloque de Media Queries (la parte final de tu archivo CSS del Navbar) por este:
+CSS
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .navbar-main {
+        width: 100%; 
+        left: 0; 
+        right: auto;
+        padding: 0 20px;
+    }
+
+    .user-info {
+        display: none; 
+    }
+}
+
+@media (max-width: 768px) {
+    .navbar-main {
+        height: 60px;
+        padding: 0 15px;
+        width: 100%;
+        left: 0;
+    }
+
+    .navbar-left h1 {
+        margin-left: 10px;
+        font-size: 0.9rem;
+    }
+
+    .navbar-right {
+        gap: 10px;
+    }
+
+    .user-avatar {
+        width: 100%;
+        height: 100%;
+        line-height: 35px;
+    }
+
+    .avatar-img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .user-info {
+        display: none;
+    }
+
+    .user-profile {
+        padding: 5px 3px;
+    }
+
+    .notifications-dropdown {
+        width: 280px;
+        right: -30px;
+    }
+
+    .profile-dropdown {
+        right: 0px;
+    }
+}
+
+@media (max-width: 480px) {
+    .connection-status {
+        display: none; 
+    }
+
+    .navbar-divider-vertical {
+        display: none;
+    }
+
+    .notifications-dropdown {
+        width: 90vw;
+        right: -50px;
+    }
+}
