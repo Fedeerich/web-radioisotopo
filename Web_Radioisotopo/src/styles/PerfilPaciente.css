@@ -549,26 +549,32 @@ UPDATED:       [23/04/2026]
 }
 
 @media (max-width: 600px) {
+    .detalle-container {
+        padding: 12px;
+    }
+
     .grid-cards {
         grid-template-columns: 1fr; 
     }
     
     .bottom-row {
         grid-column: span 1 !important; 
+        grid-template-columns: 1fr !important;
     }
 
-    .emoji-item {
-        width: 45px;
-        height: 45px;
-        font-size: 1.8rem;
+    .patient-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 12px;
     }
 
-    .emoji-row {
-        gap: 15px;
+    .back-btn {
+        width: 36px;
+        height: 36px;
     }
 
-    .mood-labels span {
-        font-size: 0.55rem;
+    .patient-title-area {
+        margin-left: 0;
     }
 
     .patient-title-row {
@@ -576,8 +582,244 @@ UPDATED:       [23/04/2026]
         align-items: flex-start;
         gap: 8px;
     }
-    
+
     .patient-name-2 {
         margin-top: 10px;
+        font-size: 1.2rem;
+    }
+
+    .badge {
+        font-size: 0.7rem;
+    }
+
+    .badge-tratamiento {
+        margin-top: 10px;
+    }
+
+    .patient-subtitle {
+        font-size: 0.8rem;
+    }
+
+    .card {
+        padding: 16px 12px;
+    }
+
+    .span-2 {
+        grid-column: span 1;
+    }
+
+    .card-title {
+        font-size: 0.95rem;
+        margin-bottom: 12px;
+    }
+
+    .watch-elegant-container {
+        padding: 8px 0;
+        gap: 8px;
+    }
+
+    .watch-note-text p {
+        font-size: 0.7rem;
+    }
+
+    .watch-elegant-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 22px;
+    }
+
+    .watch-elegant-badge {
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+
+    .watch-elegant-info strong {
+        font-size: 0.9rem;
+    }
+
+    .watch-elegant-info p {
+        font-size: 0.75rem;
+        margin-bottom: 6px;
+    }
+
+    .text-connected, .text-disconnected {
+        font-size: 0.85rem;
+    }
+
+    .atom-container {
+        margin: 30px 0;
+    }
+
+    .atom-icon img {
+        width: 45px;
+    }
+
+    .atom-text {
+        font-size: 0.85rem;
+    }
+
+    .progress-stats {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .stat-left, .stat-right {
+        align-items: flex-start;
+    }
+
+    .stat-value {
+        font-size: 1rem;
+    }
+
+    .stat-label {
+        font-size: 0.65rem;
+    }
+
+    .progress-bar-container {
+        height: 6px;
+    }
+
+    .card-desc {
+        font-size: 0.75rem;
+    }
+
+    .alert-green, .alert-naranja {
+        margin-top: 24px;
+        padding: 10px;
+    }
+
+    .alert-header {
+        font-size: 0.8rem;
+    }
+
+    .alert-naranja .alert-header {
+        font-size: 0.8rem;
+    }
+
+    .alert-time {
+        font-size: 0.65rem;
+    }
+
+    .alert-naranja .alert-time {
+        font-size: 0.65rem;
+    }
+
+    .circled-i {
+        width: 16px;
+        height: 16px;
+        font-size: 11px;
+    }
+
+    .select-input {
+        margin-top: 24px;
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .btn-outline {
+        padding: 10px;
+        font-size: 0.8rem;
+    }
+
+    .emot-card {
+        min-height: auto;
+    }
+
+    .emoji-row {
+        gap: 12px;
+        margin: 15px 0 15px 0;
+    }
+
+    .emoji-item {
+        width: 40px;
+        height: 40px;
+        font-size: 1.5rem;
+    }
+
+    .emoji-item.active {
+        background: #fff;
+    }
+
+    .emoji-item.green-emoji { border-width: 3px; }
+    .emoji-item.yellow-emoji { border-width: 2px; }
+    .emoji-item.orange-emoji { border-width: 2px; }
+    .emoji-item.red-emoji { border-width: 2px; }
+
+    .mood-scale-container {
+        width: 90%;
+    }
+
+    .mood-scale {
+        height: 10px;
+    }
+
+    .scale-segment { flex: 1; }
+
+    .mood-pointer {
+        top: -12px;
+        font-size: 12px;
+    }
+
+    .mood-text p {
+        margin-top: 20px;
+        font-size: 0.8rem;
+    }
+
+    .mood-labels {
+        margin-top: 6px;
+    }
+
+    .mood-labels span {
+        font-size: 0.5rem;
+    }
+
+    .two-lines {
+        font-size: 0.45rem;
+    }
+
+    .chat-card {
+        padding-right: 0;
+    }
+
+    .message-list {
+        max-height: 200px;
+    }
+
+    .msg-item {
+        padding: 8px 0;
+        gap: 8px;
+    }
+
+    .msg-item:hover {
+        margin: 0;
+        padding: 8px;
+    }
+
+    .msg-icon {
+        width: 32px;
+        height: 32px;
+        font-size: 14px;
+    }
+
+    .msg-content {
+        gap: 8px;
+    }
+
+    .msg-left {
+        flex: 1;
+    }
+
+    .msg-left strong {
+        font-size: 0.8rem;
+    }
+
+    .msg-subject {
+        font-size: 0.7rem;
+    }
+
+    .msg-preview {
+        font-size: 0.6rem;
+        min-width: 40px;
     }
 }
