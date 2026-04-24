@@ -446,6 +446,77 @@ UPDATED:       [23/04/2026]
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .crear-paciente-container {
+        padding: 25px;
+    }
+
+    .header-seccion {
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .btn-back-square {
+        width: 42px;
+        height: 42px;
+    }
+
+    .header-textos h1 {
+        font-size: 1.55rem;
+    }
+
+    .grid-crear-paciente {
+        gap: 22px;
+    }
+
+    .formulario-card {
+        padding: 22px 25px;
+    }
+
+    .card-header-icon {
+        margin-bottom: 20px;
+    }
+
+    .form-row {
+        gap: 18px;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-input {
+        padding: 11px 14px;
+    }
+
+    .custom-datepicker {
+        padding: 11px 14px;
+        padding-right: 38px;
+    }
+
+    .sync-box {
+        padding: 80px 25px;
+        gap: 20px;
+    }
+
+    .btn-blue-sync {
+        padding: 11px 22px;
+    }
+
+    .card-resumen-green {
+        padding: 22px 25px;
+    }
+
+    .resumen-lista {
+        margin-bottom: 20px;
+    }
+
+    .btn-confirmar-verde {
+        padding: 14px;
+    }
+}
+
 @media (max-width: 768px) {
     .crear-paciente-container {
         padding: 15px 10px;

@@ -394,7 +394,7 @@ export function LandingPage() {
                     </div>
                     <div className="demo-card fade-in-element stagger-2">
                         <div className="demo-card-image">
-                            <img src="https://images.unsplash.com/photo-1559757175-5700dde87bc0?w=600&q=80" alt={t('creacioPacient')} />
+                            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt={t('creacioPacient')} />
                         </div>
                         <div className="demo-card-content">
                             <h3>{t('creacioPacient')}</h3>

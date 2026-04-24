@@ -289,6 +289,50 @@ input[type="text"] {
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .pacientes-container {
+        padding: 25px;
+    }
+
+    .content-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .filter-bar {
+        padding: 18px 22px;
+        gap: 12px;
+    }
+
+    .search-input input,
+    .filter-select {
+        height: 44px;
+    }
+
+    .patients-table th,
+    .patients-table td {
+        padding: 18px 15px;
+    }
+
+    .btn-perfil {
+        padding: 8px 16px;
+        font-size: 0.8rem;
+    }
+
+    .btn-add-patient {
+        padding: 10px 20px;
+    }
+
+    .progress-bar-bg {
+        width: 90px;
+        height: 7px;
+    }
+
+    .progress-text {
+        font-size: 0.8rem;
+    }
+}
+
 @media (max-width: 768px) {
     .content-header {
         display: flex;

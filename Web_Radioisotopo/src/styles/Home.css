@@ -216,6 +216,68 @@ UPDATED:       [23/04/2026]
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .dashboard-content {
+        padding: 35px 40px;
+    }
+
+    .content-header {
+        margin-bottom: 30px;
+    }
+
+    .content-header h1 {
+        font-size: 1.85rem;
+    }
+
+    .stats-grid {
+        gap: 25px;
+    }
+
+    .stat-card {
+        padding: 22px 25px;
+    }
+
+    .stat-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.65rem;
+    }
+
+    .stat-number {
+        font-size: 2rem;
+    }
+
+    .stat-label {
+        font-size: 0.9rem;
+    }
+
+    .activity-card {
+        padding: 20px 30px;
+    }
+
+    .activity-header {
+        margin-bottom: 12px;
+    }
+
+    .activity-header h3 {
+        font-size: 1.15rem;
+    }
+
+    .activity-item {
+        padding: 18px 0;
+        gap: 18px;
+    }
+
+    .patient-name {
+        font-size: 0.95rem;
+    }
+
+    .time-ago {
+        margin-right: 10px;
+    }
+}
+
 @media (max-width: 850px) {
     .stats-grid {
         grid-template-columns: repeat(2, 1fr);

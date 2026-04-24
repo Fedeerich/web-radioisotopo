@@ -397,6 +397,46 @@ CSS
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .navbar-main {
+        width: 100%;
+        left: 0;
+        padding: 0 25px;
+    }
+
+    .navbar-left h1 {
+        font-size: 1.1rem;
+    }
+
+    .navbar-right {
+        gap: 15px;
+    }
+
+    .user-profile {
+        padding: 5px 8px;
+    }
+
+    .user-avatar {
+        width: 36px;
+        height: 36px;
+        font-size: 0.8rem;
+        line-height: 36px;
+    }
+
+    .notifications-dropdown {
+        width: 300px;
+    }
+
+    .profile-dropdown {
+        width: 240px;
+    }
+
+    .notif-list {
+        max-height: 280px;
+    }
+}
+
 @media (max-width: 768px) {
     .navbar-main {
         height: 60px;

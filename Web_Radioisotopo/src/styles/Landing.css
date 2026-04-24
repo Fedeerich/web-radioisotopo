@@ -1830,6 +1830,115 @@ body.dark-mode .hero-bg-grid {
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .landing-header {
+        padding: 18px 40px;
+    }
+
+    .landing-hero {
+        padding: 140px 50px 80px;
+    }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .hero-description {
+        font-size: 1.1rem;
+    }
+
+    .hero-actions {
+        gap: 14px;
+    }
+
+    .btn-primary,
+    .btn-secondary {
+        padding: 11px 20px;
+    }
+
+    .landing-stats {
+        padding: 50px 40px;
+    }
+
+    .landing-stats-grid {
+        gap: 30px;
+    }
+
+    .landing-stat-number {
+        font-size: 2.5rem;
+    }
+
+    .landing-features {
+        padding: 100px 40px;
+    }
+
+    .section-header {
+        margin-bottom: 60px;
+    }
+
+    .landing-section-title {
+        font-size: 2.2rem;
+    }
+
+    .features-container {
+        gap: 25px;
+    }
+
+    .feature-card {
+        padding: 30px 25px;
+    }
+
+    .feature-icon {
+        width: 56px;
+        height: 56px;
+    }
+
+    .landing-showcase {
+        padding: 100px 40px;
+    }
+
+    .showcase-container {
+        gap: 60px;
+    }
+
+    .showcase-content h2 {
+        font-size: 2.2rem;
+    }
+
+    .landing-cta {
+        padding: 120px 40px;
+    }
+
+    .cta-title {
+        font-size: 2.4rem;
+    }
+
+    .cta-actions {
+        gap: 16px;
+    }
+
+    .landing-demo {
+        padding: 100px 40px;
+    }
+
+    .demo-grid {
+        gap: 25px;
+    }
+
+    .landing-footer {
+        padding: 50px 40px;
+    }
+
+    .footer-top {
+        padding-bottom: 30px;
+    }
+
+    .cookies-banner {
+        padding: 20px 40px;
+    }
+}
+
 .fade-in-element {
     opacity: 0;
     transform: translateY(20px);

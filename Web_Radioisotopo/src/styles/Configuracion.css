@@ -47,6 +47,72 @@ UPDATED:       [23/04/2026]
     }
 }
 
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .configuracion-container {
+        padding: 25px;
+    }
+
+    .grid-configuracion {
+        gap: 20px;
+    }
+
+    .header-seccion {
+        gap: 15px;
+        margin-bottom: 25px;
+    }
+
+    .header-textos h1 {
+        font-size: 1.6rem;
+    }
+
+    .formulario-card {
+        padding: 25px;
+    }
+
+    .card-header-icon {
+        margin-bottom: 20px;
+    }
+
+    .card-header-icon h3 {
+        font-size: 1.05rem;
+    }
+
+    .form-group {
+        margin-bottom: 18px;
+    }
+
+    .form-input {
+        padding: 11px 14px;
+    }
+
+    .btn-blue-outline {
+        padding: 11px;
+    }
+
+    .toggle-item {
+        padding-bottom: 12px;
+    }
+
+    .switch {
+        width: 40px;
+        height: 22px;
+    }
+
+    .slider:before {
+        height: 16px;
+        width: 16px;
+    }
+
+    input:checked + .slider:before {
+        transform: translateX(18px);
+    }
+
+    .danger-zone {
+        padding: 22px 25px;
+    }
+}
+
 .columna-ajustes {
     display: flex;
     flex-direction: column;

@@ -215,3 +215,63 @@ UPDATED:       [23/04/2026]
   color: white;
   box-shadow: 0 4px 12px rgba(225, 29, 72, 0.2);
 }
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+  .doctor-header {
+    padding: 5px 10px;
+    gap: 10px;
+  }
+
+  .doctor-avatar-circle {
+    width: 38px;
+    height: 38px;
+    font-size: 0.8rem;
+  }
+
+  .doctor-name {
+    font-size: 0.9rem;
+  }
+
+  .profile-dropdown {
+    width: 290px;
+    top: 58px;
+  }
+
+  .profile-dropdown-header {
+    padding: 18px 0;
+  }
+
+  .profile-dropdown-header h3 {
+    font-size: 1rem;
+  }
+
+  .profile-dropdown-content {
+    padding: 25px 18px;
+  }
+
+  .profile-avatar-editable {
+    width: 100px;
+    height: 100px;
+    margin-bottom: 20px;
+  }
+
+  .avatar-placeholder {
+    font-size: 1.9rem;
+  }
+
+  .logout-btn {
+    width: 160px;
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .close-button {
+    width: 26px;
+    height: 26px;
+  }
+}

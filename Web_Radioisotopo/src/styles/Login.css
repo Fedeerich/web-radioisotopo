@@ -176,3 +176,50 @@ input[type="text"] {
         font-size: 16px;
     }
 }
+
+/* Tablet */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .login-form {
+        padding: 35px;
+        max-width: 380px;
+    }
+
+    .logo {
+        width: 140px;
+    }
+
+    h1 {
+        font-size: 22px;
+    }
+
+    p {
+        font-size: 13px;
+        margin-bottom: 25px;
+    }
+
+    input[type="email"], 
+    input[type="password"], 
+    input[type="text"] {
+        padding: 14px;
+    }
+
+    .show-password-btn {
+        right: 12px;
+        top: 12px;
+    }
+
+    .addons {
+        margin-bottom: 25px;
+        font-size: 12px;
+    }
+
+    .submit-btn {
+        width: 70%;
+        padding: 14px;
+        font-size: 16px;
+    }
+
+    .error-texto-final {
+        font-size: 0.85rem;
+    }
+}

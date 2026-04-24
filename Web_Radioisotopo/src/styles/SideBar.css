@@ -196,7 +196,48 @@ UPDATED:       [23/04/2026]
     }
 }
 
-@media (max-width: 768px) {
+@media (min-width: 600px) and (max-width: 1024px) {
+    .sidebar-main {
+        width: 220px;
+    }
+
+    .sidebar-top {
+        padding: 20px 20px;
+    }
+
+    .logo-box {
+        gap: 12px;
+    }
+
+    .logo-circle {
+        width: 32px;
+        height: 32px;
+    }
+
+    .logo-box .logo {
+        width: 55px;
+    }
+
+    .logo-box span {
+        font-size: 1.2rem;
+    }
+
+    .menu-item {
+        padding: 16px 20px;
+        gap: 12px;
+        font-size: 14px;
+    }
+
+    .menu-item i {
+        font-size: 17px;
+    }
+
+    .logout {
+        padding: 16px 20px;
+    }
+}
+
+@media (max-width: 850px) {
     .sidebar-main {
         width: 100vw;
         height: 70px;
