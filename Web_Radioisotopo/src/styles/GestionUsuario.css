@@ -137,3 +137,41 @@ UPDATED:       [23/04/2026]
     color: #075985;
     border: 1px solid #bae6fd;
 }
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+@media (max-width: 768px) {
+    .gestion-container {
+        padding: 15px;
+    }
+
+    .gestion-header h1 {
+        font-size: 1.6rem;
+    }
+
+    .gestion-form-caja {
+        padding: 20px 15px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-divider {
+        margin: 20px 0;
+    }
+
+    .form-footer {
+        justify-content: stretch;
+        margin-top: 20px;
+    }
+
+    .btn-green-submit {
+        width: 100%;
+        padding: 14px;
+        font-size: 1.05rem;
+    }
+}

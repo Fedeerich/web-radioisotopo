@@ -369,4 +369,19 @@ input[type="text"] {
         padding: 8px 15px;
         font-size: 0.8rem;
     }
+
+    .auditoria-container .patients-table tbody::before {
+        content: "FACULTATIVO \A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0\A0 ACCIONES";
+    }
+
+    .auditoria-container .patients-table td:last-child > div {
+        flex-direction: column !important;
+        gap: 8px !important;
+    }
+
+    .auditoria-container .btn-perfil {
+        width: 100px;
+        padding: 8px 5px;
+        font-size: 0.75rem;
+    }
 }

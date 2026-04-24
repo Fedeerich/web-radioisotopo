@@ -430,3 +430,72 @@ UPDATED:       [23/04/2026]
     background-color: #3b82f6 !important;
     color: white !important;
 }
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+@media (max-width: 1024px) {
+    .grid-crear-paciente {
+        grid-template-columns: 1fr; 
+        gap: 20px;
+    }
+
+    .sync-box {
+        padding: 60px 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    .crear-paciente-container {
+        padding: 15px 10px;
+    }
+
+    .header-seccion {
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .header-textos h1 {
+        font-size: 1.4rem;
+        margin-top: 0;
+    }
+
+    .formulario-card {
+        padding: 20px 15px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .sync-box {
+        padding: 40px 15px;
+    }
+
+    .btn-blue-sync {
+        width: 100%;
+    }
+
+    .card-resumen-green {
+        padding: 20px 15px;
+    }
+
+    .react-datepicker {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .react-datepicker__time-container {
+        width: 100%;
+        border-left: none;
+        border-top: 1px solid #e2e8f0;
+        border-radius: 0 0 15px 15px;
+    }
+    
+    .react-datepicker__time-box {
+        width: 100% !important;
+    }
+}

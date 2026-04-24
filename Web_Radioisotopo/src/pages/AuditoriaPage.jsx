@@ -98,7 +98,7 @@ export function AuditoriaPage() {
     };
 
     return (
-        <div className="pacientes-container">
+        <div className="pacientes-container auditoria-container">
             <header className="content-header">
                 <h1>{t('panelAuditoria')}</h1>
                 <p>{t('controlAccesoSeguridad')}</p>
