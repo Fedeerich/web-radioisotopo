@@ -2,46 +2,26 @@
 ================================================================================
 PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
-DESCRIPTION:   [Pagina para ver el perfil de cada paciente]
+DESCRIPTION:   [Pagina para ver el perfil de cada paciente - Reloj Simplificado]
 AUTHOR:        [Marcos, Wael]
 UPDATED:       [23/04/2026]
 ================================================================================
 */
 
-// IMPORTS
 import { useEffect, useState } from "react";
 import "../styles/PerfilPaciente.css";
 import moleculaImg from "../assets/molecula.png";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
-// PAGER PERFIL PACIENTE
 export function PerfilPacientePage({ paciente, alVolver }) {
     const { t } = useTranslation();
     const [mensajes, setMensajes] = useState([]);
     const [ultimoConsejo, setUltimoConsejo] = useState(null);
-    const [sincronizando, setSincronizando] = useState(false);
-    
-    const [datosDinamicos, setDatosDinamicos] = useState({
-        watchBattery: paciente?.watchBattery || null,
-        watchUltimaSinc: paciente?.watchUltimaSinc || null,
-        watchEstado: paciente?.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
-    });
 
     useEffect(() => {
         if (paciente && paciente.cip) {
-            
             loginService.registrarVisitaPaciente(paciente.cip);
-            
-            loginService.obtenerPerfilPaciente(paciente.cip)
-                .then(data => {
-                    setDatosDinamicos({
-                        watchBattery: data.watchBattery,
-                        watchUltimaSinc: data.watchUltimaSinc,
-                        watchEstado: data.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
-                    });
-                })
-                .catch(err => console.error("Error cargando perfil:", err));
 
             loginService.obtenerConsultasPaciente(paciente.cip)
                 .then(data => {
@@ -54,7 +34,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 })
                 .catch(() => setMensajes([]));
         }
-        
     }, [paciente?.cip]);
 
     const patientData = paciente || {
@@ -64,34 +43,6 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         progreso: 0,
         color: "gray",
         valorEmocional: 2 
-    };
-
-    const manejarSincronizacionReloj = async () => {
-        if (!paciente?.cip || !paciente?.watchId) {
-            alert(t('noHayRelojVinculado'));
-            return;
-        }
-
-        setSincronizando(true);
-        try {
-            const dataActualizada = await loginService.obtenerPerfilPaciente(paciente.cip);
-            
-            setDatosDinamicos({
-                watchBattery: dataActualizada.watchBattery,
-                watchUltimaSinc: dataActualizada.watchUltimaSinc,
-                watchEstado: dataActualizada.watchId ? t('conectadoTransmitiendo') : t('noVinculado')
-            });
-
-            if (dataActualizada.watchUltimaSinc) {
-                alert(`${t('sincronizacionExitosa')} ${new Date(dataActualizada.watchUltimaSinc).toLocaleTimeString()}`);
-            } else {
-                alert(t('relojSinDatosAun'));
-            }
-        } catch (error) {
-            alert(t('errorAlConectarServidorReloj'));
-        } finally {
-            setSincronizando(false);
-        }
     };
 
     const manejarEnvioConsejo = async () => {
@@ -115,6 +66,8 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         }
     };
 
+    const tieneReloj = paciente?.watchId && paciente.watchId !== "null" && paciente.watchId.trim() !== "";
+
     return (
         <div className="detalle-container">
             <div className="patient-header">
@@ -127,7 +80,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 <div className="patient-title-area">
                     <div className="patient-title-row">
                         <h1 className="patient-name-2">{patientData.nombre}</h1>
-                        <span className={`badge ${patientData.color}`}>{t('tractamentActiu')}</span>
+                        <span className={`badge badge-tratamiento ${patientData.color}`}>{t('tractamentActiu')}</span>
                     </div>
                     <p className="patient-subtitle">
                         {t('idPaciente')}: {patientData.cip} | {patientData.tratamiento}
@@ -139,41 +92,35 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                 
                 <div className="card">
                     <h4 className="card-title">{t('dispositivoSmartwatch')}</h4>
-                    <div className="watch-content">
-                        <div className="watch-icon-box"><i className="fi fi-sr-watch-smart"></i></div>
-                        <div className="watch-info">
-                            <strong>{paciente?.watchModel || "Galaxy Watch 8"}</strong>
-                            <div className="status-row">
-                                <span className={`status-text ${datosDinamicos.watchEstado === t('noVinculado') ? 'red' : 'green'}`}>
-                                    {datosDinamicos.watchEstado}
-                                </span>
+                    <div className="watch-elegant-container">
+                        
+                        <div className="watch-elegant-icon">
+                            <i className="fi fi-sr-watch-smart"></i>
+                            <div className={`watch-elegant-badge ${tieneReloj ? 'connected' : 'disconnected'}`}>
+                                <i className={tieneReloj ? "fi fi-rs-check" : "fi fi-rs-cross-small"}></i>
                             </div>
-                            <small>
-                                {t('bateria')} {datosDinamicos.watchBattery ? `${datosDinamicos.watchBattery}%` : 'N/A'} | 
-                                {t('ultimaSinc')}: {datosDinamicos.watchUltimaSinc ? new Date(datosDinamicos.watchUltimaSinc).toLocaleTimeString() : 'N/A'}
-                            </small>
+                        </div>
+                        
+                        <div className="watch-elegant-info">
+                            <strong className={tieneReloj ? 'text-connected' : 'text-disconnected'}>
+                                {tieneReloj ? t('conectadoTransmitiendo') : t('noVinculado')}
+                            </strong>
+                            <p>
+                                {tieneReloj ? (paciente.watchModel || "Galaxy Watch 8") : "Dispositivo no asignado en el alta."}
+                            </p>
+                        </div>
+
+                        <div className="watch-note-text">
+                            <p>Nota: Actualmente si el dispositivo no ha sido vinculado en el alta no puede, vincularse posteriormente.</p>
                         </div>
                     </div>
-                    <div className="watch-actions">
-                        <button 
-                            className={`btn-sync ${sincronizando ? 'loading' : ''}`} 
-                            onClick={manejarSincronizacionReloj}
-                            disabled={sincronizando || datosDinamicos.watchEstado === t('noVinculado')}
-                        >
-                            {sincronizando ? t('actualizando') : t('sincronizacionRemota')}
-                        </button>
-                        <button className="btn-disconnect">
-                             <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" strokeWidth="2" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path><line x1="4" y1="4" x2="20" y2="20"></line></svg>
-                        </button>
-                    </div>
-                    <p className="watch-note">{t('descargaBiometriaAutomatica')}</p>
                 </div>
 
                 <div className="card">
                     <h4 className="card-title">{t('progresoRadioterapia')}</h4>
                     <div className="atom-container">
                         <div className="atom-icon">
-                            <img src={moleculaImg} alt="Molecula" width="40" height="40" />
+                            <img src={moleculaImg} alt="Molecula" />
                         </div>
                         <p className="atom-text">{patientData.tratamiento}</p>
                     </div>
@@ -196,13 +143,21 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <h4 className="card-title">{t('consonanciaSalud')}</h4>
                     <p className="card-desc">{t('empujarConsejosReloj')}</p>
                     
-                    {ultimoConsejo && (
+                    {ultimoConsejo ? (
                         <div className="alert-green">
                             <div className="alert-header">
                                 <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" strokeWidth="2" fill="none"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
                                 <strong>{ultimoConsejo.texto}</strong>
                             </div>
                             <span className="alert-time">{t('enviadoALes')} {ultimoConsejo.hora}h</span>
+                        </div>
+                    ) : (
+                        <div className="alert-naranja">
+                            <div className="alert-header">
+                                <span className="circled-i">i</span>
+                                <strong>{t('noHayMensajeEnviado')}</strong>
+                            </div>
+                            <span className="alert-time">{t('enviaUnConsejo')}</span>
                         </div>
                     )}
 
@@ -235,6 +190,9 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                                 <div className="mood-pointer" style={{ left: patientData.valorEmocional === 1 ? '12%' : patientData.valorEmocional === 2 ? '37%' : patientData.valorEmocional === 3 ? '62%' : '87%' }}>▼</div>
                                 <div className="mood-labels">
                                     <span>EXCELLENT</span><span>GOOD</span><span>REGULAR</span><span className="two-lines">NEEDS<br/>IMPROVEMENT</span>
+                                </div>
+                                <div className="mood-text">
+                                    <p>Nota: Este es el estado diario del paciente, si no marca ningún estado saldrá a la mitad por defecto.</p>
                                 </div>
                             </div>
                         </div>

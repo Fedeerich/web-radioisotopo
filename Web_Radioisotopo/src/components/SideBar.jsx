@@ -47,7 +47,9 @@ export function SideBar() {
             <aside className="sidebar-main">
                 <div className="sidebar-top">
                     <div className="logo-box">
-                        <img src={logo} alt="Logo" className="logo"/>
+                        <div className="logo-circle">
+                            <img src={logo} alt="Logo" className="logo"/>
+                        </div>
                         <span>{t('radioisotopos')}</span>
                     </div>
                 </div>

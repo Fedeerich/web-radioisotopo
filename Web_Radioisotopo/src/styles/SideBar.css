@@ -31,14 +31,30 @@ UPDATED:       [23/04/2026]
     gap: 15px;
 }
 
+.logo-circle {
+    width: 35px;
+    height: 35px;
+    background-color: rgb(255, 255, 255);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+    overflow: hidden;
+    padding: 5px;
+}
+
 .logo-box .logo {
-    width: 45px;
+    width: 60px;
     height: auto;
+    object-fit: contain;
 }
 
 .logo-box span {
     font-size: 1.3rem;
     font-weight: 500;
+    color: white;
 }
 
 .sidebar-divider {

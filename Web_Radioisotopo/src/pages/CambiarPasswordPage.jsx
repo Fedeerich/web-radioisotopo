@@ -9,7 +9,7 @@ UPDATED:       [23/04/2026]
 */
 
 // IMPORTS
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/CambiarPassword.css";
@@ -20,12 +20,28 @@ import { useTranslation } from "../hooks/useTranslation";
 export function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });
+    const [userId, setUserId] = useState(null); // NUEVO: Estado para guardar el ID
     const navigate = useNavigate();
     const { t } = useTranslation();
+
+    useEffect(() => {
+        loginService.obtenerPerfilActual()
+            .then(perfil => {
+                if (perfil && perfil.id) {
+                    setUserId(perfil.id);
+                }
+            })
+            .catch(err => console.error("Error obteniendo perfil:", err));
+    }, []);
 
     const manejarCambio = async (e) => {
         e.preventDefault();
         
+        if (!userId) {
+            setEstado({ ...estado, error: "No se pudo identificar tu usuario. Recarga la página.", exito: "" });
+            return;
+        }
+
         if (passwords.nueva !== passwords.confirmar) {
             setEstado({ ...estado, error: t('contrasenasNoCoinciden'), exito: "" });
             return;
@@ -39,9 +55,9 @@ export function CambiarPasswordPage() {
         setEstado({ cargando: true, error: "", exito: "" });
         
         try {
-            await loginService.cambiarPasswordPerfil(passwords.actual, passwords.nueva);
-            setEstado({ cargando: false, exito: t('contrasenaActualizadaExito'), error: "" });
+            await loginService.cambiarPasswordPerfil(userId, passwords.nueva);
             
+            setEstado({ cargando: false, exito: t('contrasenaActualizadaExito'), error: "" });
             setTimeout(() => navigate("/"), 2000); 
         } catch (err) {
             setEstado({ cargando: false, error: err.message, exito: "" });

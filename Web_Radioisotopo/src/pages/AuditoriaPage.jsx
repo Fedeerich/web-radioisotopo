@@ -46,7 +46,11 @@ export function AuditoriaPage() {
                 lista
                     .filter(m => m.profilePicUrl)
                     .map(async (m) => {
-                        const blobUrl = await cargarImagenComoBlob(`${BASE_HOST}${m.profilePicUrl}`);
+                        const finalUrl = m.profilePicUrl.startsWith('http') 
+                            ? m.profilePicUrl 
+                            : `${BASE_HOST}${m.profilePicUrl}`;
+
+                        const blobUrl = await cargarImagenComoBlob(finalUrl);
                         if (blobUrl) nuevosAvatares[m.id] = blobUrl;
                     })
             );
@@ -146,7 +150,7 @@ export function AuditoriaPage() {
                                     <td>
                                         <div style={{ display: 'flex', gap: '10px', justifyContent: 'center' }}>
                                             <button
-                                                className="btn-sync"
+                                                className="btn-perfil btn-sync"
                                                 onClick={() => manejarCambioEstado(m.id, m.estado)}
                                                 disabled={procesando}
                                             >
@@ -154,8 +158,8 @@ export function AuditoriaPage() {
                                             </button>
 
                                             <button
-                                                className="btn-perfil"
-                                                style={{ backgroundColor: '#f59e0b', opacity: procesando ? 0.6 : 1 }}
+                                                className="btn-perfil btn-reset"
+                                                style={{opacity: procesando ? 0.6 : 1 }}
                                                 onClick={() => manejarResetPassword(m.id, m.nombreCompleto)}
                                                 disabled={procesando}
                                             >

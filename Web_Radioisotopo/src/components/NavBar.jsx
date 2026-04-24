@@ -2,7 +2,7 @@
 ================================================================================
 PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
-DESCRIPTION:   [Componente NavBar]
+DESCRIPTION:   [Componente NavBar - Corregido bucle notificaciones]
 AUTHOR:        [Marcos, Wael]
 UPDATED:       [23/04/2026]
 ================================================================================
@@ -15,7 +15,7 @@ import { useAuth } from "../context/AuthContext";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
-// COMPONENTE NAV BAR
+// COMPONENTE NAVBAR
 export function NavBar() {
     const { usuario, actualizarUsuario } = useAuth();
     const { t } = useTranslation();
@@ -47,10 +47,8 @@ export function NavBar() {
         try {
             setIsUploading(true);
             const data = await loginService.subirAvatar(usuario.id, file);
-            
             const urlFinal = obtenerUrlFinal(data.url);
             setUserAvatar(urlFinal);
-            
             actualizarUsuario({ profilePicUrl: data.url });
         } catch (error) {
             console.error("Fallo en la subida:", error);
@@ -62,6 +60,8 @@ export function NavBar() {
     };
 
     const actualizarNotificaciones = async () => {
+        if (!usuario || !localStorage.getItem("token")) return;
+
         try {
             const conteo = await loginService.obtenerConteoNotificaciones();
             setNotificacionesCount(conteo);
@@ -71,6 +71,7 @@ export function NavBar() {
     };
 
     const cargarListaCompleta = async () => {
+        if (!usuario) return;
         try {
             const datos = await loginService.obtenerListaNotificaciones();
             setListaNotificaciones(Array.isArray(datos) ? datos : []);
@@ -101,17 +102,20 @@ export function NavBar() {
     };
 
     useEffect(() => {
-        if (usuario) {
+        if (usuario?.id) {
             actualizarNotificaciones();
-            const interval = setInterval(actualizarNotificaciones, 30000);
             
+            const interval = setInterval(() => {
+                actualizarNotificaciones();
+            }, 30000);
+
             if (usuario.profilePicUrl) {
                 setUserAvatar(obtenerUrlFinal(usuario.profilePicUrl));
             }
-            
+
             return () => clearInterval(interval);
         }
-    }, [usuario]);
+    }, [usuario?.id]);
 
     return (
         <header className="navbar-main">

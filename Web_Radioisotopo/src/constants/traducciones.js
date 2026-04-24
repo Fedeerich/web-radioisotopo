@@ -148,6 +148,9 @@ export const textos = {
         noHayMensajesNuevos: "No se han recibido mensajes nuevos hoy.",
         mensajeEnviadoExito: "Consejo enviado al Smartwatch con éxito",
         errorEnviarConsejo: "Error al enviar el consejo",
+noHayMensajeEnviado: "No se ha enviado ningún consejo",
+        enviaUnConsejo: "Selecciona y envía un consejo al paciente",
+        enviadoALes: "Enviado a las",
         
         // GESTION USUARIO
         altaNuevoPersonalMedico: "Alta de Nuevo Personal Médico",
@@ -507,6 +510,9 @@ export const textos = {
         noHayMensajesNuevos: "No s'han rebut missatges nous avui.",
         mensajeEnviadoExito: "Consell enviat al Smartwatch amb èxit",
         errorEnviarConsejo: "Error en enviar el consell",
+        noHayMensajeEnviado: "No s'ha enviat cap consell",
+        enviaUnConsejo: "Selecciona i envia un consell al pacient",
+        enviadoALes: "Enviat a les",
         
         // GESTION USUARIO
         altaNuevoPersonalMedico: "Alta de Nou Personal Mèdic",
@@ -866,6 +872,9 @@ altaCompletada: "Admission completed and report downloaded successfully.",
         noHayMensajesNuevos: "No new messages received today.",
         mensajeEnviadoExito: "Advice sent to Smartwatch successfully",
         errorEnviarConsejo: "Error sending advice",
+        noHayMensajeEnviado: "No advice has been sent",
+        enviaUnConsejo: "Select and send advice to the patient",
+        enviadoALes: "Sent at",
         
         // GESTION USUARIO
         altaNuevoPersonalMedico: "New Medical Staff Registration",

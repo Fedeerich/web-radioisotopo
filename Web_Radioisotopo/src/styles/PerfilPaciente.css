@@ -28,8 +28,8 @@ UPDATED:       [23/04/2026]
 }
 
 .back-btn {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     background: white;
     border: 1px solid #e5e7eb;
     border-radius: 10px;
@@ -48,48 +48,53 @@ UPDATED:       [23/04/2026]
 }
 
 .patient-title-area {
-    margin-left: 20px;
+    margin-left: 16px;
 }
 
 .patient-title-row {
     display: flex;
     align-items: center;
-    gap: 16px;
-    margin-bottom: 6px;
+    gap: 12px;
+    margin-bottom: 4px;
 }
 
 .patient-name-2 {
     margin: 0;
-    font-size: 1.6rem;
+    font-size: 1.4rem;
     font-weight: 600;
     letter-spacing: -0.5px;
+    margin-top: 20px;
 }
 
 .badge {
     background: #6ee7b7;
     color: #064e3b;
-    padding: 6px 14px;
+    padding: 4px 12px;
     border-radius: 20px;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
+}
+
+.badge-tratamiento {
+    margin-top: 20px;
 }
 
 .patient-subtitle {
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.9rem;
     color: #6b7280;
 }
 
 .grid-cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 20px;
+    gap: 16px;
 }
 
 .card {
     background: white;
-    border-radius: 14px;
-    padding: 18px;
+    border-radius: 12px;
+    padding: 26px 20px;
     box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     display: flex;
     flex-direction: column;
@@ -101,124 +106,101 @@ UPDATED:       [23/04/2026]
 }
 
 .card-title {
-    margin: 0 0 20px 0;
-    font-size: 1.1rem;
+    margin: 0 0 16px 0;
+    font-size: 1.05rem;
     font-weight: 600;
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-.icon-blue { color: #3b82f6; }
-.icon-green { color: #22c55e; }
-.icon-red { color: #ef4444; }
-.icon-yellow { color: #eab308; }
-
-.watch-content {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    margin-top: 10px;
-    margin-bottom: 24px;
-}
-
-.watch-icon-box {
-    background: #f3f4f6;
-    border-radius: 14px;
-    width: 60px;
-    height: 60px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}  
-
-.watch-icon-box i {
-    font-size: 1.9rem;
-    color: #00000083;
-    display: flex;
-}
-
-.watch-info {
+.watch-elegant-container {
     display: flex;
     flex-direction: column;
-    gap: 4px;
-}
-
-.watch-info strong {
-    font-size: 1rem;
-    color: #111827;
-}
-
-.status-text.green {
-    color: #16a34a;
-    font-weight: 600;
-    font-size: 0.8rem;
-}
-
-.watch-info small {
-    color: #9ca3af;
-    font-size: 0.75rem;
-}
-
-.watch-actions {
-    display: flex;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.btn-sync {
-    flex: 1;
-    background: #3b82f6;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 10px;
-    font-size: 0.9rem;
-    font-weight: 600;
-    display: flex;
     justify-content: center;
     align-items: center;
-    gap: 8px;
-    cursor: pointer;
-    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
-}
-
-.btn-disconnect {
-    width: 44px;
-    background: white;
-    border: 1px solid #fecaca;
-    color: #ef4444;
-    border-radius: 8px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-}
-
-.watch-note {
-    font-size: 0.75rem;
-    color: #9ca3af;
+    margin-top: 15px;
+    padding: 10px 0;
     text-align: center;
-    margin: 16px 0 0 0;
+    gap: 12px;
+    flex: 1; 
+    width: 100%;
 }
+
+.watch-note-text p {
+    font-style: italic;
+    margin-bottom: 0;
+}
+
+.watch-elegant-icon {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    background-color: #f3f4f6;
+    border-radius: 14px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 28px;
+    color: #4b5563;
+}
+
+.watch-elegant-badge {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    border: 3px solid white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.watch-elegant-badge.connected { background-color: #10b981; }
+.watch-elegant-badge.disconnected { background-color: #ef4444; }
+
+.watch-elegant-info strong {
+    font-size: 1rem;
+    display: block;
+    margin-bottom: 2px;
+}
+
+.watch-elegant-info p {
+    color: #666;
+    margin: 0;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+}
+
+.text-connected { color: #10b981; }
+.text-disconnected { color: #ef4444; }
 
 .atom-container {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 30px 0;
+    margin: 50px 0;
 }
 
 .atom-icon {
-    margin-bottom: 12px;
+    margin-bottom: 8px;
+}
+
+.atom-icon img {
+   width: 60px;
 }
 
 .atom-text {
     margin: 0;
     font-weight: 600;
     color: #4b5563;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .progress-stats {
@@ -237,7 +219,7 @@ UPDATED:       [23/04/2026]
 }
 
 .stat-value {
-    font-size: 1.3rem;
+    font-size: 1.1rem;
     font-weight: 700;
 }
 
@@ -245,7 +227,7 @@ UPDATED:       [23/04/2026]
 .stat-value.black { color: #111827; }
 
 .stat-label {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: #9ca3af;
     font-weight: 500;
 }
@@ -275,8 +257,46 @@ UPDATED:       [23/04/2026]
     background: #dcfce7;
     border: 1px solid #bbf7d0;
     border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 16px;
+    padding: 8px;
+    margin-bottom: 12px;
+    margin-top: 40px;
+}
+
+.alert-naranja {
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+    margin-top: 32px;
+}
+
+.alert-naranja .alert-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #c2410c;
+    font-size: 0.85rem;
+    margin-bottom: 2px;
+}
+
+.circled-i {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 18px;
+    height: 18px;
+    border: 1px solid #c2410c;
+    border-radius: 50%;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.alert-naranja .alert-time {
+    font-size: 0.7rem;
+    color: rgba(194, 65, 12, 0.8);
+    display: block;
+    padding-left: 24px;
 }
 
 .alert-header {
@@ -285,11 +305,11 @@ UPDATED:       [23/04/2026]
     gap: 8px;
     color: #16a34a;
     font-size: 0.85rem;
-    margin-bottom: 4px;
+    margin-bottom: 2px;
 }
 
 .alert-time {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: rgba(22, 163, 74, 0.8);
     display: block;
     padding-left: 24px;
@@ -306,6 +326,7 @@ UPDATED:       [23/04/2026]
     margin-bottom: 12px;
     outline: none;
     font-family: inherit;
+    margin-top: 40px;
 }
 
 .btn-outline {
@@ -334,23 +355,24 @@ UPDATED:       [23/04/2026]
     flex-direction: column;
 }
 
-.emoji-row {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    margin: 15px 0 35px 0;
-}
-
 .emoji-item {
-    width: 65px;
-    height: 65px;
+    width: 55px;
+    height: 55px;
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5rem;
+    font-size: 2.2rem;
     background: #f9fafb;
     box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.emoji-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 30px 0 25px 0;
+    gap: 98px;
 }
 
 .emoji-item.active {
@@ -358,8 +380,8 @@ UPDATED:       [23/04/2026]
 }
 
 .emoji-item.green-emoji { border: 4px solid #22c55e; }
-.emoji-item.yellow-emoji { border: 2px solid #eab308; }
-.emoji-item.orange-emoji { border: 2px solid #f97316; }
+.emoji-item.yellow-emoji { border: 2px solid #f97316; }
+.emoji-item.orange-emoji { border: 2px solid #ea580c; }
 .emoji-item.red-emoji { border: 2px solid #ef4444; }
 
 .mood-scale-container {
@@ -370,18 +392,21 @@ UPDATED:       [23/04/2026]
 
 .mood-scale {
     display: flex;
-    height: 14px;
-    border-radius: 7px;
+    height: 12px;
+    border-radius: 6px;
     overflow: hidden;
 }
 
-.scale-segment {
-    flex: 1;
+.mood-text p {
+    margin-top: 30px;
+    font-style: italic;
 }
 
+.scale-segment { flex: 1; }
+
 .c-green { background: #22c55e; }
-.c-yellow { background: #eab308; }
-.c-orange { background: #f97316; }
+.c-yellow { background: #f97316; }
+.c-orange { background: #ea580c; }
 .c-red { background: #ef4444; }
 
 .mood-pointer {
@@ -395,13 +420,13 @@ UPDATED:       [23/04/2026]
 .mood-labels {
     display: flex;
     justify-content: space-between;
-    margin-top: 12px;
+    margin-top: 10px;
 }
 
 .mood-labels span {
     flex: 1;
     text-align: center;
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: 700;
     color: #4b5563;
 }
@@ -409,13 +434,6 @@ UPDATED:       [23/04/2026]
 .two-lines {
     line-height: 1.2;
     display: block;
-}
-
-.mood-note {
-    text-align: center;
-    font-size: 0.85rem;
-    color: #9ca3af;
-    margin-top: 30px;
 }
 
 .chat-card {
@@ -427,14 +445,14 @@ UPDATED:       [23/04/2026]
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    max-height: 280px;
+    max-height: 250px;
 }
 
 .msg-item {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
-    padding: 14px 0;
+    padding: 12px 0;
     border-bottom: 1px solid #f3f4f6;
     cursor: pointer;
     transition: background 0.2s;
@@ -448,13 +466,9 @@ UPDATED:       [23/04/2026]
     border-radius: 8px;
 }
 
-.msg-item.border-0 {
-    border-bottom: none;
-}
-
 .msg-icon {
-    width: 44px;
-    height: 44px;
+    width: 40px;
+    height: 40px;
     background: #fee2e2;
     color: #ef4444;
     border-radius: 50%;
@@ -467,7 +481,7 @@ UPDATED:       [23/04/2026]
 .msg-content {
     flex: 1;
     display: flex;
-    gap: 16px;
+    gap: 12px;
     align-items: center;
     overflow: hidden;
     min-width: 0;
@@ -481,7 +495,7 @@ UPDATED:       [23/04/2026]
 }
 
 .msg-left strong {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     color: #111827;
     white-space: nowrap;
     overflow: hidden;
@@ -501,11 +515,69 @@ UPDATED:       [23/04/2026]
 }
 
 .msg-preview {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: #9ca3af;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    min-width: 70px;
+    min-width: 60px;
     flex-shrink: 0;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+@media (max-width: 1490px) {
+    .grid-cards {
+        grid-template-columns: repeat(3, 1fr); 
+    }
+
+    .emoji-row {
+        gap: 53px; 
+    }
+}
+
+@media (max-width: 850px) {
+    .bottom-row {
+        grid-template-columns: 1fr !important; 
+    }
+    
+    .emoji-row {
+        gap: 20px;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid-cards {
+        grid-template-columns: 1fr; 
+    }
+    
+    .bottom-row {
+        grid-column: span 1 !important; 
+    }
+
+    .emoji-item {
+        width: 45px;
+        height: 45px;
+        font-size: 1.8rem;
+    }
+
+    .emoji-row {
+        gap: 15px;
+    }
+
+    .mood-labels span {
+        font-size: 0.55rem;
+    }
+
+    .patient-title-row {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+    
+    .patient-name-2 {
+        margin-top: 10px;
+    }
 }

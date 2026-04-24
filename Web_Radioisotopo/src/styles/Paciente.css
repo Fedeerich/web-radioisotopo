@@ -20,6 +20,7 @@ UPDATED:       [23/04/2026]
     font-weight: 700;
     color: #1a202c;
     margin-bottom: 5px;
+    margin-top: 20px;
 }
 
 .content-header p {
@@ -195,9 +196,10 @@ input[type="text"] {
 .btn-perfil {
     padding: 10px 18px;
     border: 1.5px solid #e2e8f0;
-    background: white;
+    background-color: rgb(59, 137, 253);
+    border-color: rgb(59, 137, 253);
     border-radius: 10px;
-    color: #4a5568;
+    color: #ffffff;
     font-weight: 700;
     font-size: 0.85rem;
     cursor: pointer;
@@ -205,8 +207,19 @@ input[type="text"] {
 }
 
 .btn-perfil:hover {
-    background: #f8fafc;
-    border-color: #cbd5e0;
+    background: rgb(59, 88, 253);
+    border-color: #007bff;
+}
+
+.btn-sync {
+    background-color: #008cff;
+    border-color: #008cff;
+    color: white;
+}
+
+.btn-sync:hover {
+    background-color: #53b1ff;
+    border-color: #53b1ff;
 }
 
 @keyframes fadeIn {
@@ -233,4 +246,29 @@ input[type="text"] {
     background-color: #2563eb;
     transform: translateY(-2px);
     box-shadow: 0 6px 15px rgba(59, 130, 246, 0.3);
+}
+
+.btn-reset {
+    background-color: #f83e3e;
+    border-color: #f83e3e;
+    color: white;
+}
+
+.btn-reset:hover {
+    background-color: #fc7070;
+    border-color: #fc7070;
+}
+
+/* ==========================================================================
+   DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
+   ========================================================================== */
+
+@media (max-width: 1490px) {
+    .btn-perfil {
+        padding: 5px 18px;
+    }
+
+    .patients-table td {
+        font-size: 14px;
+    }
 }
