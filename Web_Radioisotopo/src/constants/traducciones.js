@@ -18,6 +18,9 @@ export const textos = {
         recordarme: "Recordarme",
         quieresCambiarContrasena: "¿Quieres cambiar tu contraseña?",
         iniciarSesion: "Iniciar sesión",
+        errorCorreoInvalido: "El correo electrónico es inválido",
+        errorContrasenaInvalida: "La contraseña es inválida",
+        porFavorRevisaCampos: "Por favor, revisa los campos",
         
         // SIDEBAR
         radioisotopos: "Radioisótopos",
@@ -380,6 +383,9 @@ noHayMensajeEnviado: "No se ha enviado ningún consejo",
         recordarme: "Recorda'm",
         quieresCambiarContrasena: "Vols canviar la contrasenya?",
         iniciarSesion: "Iniciar sessió",
+        errorCorreoInvalido: "El correu electrònic és invàlid",
+        errorContrasenaInvalida: "La contrasenya és invàlida",
+        porFavorRevisaCampos: "Si us plau, revisa els camps",
         
         // SIDEBAR
         radioisotopos: "Radioisòtops",
@@ -735,13 +741,16 @@ privacidadCookiesTexto: "Aquest lloc fa servir cookies pròpies:",
 
     English: {
         // LOGIN
-        bienvenidoAreaPrivada: "Welcome to the Private Area",
+bienvenidoAreaPrivada: "Welcome to the Private Area",
         accederCuentaGestion: "Access your management account",
         correoElectronico: "Email address...",
         contrasena: "Password...",
         recordarme: "Remember me",
         quieresCambiarContrasena: "Do you want to change your password?",
         iniciarSesion: "Sign in",
+        errorCorreoInvalido: "The email address is invalid",
+        errorContrasenaInvalida: "The password is invalid",
+        porFavorRevisaCampos: "Please check the fields",
         
         // SIDEBAR
         radioisotopos: "Radioisotopes",

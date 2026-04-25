@@ -160,8 +160,18 @@ input[type="text"] {
     input[type="email"], 
     input[type="password"], 
     input[type="text"] {
-        width: 100%; 
-        padding: 14px;
+        width: 100%;
+        padding: 15px;
+        margin-bottom: 15px;
+        border: none;
+        background-color: #f0f0f0;
+        border-radius: 15px;
+        box-sizing: border-box;
+        
+        font-family: inherit;
+        font-size: 14px;
+        line-height: 1.2;
+        outline: none;
     }
 
     .addons {

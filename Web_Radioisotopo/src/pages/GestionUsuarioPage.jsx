@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Pagina para la gestion de los usuarios, a nivel de medicos]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [25/04/2026]
 ================================================================================
 */
 
@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import "../styles/GestionUsuario.css";
 import { loginService } from "../services/api";
+import { validateName, validateEmail, validatePassword, validateNumCol } from "../utils/validations";
 
 // PAGE GESTION DE USUARIO
 export function GestionUsuarioPage() {
@@ -34,12 +35,17 @@ export function GestionUsuarioPage() {
     const [formData, setFormData] = useState(estadoInicial);
     const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
     const [enviando, setEnviando] = useState(false);
+    
+    const [errores, setErrores] = useState({});
 
     const handleChangeUser = (e) => {
         setFormData({
             ...formData,
             [e.target.name]: e.target.value
         });
+        if (errores[e.target.name]) {
+            setErrores({ ...errores, [e.target.name]: false });
+        }
     };
 
     const handleChangeDoctor = (e) => {
@@ -50,10 +56,34 @@ export function GestionUsuarioPage() {
                 [e.target.name]: e.target.value
             }
         });
+        if (errores[e.target.name]) {
+            setErrores({ ...errores, [e.target.name]: false });
+        }
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        
+        const nuevosErrores = {};
+        
+        if (!validateName(formData.nombreCompleto)) nuevosErrores.nombreCompleto = true;
+        if (!validateEmail(formData.email)) nuevosErrores.email = true;
+        if (!validatePassword(formData.password)) nuevosErrores.password = true;
+        if (!formData.hospitalRef.trim()) nuevosErrores.hospitalRef = true; // Comprobamos que no esté vacío
+        if (!formData.doctor.especialidad) nuevosErrores.especialidad = true;
+        if (!validateNumCol(formData.doctor.colegiadoNum)) nuevosErrores.colegiadoNum = true;
+
+        if (Object.keys(nuevosErrores).length > 0) {
+            setErrores(nuevosErrores);
+            setMensaje({ 
+                texto: "Revisa los campos en rojo. La contraseña requiere 8 caracteres (mayúscula, minúscula, número) y el Colegiado 9 dígitos.", 
+                tipo: "error" 
+            });
+            return;
+        }
+        
+        setErrores({});
+
         setEnviando(true);
         setMensaje({ texto: "Conectando con el servidor de Render...", tipo: "info" });
 
@@ -87,7 +117,7 @@ export function GestionUsuarioPage() {
                 <p>Completa los datos para registrar un nuevo especialista en el sistema.</p>
             </div>
 
-            <form className="gestion-form-caja" onSubmit={handleSubmit}>
+            <form className="gestion-form-caja" onSubmit={handleSubmit} noValidate>
                 
                 <h3 className="section-title">Datos de Acceso (Usuario)</h3>
                 <div className="form-grid">
@@ -100,6 +130,7 @@ export function GestionUsuarioPage() {
                             onChange={handleChangeUser} 
                             placeholder="Ej. Carlos Ruiz" 
                             required 
+                            className={errores.nombreCompleto ? "input-error" : ""}
                         />
                     </div>
                     
@@ -112,6 +143,7 @@ export function GestionUsuarioPage() {
                             onChange={handleChangeUser} 
                             placeholder="carlos.ruiz@hospital.com" 
                             required 
+                            className={errores.email ? "input-error" : ""}
                         />
                     </div>
 
@@ -124,6 +156,7 @@ export function GestionUsuarioPage() {
                             onChange={handleChangeUser} 
                             placeholder="Asigna una contraseña" 
                             required 
+                            className={errores.password ? "input-error" : ""}
                         />
                     </div>
 
@@ -136,6 +169,7 @@ export function GestionUsuarioPage() {
                             onChange={handleChangeUser} 
                             placeholder="Ej. Hospital Clínic" 
                             required 
+                            className={errores.hospitalRef ? "input-error" : ""}
                         />
                     </div>
                 </div>
@@ -151,6 +185,7 @@ export function GestionUsuarioPage() {
                             value={formData.doctor.especialidad} 
                             onChange={handleChangeDoctor}
                             required
+                            className={errores.especialidad ? "input-error" : ""}
                         >
                             <option value="">Selecciona una especialidad...</option>
                             <option value="Oncología Radioterápica">Oncología Radioterápica</option>
@@ -169,6 +204,7 @@ export function GestionUsuarioPage() {
                             onChange={handleChangeDoctor} 
                             placeholder="Ej. 282893939" 
                             required 
+                            className={errores.colegiadoNum ? "input-error" : ""}
                         />
                     </div>
                 </div>

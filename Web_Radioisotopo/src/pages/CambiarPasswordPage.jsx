@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Pagina para Cambiar Contrasena]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [25/04/2026]
 ================================================================================
 */
 
@@ -15,12 +15,13 @@ import { useNavigate } from "react-router-dom";
 import "../styles/CambiarPassword.css";
 import logo from "../assets/logo.png"; 
 import { useTranslation } from "../hooks/useTranslation";
+import { validatePassword } from "../utils/validations";
 
 // PAGE CAMBIAR PASSWORD
 export function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });
-    const [userId, setUserId] = useState(null); // NUEVO: Estado para guardar el ID
+    const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
@@ -47,8 +48,8 @@ export function CambiarPasswordPage() {
             return;
         }
 
-        if (passwords.nueva.length < 6) {
-            setEstado({ ...estado, error: t('contrasenaMinimoCaracteres'), exito: "" });
+        if (!validatePassword(passwords.nueva)) {
+            setEstado({ ...estado, error: t('errorContrasenaInvalida'), exito: "" });
             return;
         }
 
@@ -93,6 +94,7 @@ export function CambiarPasswordPage() {
                         required 
                         value={passwords.nueva}
                         onChange={e => setPasswords({...passwords, nueva: e.target.value})}
+                        className={ estado.error === t('errorContrasenaInvalida') ? "input-error" : "" }
                     />
                     <input 
                         type="password" 
@@ -100,6 +102,7 @@ export function CambiarPasswordPage() {
                         required 
                         value={passwords.confirmar}
                         onChange={e => setPasswords({...passwords, confirmar: e.target.value})}
+                        className={ estado.error === t('contrasenasNoCoinciden') ? "input-error" : "" }
                     />
                     
                     <button type="submit" className="btn-update" disabled={estado.cargando}>

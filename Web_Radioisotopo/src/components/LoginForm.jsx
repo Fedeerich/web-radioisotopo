@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Componente LoginForm]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [25/04/2026]
 ================================================================================
 */
 
@@ -16,6 +16,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "../hooks/useTranslation";
+import { validateEmail, validatePassword } from "../utils/validations"; 
 
 // COMPONENTE LOGIN FORM
 export function LoginForm() {
@@ -41,6 +42,16 @@ export function LoginForm() {
         e.preventDefault();
         setMensajeError(""); 
 
+        if (!validateEmail(email)) {
+            setMensajeError(t('errorCorreoInvalido'));
+            return;
+        }
+
+        if (!validatePassword(password)) {
+            setMensajeError(t('errorContrasenaInvalida'));
+            return;
+        }
+
         try {
             const respuesta = await loginService.iniciarSesion(email, password);
             
@@ -63,7 +74,7 @@ export function LoginForm() {
     };
 
     return (
-        <form className="login-form" onSubmit={manejarLogin}>
+        <form className="login-form" onSubmit={manejarLogin} noValidate>
             <div className="header-container">
                 <img src={ logo } alt="Logo" className="logo" />
                 <h1>{t('bienvenidoAreaPrivada')}</h1>
@@ -77,7 +88,7 @@ export function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder={t('correoElectronico')} 
                 required 
-                className={ mensajeError ? "input-error" : "" }
+                className={ mensajeError === t('errorCorreoInvalido') ? "input-error" : "" }
             />
             
             <div className="passDiv">
@@ -88,7 +99,7 @@ export function LoginForm() {
                     onChange={(e) => setPassword(e.target.value)}
                     placeholder={t('contrasena')} 
                     required 
-                    className={ mensajeError ? "input-error" : "" }
+                    className={ mensajeError === t('errorContrasenaInvalida') ? "input-error" : "" }
                 />
                 <button 
                     type="button" 
@@ -96,7 +107,7 @@ export function LoginForm() {
                     onClick={() => setMostrarPassword(!mostrarPassword)}
                 >
                     {mostrarPassword ? (
-                        <i className="fi-rs-crossed-eye"></i>
+                        <i className="fi fi-rs-crossed-eye"></i>
                     ) : (
                         <i className="fi fi-rs-eye"></i>
                     )}

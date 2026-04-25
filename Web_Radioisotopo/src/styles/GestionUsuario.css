@@ -138,6 +138,17 @@ UPDATED:       [23/04/2026]
     border: 1px solid #bae6fd;
 }
 
+.input-group input.input-error,
+.input-group select.input-error {
+    border-color: #ef4444 !important;
+    background-color: #fef2f2 !important;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1) !important;
+}
+
+.input-group input.input-error::placeholder {
+    color: #fca5a5 !important;
+}
+
 /* ==========================================================================
    DISEÑO RESPONSIVE (Portátiles, Tablets y Móviles)
    ========================================================================== */

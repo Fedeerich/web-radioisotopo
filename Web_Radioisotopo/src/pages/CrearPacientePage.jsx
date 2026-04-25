@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Pagina para crear el paciente]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [25/04/2026]
 ================================================================================
 */
 
@@ -15,6 +15,7 @@ import { es } from "date-fns/locale";
 import { useAuth } from "../context/AuthContext";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
+import { validateName, validateCIP, validateDosis } from "../utils/validations"; 
 
 registerLocale("es", es);
 
@@ -40,9 +41,13 @@ export function CrearPacientePage({ alVolver }) {
 
     const [mensaje, setMensaje] = useState({ texto: "", tipo: "" });
     const [conectando, setConectando] = useState(false);
+    const [errores, setErrores] = useState({});
 
     const handleChange = (e) => {
         setFormData({ ...formData, [e.target.name]: e.target.value });
+        if (errores[e.target.name]) {
+            setErrores({ ...errores, [e.target.name]: false });
+        }
     };
 
     const vincularRelojBluetooth = async () => {
@@ -67,10 +72,19 @@ export function CrearPacientePage({ alVolver }) {
     };
 
     const manejarAlta = async () => {
-        if (!formData.nombreCompleto || !formData.cip || !formData.radioisotopo || !formData.dosis) {
-            setMensaje({ texto: t('porFavorCompletaCampos'), tipo: "error" });
+        const nuevosErrores = {};
+        
+        if (!validateName(formData.nombreCompleto)) nuevosErrores.nombreCompleto = true;
+        if (!validateCIP(formData.cip)) nuevosErrores.cip = true;
+        if (!formData.radioisotopo) nuevosErrores.radioisotopo = true;
+        if (!validateDosis(formData.dosis)) nuevosErrores.dosis = true;
+
+        if (Object.keys(nuevosErrores).length > 0) {
+            setErrores(nuevosErrores);
+            setMensaje({ texto: t('porFavorRevisaCampos') || "Revisa los campos marcados en rojo.", tipo: "error" });
             return;
         }
+        setErrores({});
 
         setMensaje({ texto: t('sincronizandoCatsalut'), tipo: "info" });
 
@@ -125,16 +139,39 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
                         <div className="form-group">
                             <label>{t('nomCognoms')}</label>
-                            <input type="text" name="nombreCompleto" value={formData.nombreCompleto} onChange={handleChange} placeholder={t('ejemploNombre')} className="form-input" />
+                            <input 
+                                type="text" 
+                                name="nombreCompleto" 
+                                value={formData.nombreCompleto} 
+                                onChange={handleChange} 
+                                placeholder={t('ejemploNombre')} 
+                                className={`form-input ${errores.nombreCompleto ? 'input-error' : ''}`} 
+                            />
                         </div>
                         <div className="form-row">
                             <div className="form-group half">
                                 <label>{t('cipTargetaSanitaria')}</label>
-                                <input type="text" name="cip" value={formData.cip} onChange={handleChange} placeholder={t('ejemploCIP')} className="form-input" />
+                                <input 
+                                    type="text" 
+                                    name="cip" 
+                                    value={formData.cip} 
+                                    onChange={handleChange} 
+                                    placeholder={t('ejemploCIP')} 
+                                    className={`form-input ${errores.cip ? 'input-error' : ''}`} 
+                                />
                             </div>
                             <div className="form-group half">
                                 <label>{t('dataNaixement')}</label>
-                                <DatePicker selected={formData.fechaNacimiento} onChange={(date) => setFormData({...formData, fechaNacimiento: date})} dateFormat="dd/MM/yyyy" className="form-input custom-datepicker" showYearDropdown dropdownMode="select" maxDate={new Date()} locale="es" />
+                                <DatePicker 
+                                    selected={formData.fechaNacimiento} 
+                                    onChange={(date) => setFormData({...formData, fechaNacimiento: date})} 
+                                    dateFormat="dd/MM/yyyy" 
+                                    className="form-input custom-datepicker" 
+                                    showYearDropdown 
+                                    dropdownMode="select" 
+                                    maxDate={new Date()} 
+                                    locale="es" 
+                                />
                             </div>
                         </div>
                         <div className="form-group">
@@ -154,7 +191,12 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
                         <div className="form-group">
                             <label>{t('tipusRadioisotop')}</label>
-                            <select name="radioisotopo" value={formData.radioisotopo} onChange={handleChange} className="form-input select-styled">
+                            <select 
+                                name="radioisotopo" 
+                                value={formData.radioisotopo} 
+                                onChange={handleChange} 
+                                className={`form-input select-styled ${errores.radioisotopo ? 'input-error' : ''}`}
+                            >
                                 <option value="">{t('seleccionaIsotopo')}</option>
                                 <option value="I-131">{t('iodo131')}</option>
                                 <option value="Lu-177">{t('lutecio177')}</option>
@@ -164,7 +206,14 @@ export function CrearPacientePage({ alVolver }) {
                         <div className="form-row">
                             <div className="form-group half">
                                 <label>{t('dosiAdministrada')}</label>
-                                <input type="number" name="dosis" step="0.01" value={formData.dosis} onChange={handleChange} placeholder={t('ejemploDosis')} className="form-input" />
+                                <input 
+                                    type="text"
+                                    name="dosis" 
+                                    value={formData.dosis} 
+                                    onChange={handleChange} 
+                                    placeholder={t('ejemploDosis')} 
+                                    className={`form-input ${errores.dosis ? 'input-error' : ''}`} 
+                                />
                             </div>
                             <div className="form-group half">
                                 <label>{t('unitats')}</label>
@@ -177,7 +226,17 @@ export function CrearPacientePage({ alVolver }) {
                         </div>
                         <div className="form-group">
                             <label>{t('dataHoraAdministracio')}</label>
-                            <DatePicker selected={formData.fechaAdministracion} onChange={(date) => setFormData({...formData, fechaAdministracion: date})} showTimeSelect timeFormat="HH:mm" timeIntervals={15} dateFormat="dd/MM/yyyy HH:mm" className="form-input custom-datepicker" locale="es" timeCaption="Hora" />
+                            <DatePicker 
+                                selected={formData.fechaAdministracion} 
+                                onChange={(date) => setFormData({...formData, fechaAdministracion: date})} 
+                                showTimeSelect 
+                                timeFormat="HH:mm" 
+                                timeIntervals={15} 
+                                dateFormat="dd/MM/yyyy HH:mm" 
+                                className="form-input custom-datepicker" 
+                                locale="es" 
+                                timeCaption="Hora" 
+                            />
                         </div>
                     </div>
                 </div>
