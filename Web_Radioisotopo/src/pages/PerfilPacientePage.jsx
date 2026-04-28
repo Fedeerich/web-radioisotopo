@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Pagina para ver el perfil de cada paciente - Reloj Simplificado]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [28/04/2026]
 ================================================================================
 */
 
@@ -44,6 +44,8 @@ export function PerfilPacientePage({ paciente, alVolver }) {
         color: "gray",
         valorEmocional: 2 
     };
+
+    const emotValue = patientData.valorEmocional || 2;
 
     const manejarEnvioConsejo = async () => {
         const select = document.querySelector(".select-input");
@@ -175,10 +177,10 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                         <h4 className="card-title">{t('monitorEmocional')}</h4>
                         <div className="emot-content">
                             <div className="emoji-row">
-                                <div className={`emoji-item green-emoji ${patientData.valorEmocional === 1 ? 'active' : ''}`}><span>😃</span></div>
-                                <div className={`emoji-item yellow-emoji ${patientData.valorEmocional === 2 ? 'active' : ''}`}><span>😐</span></div>
-                                <div className={`emoji-item orange-emoji ${patientData.valorEmocional === 3 ? 'active' : ''}`}><span>😑</span></div>
-                                <div className={`emoji-item red-emoji ${patientData.valorEmocional === 4 ? 'active' : ''}`}><span>😟</span></div>
+                                <div className={`emoji-item green-emoji ${emotValue === 1 ? 'active' : ''}`}><span>😃</span></div>
+                                <div className={`emoji-item yellow-emoji ${emotValue === 2 ? 'active' : ''}`}><span>😐</span></div>
+                                <div className={`emoji-item orange-emoji ${emotValue === 3 ? 'active' : ''}`}><span>😑</span></div>
+                                <div className={`emoji-item red-emoji ${emotValue === 4 ? 'active' : ''}`}><span>😟</span></div>
                             </div>
                             <div className="mood-scale-container">
                                 <div className="mood-scale">
@@ -187,7 +189,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                                     <div className="scale-segment c-orange"></div>
                                     <div className="scale-segment c-red"></div>
                                 </div>
-                                <div className="mood-pointer" style={{ left: patientData.valorEmocional === 1 ? '12%' : patientData.valorEmocional === 2 ? '37%' : patientData.valorEmocional === 3 ? '62%' : '87%' }}>▼</div>
+                                <div className="mood-pointer" style={{ left: emotValue === 1 ? '12%' : emotValue === 2 ? '37%' : emotValue === 3 ? '62%' : '87%' }}>▼</div>
                                 <div className="mood-labels">
                                     <span>EXCELLENT</span><span>GOOD</span><span>REGULAR</span><span className="two-lines">NEEDS<br/>IMPROVEMENT</span>
                                 </div>
