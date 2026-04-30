@@ -1087,6 +1087,77 @@ body.dark-mode .hero-bg-grid {
     color: var(--landing-primary);
 }
 
+.landing-collaborators {
+    padding: 100px 60px;
+    background: var(--landing-bg);
+    border-top: 1px solid var(--landing-border);
+}
+
+.collaborators-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+.collaborators-logos {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 80px;
+    margin-top: 50px;
+    flex-wrap: wrap;
+}
+
+.collaborator-logo {
+    background: var(--landing-bg-card);
+    padding: 30px 50px;
+    border-radius: 20px;
+    border: 1px solid var(--landing-border);
+    transition: all 0.3s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 250px;
+    min-height: 150px;
+}
+
+.collaborator-logo:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--landing-shadow-lg);
+    border-color: var(--landing-primary);
+}
+
+.collaborator-logo img {
+    max-width: 200px;
+    max-height: 100px;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+    transition: transform 0.3s;
+}
+
+.collaborator-logo:hover img {
+    transform: scale(1.05);
+}
+
+body.dark-mode .collaborator-logo {
+    background: var(--landing-bg-card);
+    border-color: var(--landing-border);
+}
+
+body.dark-mode .collaborator-logo:hover {
+    border-color: var(--landing-primary);
+}
+
+body.dark-mode .collaborator-logo img {
+    filter: brightness(0.9);
+    transition: filter 0.3s;
+}
+
+body.dark-mode .collaborator-logo:hover img {
+    filter: brightness(1);
+}
+
 .landing-footer {
     background: var(--landing-bg-card);
     padding: 60px;
@@ -1621,6 +1692,70 @@ body.dark-mode .hero-bg-grid {
 .stagger-2 { animation-delay: 0.2s; }
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
+
+/* Responsive para colaboradores - Tablet */
+@media (max-width: 1024px) {
+    .landing-collaborators {
+        padding: 80px 40px;
+    }
+
+    .collaborators-logos {
+        gap: 50px;
+    }
+
+    .collaborator-logo {
+        min-width: 220px;
+        min-height: 130px;
+        padding: 25px 40px;
+    }
+
+    .collaborator-logo img {
+        max-width: 180px;
+        max-height: 90px;
+    }
+}
+
+/* Responsive para colaboradores - Móvil */
+@media (max-width: 768px) {
+    .landing-collaborators {
+        padding: 60px 24px;
+    }
+
+    .collaborators-logos {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .collaborator-logo {
+        min-width: 200px;
+        min-height: 120px;
+        padding: 20px 30px;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .collaborator-logo img {
+        max-width: 160px;
+        max-height: 80px;
+    }
+}
+
+/* Responsive para colaboradores - Tablet específico */
+@media (min-width: 600px) and (max-width: 1024px) {
+    .landing-collaborators {
+        padding: 90px 40px;
+    }
+
+    .collaborators-logos {
+        gap: 40px;
+    }
+
+    .collaborator-logo {
+        min-width: 240px;
+        min-height: 140px;
+        padding: 28px 45px;
+    }
+}
 
 .footer-bottom {
     display: flex;

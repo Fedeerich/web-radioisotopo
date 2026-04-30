@@ -16,6 +16,8 @@ import logo from '../assets/logo.png';
 import imgPanellPacients from '../assets/images-demo/gestion-pacientes.png';
 import imgPerfilPacients from '../assets/images-demo/perfil-usuario.png';
 import imgAuditoriaAdmin from '../assets/images-demo/auditoria-admin.png';
+import collaborator1 from '../assets/collaborators/collaborator1.png';
+import collaborator2 from '../assets/collaborators/collaborator2.png';
 import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon, MoonIcon, SunIcon } from '../constants/iconosLanding';
 import { useTranslation } from '../hooks/useTranslation';
 import { getCookie, setCookie } from '../utils/cookies';
@@ -408,6 +410,26 @@ export function LandingPage() {
                         <div className="demo-card-content">
                             <h3>{t('generacioInformes')}</h3>
                             <p>{t('creaExportaInformes')}</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section className="landing-collaborators">
+                <div className="collaborators-container">
+                    <div className="section-header fade-in-element">
+                        <div className="section-badge">{t('colaboradores')}</div>
+                        <h2 className="landing-section-title">{t('nuestrosColaboradores')}</h2>
+                        <p className="section-description">
+                            {t('colaboradoresDesc')}
+                        </p>
+                    </div>
+                    <div className="collaborators-logos">
+                        <div className="collaborator-logo fade-in-element stagger-1">
+                            <img src={collaborator1} alt="Colaborador 1" />
+                        </div>
+                        <div className="collaborator-logo fade-in-element stagger-2">
+                            <img src={collaborator2} alt="Colaborador 2" />
                         </div>
                     </div>
                 </div>
