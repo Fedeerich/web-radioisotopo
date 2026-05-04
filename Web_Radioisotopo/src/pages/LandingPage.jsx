@@ -28,6 +28,61 @@ export function LandingPage() {
     const [darkMode, setDarkMode] = useState(false);
     const { t } = useTranslation();
 
+    // Estados para los carruseles de demo
+    const [webSlide, setWebSlide] = useState(0);
+    const [appSlide, setAppSlide] = useState(0);
+    const [watchSlide, setWatchSlide] = useState(0);
+    const [userInteracting, setUserInteracting] = useState({ web: false, app: false, watch: false });
+
+    // Imágenes temporales para cada demo (puedes reemplazar con tus propias)
+    const webImages = [imgPanellPacients, imgPerfilPacients, imgAuditoriaAdmin];
+    const appImages = [
+        "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80",
+        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
+        "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80"
+    ];
+    const watchImages = [
+        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
+        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80",
+        "https://images.unsplash.com/photo-1579586337278-3f1a5c2f1c1a?w=600&q=80"
+    ];
+
+    // Función para cambiar slide
+    const changeSlide = (type, direction) => {
+        setUserInteracting(prev => ({ ...prev, [type]: true }));
+        const images = type === 'web' ? webImages : type === 'app' ? appImages : watchImages;
+        const currentSlide = type === 'web' ? webSlide : type === 'app' ? appSlide : watchSlide;
+        const setSlide = type === 'web' ? setWebSlide : type === 'app' ? setAppSlide : setWatchSlide;
+        
+        let newSlide = currentSlide + direction;
+        if (newSlide < 0) newSlide = images.length - 1;
+        if (newSlide >= images.length) newSlide = 0;
+        setSlide(newSlide);
+    };
+
+    // Auto-rotación cada 5 segundos si el usuario no interactúa
+    useEffect(() => {
+        const intervals = [];
+        
+        if (!userInteracting.web) {
+            intervals.push(setInterval(() => {
+                setWebSlide(prev => (prev + 1) % webImages.length);
+            }, 5000));
+        }
+        if (!userInteracting.app) {
+            intervals.push(setInterval(() => {
+                setAppSlide(prev => (prev + 1) % appImages.length);
+            }, 5000));
+        }
+        if (!userInteracting.watch) {
+            intervals.push(setInterval(() => {
+                setWatchSlide(prev => (prev + 1) % watchImages.length);
+            }, 5000));
+        }
+
+        return () => intervals.forEach(clearInterval);
+    }, [userInteracting]);
+
     const toggleTheme = () => {
         const newMode = !darkMode;
         setDarkMode(newMode);
@@ -355,65 +410,122 @@ export function LandingPage() {
                     <h2 className="landing-section-title">{t('quePodeuMonitoritzar')}</h2>
                     <p className="section-description">
                         {t('descobrirFuncionalitats')}
-                    </p>
-                </div>
-                <div className="demo-grid">
-                    <div className="demo-card fade-in-element stagger-1">
-                        <div className="demo-card-image">
-                            <img src={ imgPanellPacients } alt={t('panellPacients')} />
+                </p>
+                    </div>
+                    <div className="demo-grid">
+                        <div className="demo-card fade-in-element stagger-1">
+                            <div className="demo-card-image carousel-container">
+                                <div className="carousel-slides">
+                                    {webImages.map((img, index) => (
+                                        <div key={index} className={`carousel-slide ${index === webSlide ? 'active' : ''}`}>
+                                            <img src={img} alt={`${t('demoWeb')} ${index + 1}`} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('web', -1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('web', 1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <div className="carousel-dots">
+                                    {webImages.map((_, index) => (
+                                        <span 
+                                            key={index} 
+                                            className={`carousel-dot ${index === webSlide ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setWebSlide(index);
+                                                setUserInteracting(prev => ({ ...prev, web: true }));
+                                            }}
+                                        ></span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="demo-card-content">
+                                <h3>{t('demoWeb')}</h3>
+                                <p>{t('demoWebDesc')}</p>
+                            </div>
                         </div>
-                        <div className="demo-card-content">
-                            <h3>{t('panellPacients')}</h3>
-                            <p>{t('visualitzaRealTime')}</p>
+                        <div className="demo-card fade-in-element stagger-2">
+                            <div className="demo-card-image carousel-container">
+                                <div className="carousel-slides">
+                                    {appImages.map((img, index) => (
+                                        <div key={index} className={`carousel-slide ${index === appSlide ? 'active' : ''}`}>
+                                            <img src={img} alt={`${t('demoApp')} ${index + 1}`} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('app', -1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('app', 1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <div className="carousel-dots">
+                                    {appImages.map((_, index) => (
+                                        <span 
+                                            key={index} 
+                                            className={`carousel-dot ${index === appSlide ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setAppSlide(index);
+                                                setUserInteracting(prev => ({ ...prev, app: true }));
+                                            }}
+                                        ></span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="demo-card-content">
+                                <h3>{t('demoApp')}</h3>
+                                <p>{t('demoAppDesc')}</p>
+                            </div>
+                        </div>
+                        <div className="demo-card fade-in-element stagger-3">
+                            <div className="demo-card-image carousel-container">
+                                <div className="carousel-slides">
+                                    {watchImages.map((img, index) => (
+                                        <div key={index} className={`carousel-slide ${index === watchSlide ? 'active' : ''}`}>
+                                            <img src={img} alt={`${t('demoSmartwatch')} ${index + 1}`} />
+                                        </div>
+                                    ))}
+                                </div>
+                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('watch', -1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('watch', 1)}>
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
+                                    </svg>
+                                </button>
+                                <div className="carousel-dots">
+                                    {watchImages.map((_, index) => (
+                                        <span 
+                                            key={index} 
+                                            className={`carousel-dot ${index === watchSlide ? 'active' : ''}`}
+                                            onClick={() => {
+                                                setWatchSlide(index);
+                                                setUserInteracting(prev => ({ ...prev, watch: true }));
+                                            }}
+                                        ></span>
+                                    ))}
+                                </div>
+                            </div>
+                            <div className="demo-card-content">
+                                <h3>{t('demoSmartwatch')}</h3>
+                                <p>{t('demoSmartwatchDesc')}</p>
+                            </div>
                         </div>
                     </div>
-                    <div className="demo-card fade-in-element stagger-2">
-                        <div className="demo-card-image">
-                            <img src={ imgPerfilPacients } alt={t('estadistiquesDetallades')} />
-                        </div>
-                        <div className="demo-card-content">
-                            <h3>{t('estadistiquesDetallades')}</h3>
-                            <p>{t('grafiquesInformes')}</p>
-                        </div>
-                    </div>
-                    <div className="demo-card fade-in-element stagger-3">
-                        <div className="demo-card-image">
-                            <img src={ imgAuditoriaAdmin } alt={t('sistemaAuditoria')} />
-                        </div>
-                        <div className="demo-card-content">
-                            <h3>{t('sistemaAuditoria')}</h3>
-                            <p>{t('registreComplet')}</p>
-                        </div>
-                    </div>
-                    <div className="demo-card fade-in-element stagger-1">
-                        <div className="demo-card-image">
-                            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt={t('sistemaAlertes')} />
-                        </div>
-                        <div className="demo-card-content">
-                            <h3>{t('sistemaAlertes')}</h3>
-                            <p>{t('notificacionsAutomaticas')}</p>
-                        </div>
-                    </div>
-                    <div className="demo-card fade-in-element stagger-2">
-                        <div className="demo-card-image">
-                            <img src="https://images.unsplash.com/photo-1576091160550-2173dba999ef?w=600&q=80" alt={t('creacioPacient')} />
-                        </div>
-                        <div className="demo-card-content">
-                            <h3>{t('creacioPacient')}</h3>
-                            <p>{t('calculAutoma')}</p>
-                        </div>
-                    </div>
-                    <div className="demo-card fade-in-element stagger-3">
-                        <div className="demo-card-image">
-                            <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=600&q=80" alt={t('generacioInformes')} />
-                        </div>
-                        <div className="demo-card-content">
-                            <h3>{t('generacioInformes')}</h3>
-                            <p>{t('creaExportaInformes')}</p>
-                        </div>
-                    </div>
-                </div>
-            </section>
+                </section>
 
             <section className="landing-collaborators">
                 <div className="collaborators-container">
