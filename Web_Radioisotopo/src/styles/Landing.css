@@ -27,269 +27,6 @@ UPDATED:       [23/04/2026]
     --landing-gradient-soft: linear-gradient(135deg, #3182ce 0%, #48bb78 100%);
 }
 
-body.dark-mode {
-    --landing-bg: #09090b;
-    --landing-bg-card: #111113;
-    --landing-bg-light: #18181b;
-    --landing-primary: #6366f1;
-    --landing-primary-hover: #8b5cf6;
-    --landing-secondary: #8b5cf6;
-    --landing-accent: #06b6d4;
-    --landing-text: #fafafa;
-    --landing-text-secondary: #a1a1aa;
-    --landing-text-muted: #71717a;
-    --landing-border: rgba(255, 255, 255, 0.1);
-    --landing-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
-    --landing-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.5);
-    --landing-gradient: linear-gradient(135deg, #6366f1 0%, #8b5cf6 50%, #06b6d4 100%);
-    --landing-gradient-soft: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
-}
-
-body.dark-mode .landing-header {
-    background: rgba(9, 9, 11, 0.95);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-}
-
-body.dark-mode .theme-toggle {
-    background: rgba(255, 255, 255, 0.08);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .theme-toggle:hover {
-    background: var(--landing-primary);
-    color: white;
-}
-
-body.dark-mode .theme-toggle svg,
-body.dark-mode .theme-toggle svg path {
-    fill: currentColor;
-    color: currentColor;
-}
-
-body.dark-mode .landing-logo-icon,
-body.dark-mode .landing-logo-icon svg {
-    color: white;
-}
-
-body.dark-mode .landing-logo-icon svg {
-    fill: white;
-}
-
-body.dark-mode .landing-logo span {
-    color: white;
-    -webkit-text-fill-color: white;
-}
-
-body.dark-mode .landing-stat-icon,
-body.dark-mode .landing-stat-icon svg,
-body.dark-mode .feature-icon,
-body.dark-mode .feature-icon svg,
-body.dark-mode .showcase-feature-icon,
-body.dark-mode .showcase-feature-icon svg,
-body.dark-mode .showcase-feature-icon svg path,
-body.dark-mode .floating-card-icon,
-body.dark-mode .floating-card-icon svg,
-body.dark-mode .floating-card-icon svg path,
-body.dark-mode .hero-badge-dot,
-body.dark-mode .demo-card-image,
-body.dark-mode .section-badge,
-body.dark-mode .landing-showcase-stat-label,
-body.dark-mode .landing-stat-label {
-    color: var(--landing-text-secondary);
-    fill: var(--landing-text-secondary);
-}
-
-body.dark-mode .landing-stat-icon,
-body.dark-mode .feature-icon,
-body.dark-mode .floating-card-icon {
-    background: rgba(99, 102, 241, 0.15);
-}
-
-body.dark-mode .landing-stat-icon svg,
-body.dark-mode .feature-icon svg,
-body.dark-mode .showcase-feature-icon svg path,
-body.dark-mode .floating-card-icon svg path {
-    fill: currentColor;
-    color: currentColor;
-}
-
-body.dark-mode .landing-stat-number {
-    background: var(--landing-gradient);
-    -webkit-background-clip: text;
-}
-
-body.dark-mode .landing-section-title {
-    color: var(--landing-text);
-}
-
-body.dark-mode .section-description,
-body.dark-mode .section-badge,
-body.dark-mode .showcase-tag {
-    color: var(--landing-primary);
-    background: rgba(99, 102, 241, 0.15);
-}
-
-body.dark-mode .btn-primary {
-    background: var(--landing-primary);
-    color: white;
-}
-
-body.dark-mode .btn-secondary {
-    background: var(--landing-bg-card);
-    color: var(--landing-text);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .btn-secondary:hover {
-    border-color: var(--landing-primary);
-    color: var(--landing-primary);
-}
-
-body.dark-mode .hero-floating-card,
-body.dark-mode .hero-floating-card-1,
-body.dark-mode .hero-floating-card-2 {
-    background: var(--landing-bg-card);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .floating-card-icon {
-    background: rgba(99, 102, 241, 0.2);
-    color: var(--landing-primary);
-}
-
-body.dark-mode .feature-card,
-body.dark-mode .landing-showcase-stat-card,
-body.dark-mode .landing-demo {
-    background: var(--landing-bg-card);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .landing-cta {
-    background: var(--landing-bg-card);
-}
-
-body.dark-mode .demo-card,
-body.dark-mode .cookies-banner {
-    background: var(--landing-bg-card);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .cta-actions .btn-cta-secondary,
-body.dark-mode .btn-cta-secondary {
-    background: var(--landing-bg-card);
-    color: var(--landing-text);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .cookies-banner,
-body.dark-mode .landing-footer {
-    background: var(--landing-bg-card);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .footer-brand svg,
-body.dark-mode .footer-brand span {
-    color: var(--landing-text);
-}
-
-body.dark-mode .footer-links a,
-body.dark-mode .footer-link-secondary {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .footer-links a:hover,
-body.dark-mode .footer-link-secondary:hover {
-    color: var(--landing-primary);
-}
-
-body.dark-mode .social-link {
-    background: var(--landing-bg);
-    color: var(--landing-text-secondary);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .hero-badge {
-    background: rgba(99, 102, 241, 0.15);
-    color: var(--landing-primary);
-}
-
-body.dark-mode .hero-badge-dot {
-    background: var(--landing-accent);
-}
-
-body.dark-mode .hero-title {
-    color: var(--landing-text);
-}
-
-body.dark-mode .hero-description {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .floating-card-title {
-    color: var(--landing-text);
-}
-
-body.dark-mode .floating-card-subtitle {
-    color: var(--landing-text-muted);
-}
-
-body.dark-mode .showcase-content h2,
-body.dark-mode .showcase-content p,
-body.dark-mode .cta-title,
-body.dark-mode .cta-description {
-    color: var(--landing-text);
-}
-
-body.dark-mode .showcase-content p,
-body.dark-mode .cta-description {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .showcase-feature-item,
-body.dark-mode .showcase-feature-text {
-    color: var(--landing-text);
-}
-
-body.dark-mode .cta-trust-item {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .cta-trust-item svg,
-body.dark-mode .cta-trust-item svg path {
-    color: #ffffff !important;
-    fill: #ffffff !important;
-}
-
-body.dark-mode .footer-brand,
-body.dark-mode .footer-copyright,
-body.dark-mode .footer-legal a,
-body.dark-mode .footer-minimal-copy,
-body.dark-mode .footer-minimal-links a {
-    color: var(--landing-text-muted);
-}
-
-body.dark-mode .demo-card-content h3 {
-    color: var(--landing-text);
-}
-
-body.dark-mode .demo-card-content p {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .cookies-banner-content p {
-    color: var(--landing-text-secondary);
-}
-
-body.dark-mode .cookies-banner-content svg {
-    color: var(--landing-primary);
-}
-
-body.dark-mode .btn-cookies-learn {
-    color: var(--landing-text-secondary);
-    border-color: var(--landing-border);
-}
-
 .landing-wrapper * {
     margin: 0;
     padding: 0;
@@ -414,20 +151,59 @@ html {
     color: var(--landing-primary);
 }
 
-.theme-toggle {
+.language-selector {
+    position: relative;
+}
+
+.language-btn {
     background: none;
-    border: none;
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
+    border: 1px solid var(--landing-border);
+    border-radius: 8px;
+    padding: 8px 12px;
     display: flex;
     align-items: center;
-    justify-content: center;
+    gap: 6px;
     cursor: pointer;
-    color: var(--landing-text-secondary);
-    transition: all 0.2s;
-    background: var(--landing-bg);
+    color: var(--landing-text);
+    font-size: 0.85rem;
+    font-weight: 600;
+    transition: all 0.3s;
+}
+
+.language-btn:hover {
+    background: var(--landing-bg-card);
+    border-color: var(--landing-primary);
+}
+
+.language-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 8px;
+    background: var(--landing-bg-card);
     border: 1px solid var(--landing-border);
+    border-radius: 12px;
+    box-shadow: var(--landing-shadow-lg);
+    overflow: hidden;
+    z-index: 1000;
+    min-width: 160px;
+}
+
+.language-dropdown button {
+    display: block;
+    width: 100%;
+    padding: 10px 16px;
+    text-align: left;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: var(--landing-text);
+    font-size: 0.9rem;
+    transition: background 0.2s;
+}
+
+.language-dropdown button:hover {
+    background: var(--landing-bg);
 }
 
 .theme-toggle:hover {
@@ -438,17 +214,6 @@ html {
 .theme-toggle svg {
     width: 20px;
     height: 20px;
-}
-
-body.dark-mode .theme-toggle svg {
-    fill: white;
-    color: white;
-}
-
-.theme-toggle svg path,
-.theme-toggle svg {
-    fill: var(--landing-text-secondary);
-    color: var(--landing-text-secondary);
 }
 
 .btn-login-header {
@@ -487,12 +252,6 @@ body.dark-mode .theme-toggle svg {
         linear-gradient(90deg, rgba(49, 130, 206, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
-}
-
-body.dark-mode .hero-bg-grid {
-    background-image: 
-        linear-gradient(rgba(99, 102, 241, 0.08) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(99, 102, 241, 0.08) 1px, transparent 1px);
 }
 
 .hero-bg-glow {
@@ -1150,24 +909,6 @@ body.dark-mode .hero-bg-grid {
     transform: scale(1.05);
 }
 
-body.dark-mode .collaborator-logo {
-    background: var(--landing-bg-card);
-    border-color: var(--landing-border);
-}
-
-body.dark-mode .collaborator-logo:hover {
-    border-color: var(--landing-primary);
-}
-
-body.dark-mode .collaborator-logo img {
-    filter: brightness(0.9);
-    transition: filter 0.3s;
-}
-
-body.dark-mode .collaborator-logo:hover img {
-    filter: brightness(1);
-}
-
 .landing-footer {
     background: var(--landing-bg-card);
     padding: 60px;
@@ -1567,22 +1308,6 @@ body.dark-mode .collaborator-logo:hover img {
 
 .carousel-dot.active {
     background: white;
-}
-
-body.dark-mode .carousel-btn {
-    background: rgba(255, 255, 255, 0.2);
-}
-
-body.dark-mode .carousel-btn:hover {
-    background: rgba(255, 255, 255, 0.4);
-}
-
-body.dark-mode .carousel-dot {
-    background: rgba(255, 255, 255, 0.3);
-}
-
-body.dark-mode .carousel-dot.active {
-    background: var(--landing-primary);
 }
 
 .cookies-banner {

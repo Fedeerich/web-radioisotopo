@@ -18,15 +18,15 @@ import imgPerfilPacients from '../assets/images-demo/perfil-usuario.png';
 import imgAuditoriaAdmin from '../assets/images-demo/auditoria-admin.png';
 import collaborator1 from '../assets/collaborators/collaborator1.png';
 import collaborator2 from '../assets/collaborators/collaborator2.png';
-import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon, MoonIcon, SunIcon } from '../constants/iconosLanding';
+import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon } from '../constants/iconosLanding';
 import { useTranslation } from '../hooks/useTranslation';
 import { getCookie, setCookie } from '../utils/cookies';
 
 // PAGE LANDING PAGE
 export function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
-    const [darkMode, setDarkMode] = useState(false);
-    const { t } = useTranslation();
+    const [showLangMenu, setShowLangMenu] = useState(false);
+    const { t, idioma, changeLanguage } = useTranslation();
 
     // Estados para los carruseles de demo
     const [webSlide, setWebSlide] = useState(0);
@@ -83,19 +83,8 @@ export function LandingPage() {
         return () => intervals.forEach(clearInterval);
     }, [userInteracting]);
 
-    const toggleTheme = () => {
-        const newMode = !darkMode;
-        setDarkMode(newMode);
-        document.body.classList.toggle('dark-mode', newMode);
-        setCookie('theme', newMode ? 'dark' : 'light', 365);
-    };
-
     useEffect(() => {
-        const savedTheme = getCookie('theme');
-        if (savedTheme === 'dark') {
-            setDarkMode(true);
-            document.body.classList.add('dark-mode');
-        }
+        document.body.classList.remove('dark-mode');
     }, []);
 
     useEffect(() => {
@@ -149,9 +138,30 @@ export function LandingPage() {
                     <a href="#contacte">{t('contacte')}</a>
                 </nav>
                 <div className="header-actions">
-                    <button className="theme-toggle" onClick={toggleTheme} title={darkMode ? "Modo claro" : "Modo oscuro"}>
-                        {darkMode ? <SunIcon /> : <MoonIcon />}
-                    </button>
+                    <div className="language-selector">
+                        <button 
+                            className="language-btn" 
+                            onClick={() => setShowLangMenu(!showLangMenu)}
+                        >
+                            {idioma === 'Catala' ? 'CAT' : idioma === 'English' ? 'EN' : 'ES'}
+                            <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor">
+                                <path d="M7 10l5 5 5-5z"/>
+                            </svg>
+                        </button>
+                        {showLangMenu && (
+                            <div className="language-dropdown">
+                                <button onClick={() => { changeLanguage('Castellano'); setShowLangMenu(false); }}>
+                                    🇪🇸 Español
+                                </button>
+                                <button onClick={() => { changeLanguage('Catala'); setShowLangMenu(false); }}>
+                                    🇦🇩 Català
+                                </button>
+                                <button onClick={() => { changeLanguage('English'); setShowLangMenu(false); }}>
+                                    🇬🇧 English
+                                </button>
+                            </div>
+                        )}
+                    </div>
                     <a href="/login-page" className="btn-login-header">
                         {t('iniciarSesion')}
                     </a>
