@@ -151,13 +151,16 @@ export function LandingPage() {
                         {showLangMenu && (
                             <div className="language-dropdown">
                                 <button onClick={() => { changeLanguage('Castellano'); setShowLangMenu(false); }}>
-                                    🇪🇸 Español
+                                    <span className="flag flag-spain"></span>
+                                    Español
                                 </button>
                                 <button onClick={() => { changeLanguage('Catala'); setShowLangMenu(false); }}>
-                                    🇦🇩 Català
+                                    <span className="flag flag-catalonia"></span>
+                                    Català
                                 </button>
                                 <button onClick={() => { changeLanguage('English'); setShowLangMenu(false); }}>
-                                    🇬🇧 English
+                                    <span className="flag flag-uk"></span>
+                                    English
                                 </button>
                             </div>
                         )}
