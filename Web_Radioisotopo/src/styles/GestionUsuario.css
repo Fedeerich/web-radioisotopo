@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Css para darle estilo a la página de GestionUsuarioPage.jsx]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [06/05/2026]
 ================================================================================
 */
 .gestion-container {
@@ -72,6 +72,17 @@ UPDATED:       [23/04/2026]
     color: #1e293b;
     transition: border-color 0.2s, box-shadow 0.2s;
     background-color: #f8fafc;
+    font-family: inherit;
+    width: 100%;
+    box-sizing: border-box;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2364748b' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
 }
 
 .input-group input:focus,

@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Página principal que puedes ver si no tienes cuenta]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [06/05/2026]
 ================================================================================
 */
 
@@ -13,9 +13,12 @@ import React, { useEffect, useState } from 'react';
 import '../styles/Landing.css';
 import imgMedicos from '../assets/images/medicos.jpg';
 import logo from '../assets/logo.png';
-import imgPanellPacients from '../assets/images-demo/gestion-pacientes.png';
-import imgPerfilPacients from '../assets/images-demo/perfil-usuario.png';
-import imgAuditoriaAdmin from '../assets/images-demo/auditoria-admin.png';
+import imgInicioWeb from '../assets/images-demo/inicio-web.jpeg';
+import imgAltaPacientesWeb from '../assets/images-demo/alta-pacientes-web.jpeg';
+import imgAltaMedicoWeb from '../assets/images-demo/alta-medico-web.jpeg';
+import imgPacientesWeb from '../assets/images-demo/pacientes-web.jpeg';
+import imgAuditoriaWeb from '../assets/images-demo/auditoria-web.jpeg';
+import imgConfigWeb from '../assets/images-demo/config-web.jpeg';
 import collaborator1 from '../assets/collaborators/collaborator1.png';
 import collaborator2 from '../assets/collaborators/collaborator2.png';
 import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon } from '../constants/iconosLanding';
@@ -34,8 +37,8 @@ export function LandingPage() {
     const [watchSlide, setWatchSlide] = useState(0);
     const [userInteracting, setUserInteracting] = useState({ web: false, app: false, watch: false });
 
-    // Imágenes temporales para cada demo (puedes reemplazar con tus propias)
-    const webImages = [imgPanellPacients, imgPerfilPacients, imgAuditoriaAdmin];
+    // Imágenes del carrusel web demo
+    const webImages = [imgInicioWeb, imgAltaPacientesWeb, imgAltaMedicoWeb, imgPacientesWeb, imgAuditoriaWeb, imgConfigWeb];
     const appImages = [
         "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80",
         "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
@@ -430,10 +433,10 @@ export function LandingPage() {
                             <div className="demo-card-image carousel-container">
                                 <div className="carousel-slides">
                                     {webImages.map((img, index) => (
-                                        <div key={index} className={`carousel-slide ${index === webSlide ? 'active' : ''}`}>
-                                            <img src={img} alt={`${t('demoWeb')} ${index + 1}`} />
-                                        </div>
-                                    ))}
+                                         <div key={index} className={`carousel-slide ${index === webSlide ? 'active' : ''}`}>
+                                             <img src={img} alt={`${t('demoWeb')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
+                                         </div>
+                                     ))}
                                 </div>
                                 <button className="carousel-btn carousel-prev" onClick={() => changeSlide('web', -1)}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -467,10 +470,10 @@ export function LandingPage() {
                             <div className="demo-card-image carousel-container">
                                 <div className="carousel-slides">
                                     {appImages.map((img, index) => (
-                                        <div key={index} className={`carousel-slide ${index === appSlide ? 'active' : ''}`}>
-                                            <img src={img} alt={`${t('demoApp')} ${index + 1}`} />
-                                        </div>
-                                    ))}
+                                         <div key={index} className={`carousel-slide ${index === appSlide ? 'active' : ''}`}>
+                                             <img src={img} alt={`${t('demoApp')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
+                                         </div>
+                                     ))}
                                 </div>
                                 <button className="carousel-btn carousel-prev" onClick={() => changeSlide('app', -1)}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -504,10 +507,10 @@ export function LandingPage() {
                             <div className="demo-card-image carousel-container">
                                 <div className="carousel-slides">
                                     {watchImages.map((img, index) => (
-                                        <div key={index} className={`carousel-slide ${index === watchSlide ? 'active' : ''}`}>
-                                            <img src={img} alt={`${t('demoSmartwatch')} ${index + 1}`} />
-                                        </div>
-                                    ))}
+                                         <div key={index} className={`carousel-slide ${index === watchSlide ? 'active' : ''}`}>
+                                             <img src={img} alt={`${t('demoSmartwatch')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
+                                         </div>
+                                     ))}
                                 </div>
                                 <button className="carousel-btn carousel-prev" onClick={() => changeSlide('watch', -1)}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

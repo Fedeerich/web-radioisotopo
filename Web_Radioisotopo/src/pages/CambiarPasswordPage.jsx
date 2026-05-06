@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Pagina para Cambiar Contrasena]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [25/04/2026]
+UPDATED:       [06/05/2026]
 ================================================================================
 */
 
@@ -21,27 +21,11 @@ import { validatePassword } from "../utils/validations";
 export function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });
-    const [userId, setUserId] = useState(null);
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    useEffect(() => {
-        loginService.obtenerPerfilActual()
-            .then(perfil => {
-                if (perfil && perfil.id) {
-                    setUserId(perfil.id);
-                }
-            })
-            .catch(err => console.error("Error obteniendo perfil:", err));
-    }, []);
-
     const manejarCambio = async (e) => {
         e.preventDefault();
-        
-        if (!userId) {
-            setEstado({ ...estado, error: "No se pudo identificar tu usuario. Recarga la página.", exito: "" });
-            return;
-        }
 
         if (passwords.nueva !== passwords.confirmar) {
             setEstado({ ...estado, error: t('contrasenasNoCoinciden'), exito: "" });
@@ -56,7 +40,7 @@ export function CambiarPasswordPage() {
         setEstado({ cargando: true, error: "", exito: "" });
         
         try {
-            await loginService.cambiarPasswordPerfil(userId, passwords.nueva);
+            await loginService.cambiarPasswordPerfil(passwords.actual, passwords.nueva);
             
             setEstado({ cargando: false, exito: t('contrasenaActualizadaExito'), error: "" });
             setTimeout(() => navigate("/"), 2000); 

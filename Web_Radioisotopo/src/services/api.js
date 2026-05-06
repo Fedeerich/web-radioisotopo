@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Servicio para llamar al backend]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [24/04/2026]
+UPDATED:       [06/05/2026]
 ================================================================================
 */ 
 
@@ -110,7 +110,7 @@ export const loginService = {
 
     resetPasswordAdmin: async (id, nuevaPassword) => {
         const respuesta = await fetch(`${API_URL}/auth/doctor/${id}/password`, {
-            method: "PUT",
+            method: "POST",
             headers: getHeaders(),
             body: JSON.stringify({ password: nuevaPassword })
         });
@@ -289,11 +289,11 @@ export const loginService = {
         return datos;
     },
 
-    cambiarPasswordPerfil: async (userId, newPassword) => {
-        const respuesta = await fetch(`${API_URL}/users/${userId}/update-password`, {
-            method: "PUT",
+    cambiarPasswordPerfil: async (oldPassword, newPassword) => {
+        const respuesta = await fetch(`${API_URL}/auth/update-password`, {
+            method: "POST",
             headers: getHeaders(),
-            body: JSON.stringify({ password: newPassword })
+            body: JSON.stringify({ oldPassword: oldPassword, newPassword: newPassword })
         });
 
         if (!respuesta.ok) {

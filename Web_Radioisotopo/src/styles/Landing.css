@@ -4,7 +4,7 @@ PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
 DESCRIPTION:   [Css para darle estilo a la página de LandingPage.jsx]
 AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
+UPDATED:       [06/05/2026]
 ================================================================================
 */
 :root {
@@ -1196,14 +1196,19 @@ html {
 
 .demo-card-image {
     width: 100%;
-    height: 200px;
+    height: 280px;
     overflow: hidden;
+    background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .demo-card-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 90%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
     transition: transform 0.3s;
 }
 
@@ -1232,8 +1237,9 @@ html {
 .carousel-container {
     position: relative;
     width: 100%;
-    height: 200px;
+    height: 280px;
     overflow: hidden;
+    background-color: #fff;
 }
 
 .carousel-slides {
@@ -1250,20 +1256,9 @@ html {
     height: 100%;
     opacity: 0;
     transition: opacity 0.5s ease-in-out;
-}
-
-.carousel-slide.active {
-    opacity: 1;
-}
-
-.carousel-slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    transition: opacity 0.5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .carousel-slide.active {
@@ -1271,9 +1266,10 @@ html {
 }
 
 .carousel-slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    width: 90%;
+    height: auto;
+    max-height: 100%;
+    object-fit: contain;
 }
 
 .carousel-btn {
