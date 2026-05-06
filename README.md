@@ -1,8 +1,8 @@
-# RADIOISOTOPO - Hospital Management System
+# RadiSync - Hospital Management System
 
 ## Description
 
-RADIOISOTOPO is a web application for hospital management specialized in radiotherapy oncology, nuclear medicine, and radiology. The system allows the administration of patients, doctors, clinical notifications, and wearable device monitoring.
+RadiaSync is a web application for hospital management specialized in radiotherapy oncology, nuclear medicine, and radiology. The system allows the administration of patients, doctors, clinical notifications, and wearable device monitoring.
 
 ## Technologies Used
 
