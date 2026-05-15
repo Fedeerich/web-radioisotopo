@@ -2117,8 +2117,13 @@ html {
         justify-content: center;
     }
 
+    .lightbox-close svg {
+        width: 16px;
+        height: 16px;
+    }
+
     .lightbox-nav {
-        padding: 14px 10px;
+        padding: 10px 8px;
         background: rgba(0, 0, 0, 0.6);
         border: 2px solid rgba(255, 255, 255, 0.7);
     }
@@ -2128,8 +2133,8 @@ html {
     }
 
     .lightbox-nav svg {
-        width: 28px;
-        height: 28px;
+        width: 18px;
+        height: 18px;
     }
 
     .lightbox-counter {

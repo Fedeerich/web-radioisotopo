@@ -11,7 +11,7 @@ UPDATED:       [23/04/2026]
 // IMPORTS
 import { useState, useEffect } from "react";
 import "../styles/SideBar.css";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.webp"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "../hooks/useTranslation";

@@ -11,21 +11,25 @@ UPDATED:       [06/05/2026]
 // IMPORTS
 import React, { useEffect, useState } from 'react';
 import '../styles/Landing.css';
-import imgMedicos from '../assets/images/medicos.jpg';
-import logo from '../assets/logo.png';
-import imgInicioWeb from '../assets/images-demo/inicio-web.jpeg';
-import imgAltaPacientesWeb from '../assets/images-demo/alta-pacientes-web.jpeg';
-import imgAltaMedicoWeb from '../assets/images-demo/alta-medico-web.jpeg';
-import imgPacientesWeb from '../assets/images-demo/pacientes-web.jpeg';
-import imgAuditoriaWeb from '../assets/images-demo/auditoria-web.jpeg';
-import imgConfigWeb from '../assets/images-demo/config-web.jpeg';
-import imgSmartwatchOne from '../assets/images-demo/one-smartwatch.jpeg';
-import imgSmartwatchSecond from '../assets/images-demo/second-smartwatch.jpeg';
-import imgSmartwatchThird from '../assets/images-demo/third-smartwatch.jpeg';
-import imgSmartwatchFourth from '../assets/images-demo/fourth-smartwatch.jpeg';
-import imgSmartwatchFifht from '../assets/images-demo/fifht-smartwatch.jpeg';
-import collaborator1 from '../assets/collaborators/collaborator1.png';
-import collaborator2 from '../assets/collaborators/collaborator2.png';
+import imgMedicos from '../assets/images/medicos.webp';
+import imgMedicos2 from '../assets/images/medicos2.webp';
+import logo from '../assets/logo.webp';
+import imgInicioWeb from '../assets/images-demo/inicio-web.webp';
+import imgAltaPacientesWeb from '../assets/images-demo/alta-pacientes-web.webp';
+import imgAltaMedicoWeb from '../assets/images-demo/alta-medico-web.webp';
+import imgPacientesWeb from '../assets/images-demo/pacientes-web.webp';
+import imgAuditoriaWeb from '../assets/images-demo/auditoria-web.webp';
+import imgConfigWeb from '../assets/images-demo/config-web.webp';
+import imgPhone1 from '../assets/images-demo/phone1-app.webp';
+import imgPhone2 from '../assets/images-demo/phone2-app.webp';
+import imgPhone3 from '../assets/images-demo/phone3-app.webp';
+import imgSmartwatchOne from '../assets/images-demo/one-smartwatch.webp';
+import imgSmartwatchSecond from '../assets/images-demo/second-smartwatch.webp';
+import imgSmartwatchThird from '../assets/images-demo/third-smartwatch.webp';
+import imgSmartwatchFourth from '../assets/images-demo/fourth-smartwatch.webp';
+import imgSmartwatchFifht from '../assets/images-demo/fifht-smartwatch.webp';
+import collaborator1 from '../assets/collaborators/collaborator1.webp';
+import collaborator2 from '../assets/collaborators/collaborator2.webp';
 import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon } from '../constants/iconosLanding';
 import { useTranslation } from '../hooks/useTranslation';
 import { getCookie, setCookie } from '../utils/cookies';
@@ -48,9 +52,9 @@ export function LandingPage() {
     // Imágenes del carrusel web demo
     const webImages = [imgInicioWeb, imgAltaPacientesWeb, imgAltaMedicoWeb, imgPacientesWeb, imgAuditoriaWeb, imgConfigWeb];
     const appImages = [
-        "https://images.unsplash.com/photo-1558618666-fcd25c85f82e?w=600&q=80",
-        "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?w=600&q=80",
-        "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80"
+        imgPhone1,
+        imgPhone2,
+        imgPhone3
     ];
     const watchImages = [
         imgSmartwatchOne,
@@ -411,7 +415,7 @@ export function LandingPage() {
                     </div>
                     <div className="showcase-visual fade-in-element">
                         <div className="showcase-image-main">
-                            <img src={imgMedicos} alt="Dashboard del sistema" />
+                            <img src={imgMedicos2} alt="Dashboard del sistema" />
                         </div>
                         <div className="showcase-stats-overlay">
                             <div className="landing-showcase-stat-card">

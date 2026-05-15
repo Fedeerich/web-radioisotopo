@@ -10,7 +10,7 @@ UPDATED:       [28/04/2026]
 
 import { useEffect, useState } from "react";
 import "../styles/PerfilPaciente.css";
-import moleculaImg from "../assets/molecula.png";
+import moleculaImg from "../assets/molecula.webp";
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 

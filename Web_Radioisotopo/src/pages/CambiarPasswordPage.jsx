@@ -13,7 +13,7 @@ import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../styles/CambiarPassword.css";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.webp"; 
 import { useTranslation } from "../hooks/useTranslation";
 import { validatePassword } from "../utils/validations";
 

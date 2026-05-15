@@ -10,7 +10,7 @@ UPDATED:       [25/04/2026]
 
 // IMPORTS
 import "../styles/Login.css";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.webp"; 
 import { loginService } from "../services/api";
 import { useState, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
