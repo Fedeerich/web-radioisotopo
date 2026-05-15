@@ -28,7 +28,8 @@ export function LoginForm() {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [recordarme, setRecordarme] = useState(false);
-    const [mensajeError, setMensajeError] = useState(""); 
+    const [mensajeError, setMensajeError] = useState("");
+    const [cargando, setCargando] = useState(false); 
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -52,6 +53,8 @@ export function LoginForm() {
             return;
         }
 
+        setCargando(true);
+
         try {
             const respuesta = await loginService.iniciarSesion(email, password);
             
@@ -70,6 +73,8 @@ export function LoginForm() {
             }
         } catch (error) {
             setMensajeError(error.message); 
+        } finally {
+            setCargando(false);
         }
     };
 
@@ -138,8 +143,8 @@ export function LoginForm() {
                 </span>
             )}
 
-            <button type="submit" className="submit-btn">
-                {t('iniciarSesion')}
+            <button type="submit" className="submit-btn" disabled={cargando}>
+                {cargando ? <span className="spinner"></span> : t('iniciarSesion')}
             </button>
         </form>
     );

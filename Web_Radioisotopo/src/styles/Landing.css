@@ -248,7 +248,9 @@ html {
     font-weight: 600;
     text-decoration: none;
     transition: all 0.2s;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .btn-login-header:hover {
@@ -1199,9 +1201,6 @@ html {
     height: 280px;
     overflow: hidden;
     background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .demo-card-image img {
@@ -1240,6 +1239,7 @@ html {
     height: 280px;
     overflow: hidden;
     background-color: #fff;
+    cursor: pointer;
 }
 
 .carousel-slides {
@@ -1276,7 +1276,7 @@ html {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
-    background: rgba(0, 0, 0, 0.5);
+    background: #1a1a2e;
     color: white;
     border: none;
     width: 36px;
@@ -1288,10 +1288,11 @@ html {
     cursor: pointer;
     transition: background 0.3s;
     z-index: 10;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .carousel-btn:hover {
-    background: rgba(0, 0, 0, 0.8);
+    background: #16213e;
 }
 
 .carousel-btn svg {
@@ -1300,11 +1301,11 @@ html {
 }
 
 .carousel-prev {
-    left: 10px;
+    left: 20px;
 }
 
 .carousel-next {
-    right: 10px;
+    right: 20px;
 }
 
 .carousel-dots {
@@ -1520,13 +1521,21 @@ html {
     }
 
     .carousel-btn {
-        width: 32px;
-        height: 32px;
+        width: 44px;
+        height: 44px;
     }
 
     .carousel-btn svg {
-        width: 16px;
-        height: 16px;
+        width: 24px;
+        height: 24px;
+    }
+
+    .carousel-prev {
+        left: 4px;
+    }
+
+    .carousel-next {
+        right: 4px;
     }
 
     .footer-top {
@@ -1561,8 +1570,12 @@ html {
     }
 
     .btn-login-header {
-        padding: 4px 6px;
-        font-size: 12px;
+        padding: 8px;
+        border-radius: 8px;
+    }
+
+    .login-text {
+        display: none;
     }
 }
 
@@ -1983,3 +1996,119 @@ html {
 .stagger-2 { animation-delay: 0.2s; }
 .stagger-3 { animation-delay: 0.3s; }
 .stagger-4 { animation-delay: 0.4s; }
+
+/* Lightbox */
+.lightbox-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 40px;
+}
+
+.lightbox-content {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-width: 90vw;
+    max-height: 85vh;
+}
+
+.lightbox-content img {
+    max-width: 100%;
+    max-height: 85vh;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+}
+
+.lightbox-close {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.3s;
+    padding: 8px;
+}
+
+.lightbox-close:hover {
+    opacity: 1;
+}
+
+.lightbox-nav {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.15);
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    padding: 16px 12px;
+    border-radius: 8px;
+    transition: background 0.3s;
+    display: flex;
+    align-items: center;
+}
+
+.lightbox-nav:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox-prev {
+    left: -60px;
+}
+
+.lightbox-next {
+    right: -60px;
+}
+
+.lightbox-counter {
+    position: absolute;
+    bottom: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: #fff;
+    font-size: 0.95rem;
+    font-weight: 600;
+    opacity: 0.8;
+}
+
+@media (max-width: 768px) {
+    .lightbox-overlay {
+        padding: 16px;
+    }
+
+    .lightbox-prev {
+        left: 8px;
+    }
+
+    .lightbox-next {
+        right: 8px;
+    }
+
+    .lightbox-close {
+        top: 8px;
+        right: 8px;
+    }
+
+    .lightbox-nav {
+        padding: 12px 8px;
+    }
+
+    .lightbox-nav svg {
+        width: 24px;
+        height: 24px;
+    }
+
+    .lightbox-counter {
+        bottom: -32px;
+    }
+}

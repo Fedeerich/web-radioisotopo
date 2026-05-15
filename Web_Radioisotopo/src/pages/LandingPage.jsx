@@ -19,6 +19,11 @@ import imgAltaMedicoWeb from '../assets/images-demo/alta-medico-web.jpeg';
 import imgPacientesWeb from '../assets/images-demo/pacientes-web.jpeg';
 import imgAuditoriaWeb from '../assets/images-demo/auditoria-web.jpeg';
 import imgConfigWeb from '../assets/images-demo/config-web.jpeg';
+import imgSmartwatchOne from '../assets/images-demo/one-smartwatch.jpeg';
+import imgSmartwatchSecond from '../assets/images-demo/second-smartwatch.jpeg';
+import imgSmartwatchThird from '../assets/images-demo/third-smartwatch.jpeg';
+import imgSmartwatchFourth from '../assets/images-demo/fourth-smartwatch.jpeg';
+import imgSmartwatchFifht from '../assets/images-demo/fifht-smartwatch.jpeg';
 import collaborator1 from '../assets/collaborators/collaborator1.png';
 import collaborator2 from '../assets/collaborators/collaborator2.png';
 import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon } from '../constants/iconosLanding';
@@ -36,6 +41,9 @@ export function LandingPage() {
     const [appSlide, setAppSlide] = useState(0);
     const [watchSlide, setWatchSlide] = useState(0);
     const [userInteracting, setUserInteracting] = useState({ web: false, app: false, watch: false });
+    const [lightboxOpen, setLightboxOpen] = useState(false);
+    const [lightboxImages, setLightboxImages] = useState([]);
+    const [lightboxIndex, setLightboxIndex] = useState(0);
 
     // Imágenes del carrusel web demo
     const webImages = [imgInicioWeb, imgAltaPacientesWeb, imgAltaMedicoWeb, imgPacientesWeb, imgAuditoriaWeb, imgConfigWeb];
@@ -45,10 +53,35 @@ export function LandingPage() {
         "https://images.unsplash.com/photo-1551650975-87deedd944c3?w=600&q=80"
     ];
     const watchImages = [
-        "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=600&q=80",
-        "https://images.unsplash.com/photo-1546868871-7041f2a55e12?w=600&q=80",
-        "https://images.unsplash.com/photo-1579586337278-3f1a5c2f1c1a?w=600&q=80"
+        imgSmartwatchOne,
+        imgSmartwatchSecond,
+        imgSmartwatchThird,
+        imgSmartwatchFourth,
+        imgSmartwatchFifht
     ];
+
+    const openLightbox = (type) => {
+        const images = type === 'web' ? webImages : type === 'app' ? appImages : watchImages;
+        const currentSlide = type === 'web' ? webSlide : type === 'app' ? appSlide : watchSlide;
+        setLightboxImages(images);
+        setLightboxIndex(currentSlide);
+        setLightboxOpen(true);
+        document.body.style.overflow = 'hidden';
+    };
+
+    const closeLightbox = () => {
+        setLightboxOpen(false);
+        document.body.style.overflow = '';
+    };
+
+    const navigateLightbox = (direction) => {
+        setLightboxIndex(prev => {
+            let next = prev + direction;
+            if (next < 0) next = lightboxImages.length - 1;
+            if (next >= lightboxImages.length) next = 0;
+            return next;
+        });
+    };
 
     // Función para cambiar slide
     const changeSlide = (type, direction) => {
@@ -169,7 +202,12 @@ export function LandingPage() {
                         )}
                     </div>
                     <a href="/login-page" className="btn-login-header">
-                        {t('iniciarSesion')}
+                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
+                            <polyline points="10 17 15 12 10 7"/>
+                            <line x1="15" y1="12" x2="3" y2="12"/>
+                        </svg>
+                        <span className="login-text">{t('iniciarSesion')}</span>
                     </a>
                 </div>
             </header>
@@ -430,7 +468,7 @@ export function LandingPage() {
                     </div>
                     <div className="demo-grid">
                         <div className="demo-card fade-in-element stagger-1">
-                            <div className="demo-card-image carousel-container">
+                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('web')}>
                                 <div className="carousel-slides">
                                     {webImages.map((img, index) => (
                                          <div key={index} className={`carousel-slide ${index === webSlide ? 'active' : ''}`}>
@@ -438,12 +476,12 @@ export function LandingPage() {
                                          </div>
                                      ))}
                                 </div>
-                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('web', -1)}>
+                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('web', -1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </button>
-                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('web', 1)}>
+                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('web', 1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
@@ -453,7 +491,8 @@ export function LandingPage() {
                                         <span 
                                             key={index} 
                                             className={`carousel-dot ${index === webSlide ? 'active' : ''}`}
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 setWebSlide(index);
                                                 setUserInteracting(prev => ({ ...prev, web: true }));
                                             }}
@@ -467,7 +506,7 @@ export function LandingPage() {
                             </div>
                         </div>
                         <div className="demo-card fade-in-element stagger-2">
-                            <div className="demo-card-image carousel-container">
+                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('app')}>
                                 <div className="carousel-slides">
                                     {appImages.map((img, index) => (
                                          <div key={index} className={`carousel-slide ${index === appSlide ? 'active' : ''}`}>
@@ -475,12 +514,12 @@ export function LandingPage() {
                                          </div>
                                      ))}
                                 </div>
-                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('app', -1)}>
+                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('app', -1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </button>
-                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('app', 1)}>
+                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('app', 1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
@@ -490,7 +529,8 @@ export function LandingPage() {
                                         <span 
                                             key={index} 
                                             className={`carousel-dot ${index === appSlide ? 'active' : ''}`}
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 setAppSlide(index);
                                                 setUserInteracting(prev => ({ ...prev, app: true }));
                                             }}
@@ -504,7 +544,7 @@ export function LandingPage() {
                             </div>
                         </div>
                         <div className="demo-card fade-in-element stagger-3">
-                            <div className="demo-card-image carousel-container">
+                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('watch')}>
                                 <div className="carousel-slides">
                                     {watchImages.map((img, index) => (
                                          <div key={index} className={`carousel-slide ${index === watchSlide ? 'active' : ''}`}>
@@ -512,12 +552,12 @@ export function LandingPage() {
                                          </div>
                                      ))}
                                 </div>
-                                <button className="carousel-btn carousel-prev" onClick={() => changeSlide('watch', -1)}>
+                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('watch', -1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
                                 </button>
-                                <button className="carousel-btn carousel-next" onClick={() => changeSlide('watch', 1)}>
+                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('watch', 1); }}>
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                                         <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
                                     </svg>
@@ -527,7 +567,8 @@ export function LandingPage() {
                                         <span 
                                             key={index} 
                                             className={`carousel-dot ${index === watchSlide ? 'active' : ''}`}
-                                            onClick={() => {
+                                            onClick={(e) => {
+                                                e.stopPropagation();
                                                 setWatchSlide(index);
                                                 setUserInteracting(prev => ({ ...prev, watch: true }));
                                             }}
@@ -575,6 +616,30 @@ export function LandingPage() {
                     </nav>
                 </div>
             </footer>
+            {lightboxOpen && (
+                <div className="lightbox-overlay" onClick={closeLightbox}>
+                    <div className="lightbox-content" onClick={e => e.stopPropagation()}>
+                        <button className="lightbox-close" onClick={closeLightbox}>
+                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M18 6L6 18"/>
+                                <path d="M6 6l12 12"/>
+                            </svg>
+                        </button>
+                        <button className="lightbox-nav lightbox-prev" onClick={() => navigateLightbox(-1)}>
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M15 18l-6-6 6-6"/>
+                            </svg>
+                        </button>
+                        <img src={lightboxImages[lightboxIndex]} alt={`Imagen ${lightboxIndex + 1}`} />
+                        <button className="lightbox-nav lightbox-next" onClick={() => navigateLightbox(1)}>
+                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                                <path d="M9 18l6-6-6-6"/>
+                            </svg>
+                        </button>
+                        <div className="lightbox-counter">{lightboxIndex + 1} / {lightboxImages.length}</div>
+                    </div>
+                </div>
+            )}
             <div className="cookies-banner" id="cookies-banner">
                 <div className="cookies-banner-content">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
