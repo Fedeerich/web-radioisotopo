@@ -1467,12 +1467,19 @@ html {
     }
 
     .landing-logo {
-        font-size: 1.2rem;
+        font-size: 0.85rem;
+        gap: 8px;
     }
 
     .landing-logo-icon {
-        width: 45px;
-        height: 45px;
+        width: 32px;
+        height: 32px;
+    }
+
+    .landing-logo-icon img {
+        width: 40px;
+        height: 40px;
+        margin-top: 2px;
     }
 
     .hero-title {

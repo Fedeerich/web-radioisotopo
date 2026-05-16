@@ -102,9 +102,7 @@ export function SideBar() {
                             </button>
                         </>
                     )}
-                </nav>
 
-                <div className="sidebar-bottom-section">
                     <button 
                         className={`menu-item ${activeTab === "config" ? "active" : ""}`}
                         onClick={() => {
@@ -114,6 +112,9 @@ export function SideBar() {
                     >
                         <i className="fi fi-rs-settings"></i> <span>{t('configuracion')}</span>
                     </button>
+                </nav>
+
+                <div className="sidebar-bottom-section">
 
                     <hr className="sidebar-divider" />
 

@@ -272,22 +272,40 @@ UPDATED:       [23/04/2026]
         text-align: center;
         width: auto;
         flex: 1;
+        min-height: 0;
     }
 
     .menu-item span {
         font-size: 0.65rem;
-        display: block; 
+        display: block;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 100%;
     }
 
     .menu-item i {
         font-size: 20px;
+        flex-shrink: 0;
     }
 
     .menu-item.active {
         border-left: none;
-        border-top: 3px solid white;
         padding-left: 5px;
         background-color: transparent;
+        position: relative;
+    }
+
+    .menu-item.active::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 40%;
+        height: 3px;
+        background: white;
+        border-radius: 0 0 2px 2px;
     }
 
     .sidebar-bottom-section {
@@ -298,13 +316,14 @@ UPDATED:       [23/04/2026]
     }
 
     .logout {
-        padding: 8px 15px;
+        padding: 8px 10px;
         flex-direction: column;
         justify-content: center;
         border-left: 1px solid rgba(255,255,255,0.1);
     }
 
     .logout span {
-        display: none;
+        display: block;
+        font-size: 0.65rem;
     }
 }

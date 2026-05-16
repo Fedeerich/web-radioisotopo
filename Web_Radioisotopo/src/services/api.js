@@ -21,11 +21,16 @@ export const loginService = {
      * AUTENTICACIÓN
      */
     iniciarSesion: async (email, password) => {
-        const respuesta = await fetch(`${API_URL}/auth/login`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, password })
-        });
+        let respuesta;
+        try {
+            respuesta = await fetch(`${API_URL}/auth/login`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password })
+            });
+        } catch {
+            throw new Error("Vuelve a intentarlo de nuevo");
+        }
 
         if (!respuesta.ok) throw new Error("Credenciales incorrectas");
         
