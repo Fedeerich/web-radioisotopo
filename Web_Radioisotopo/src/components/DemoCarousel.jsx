@@ -10,12 +10,12 @@ export function DemoCarousel({ images, slideIndex, t, onChangeSlide, onDotClick,
                     </div>
                 ))}
             </div>
-            <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); onChangeSlide(-1); }}>
+            <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); onChangeSlide(-1); }} aria-label="Anterior">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
             </button>
-            <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); onChangeSlide(1); }}>
+            <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); onChangeSlide(1); }} aria-label="Siguiente">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>

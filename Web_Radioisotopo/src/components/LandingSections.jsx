@@ -35,7 +35,7 @@ export function LandingHero({ t }) {
 
                 <div className="hero-visual fade-in-element stagger-3">
                     <div className="hero-image-wrapper">
-                        <img src={ imgMedicos } alt="Professionals mèdics" />
+                        <img src={ imgMedicos } alt="Professionals mèdics" width="1200" height="675" />
                         <div className="hero-image-overlay"></div>
                     </div>
                     <div className="hero-floating-card hero-floating-card-1">
@@ -224,7 +224,7 @@ export function LandingShowcase({ t }) {
                                 <CheckIcon />
                             </div>
                             <div className="showcase-feature-text">
-                                <h4>{t('integracioApi')}</h4>
+                                <h3>{t('integracioApi')}</h3>
                                 <p>{t('connecteuSistemes')}</p>
                             </div>
                         </div>
@@ -233,7 +233,7 @@ export function LandingShowcase({ t }) {
                                 <CheckIcon />
                             </div>
                             <div className="showcase-feature-text">
-                                <h4>{t('suport247')}</h4>
+                                <h3>{t('suport247')}</h3>
                                 <p>{t('equipEspecialistes')}</p>
                             </div>
                         </div>
@@ -242,7 +242,7 @@ export function LandingShowcase({ t }) {
                                 <CheckIcon />
                             </div>
                             <div className="showcase-feature-text">
-                                <h4>{t('formacioInclosa')}</h4>
+                                <h3>{t('formacioInclosa')}</h3>
                                 <p>{t('cursosCertificacio')}</p>
                             </div>
                         </div>
@@ -250,7 +250,7 @@ export function LandingShowcase({ t }) {
                 </div>
                 <div className="showcase-visual fade-in-element">
                     <div className="showcase-image-main">
-                        <img src={imgMedicos2} alt="Dashboard del sistema" />
+                        <img src={imgMedicos2} alt="Dashboard del sistema" width="1200" height="675" />
                     </div>
                     <div className="showcase-stats-overlay">
                         <div className="landing-showcase-stat-card">

@@ -50,11 +50,11 @@ export function CambiarPasswordPage() {
     };
 
     return (
-        <div className="password-page-container">
+        <main className="password-page-container">
             <div className="password-card">
                 <div className="logo-container-cp">
                     <div className="avatar-circle-cp">
-                        <img src={logo} alt="Logo" /> 
+                        <img src={logo} alt="Logo" width="80" height="80" /> 
                     </div>
                 </div>
 
@@ -98,6 +98,6 @@ export function CambiarPasswordPage() {
                     {t('volverAtras')}
                 </button>
             </div>
-        </div>
+        </main>
     );
 }

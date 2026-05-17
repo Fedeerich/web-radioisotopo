@@ -145,7 +145,7 @@ export function NavBar() {
 
             <div className="navbar-right">
                 <div className="notification-container">
-                    <button className="notification-btn" onClick={toggleDropdown}>
+                    <button className="notification-btn" onClick={toggleDropdown} aria-label={t('notificaciones')}>
                         <i className="fi fi-rs-bell"></i>
                         {state.notificacionesCount > 0 && (
                             <span className="notification-badge">{state.notificacionesCount}</span>

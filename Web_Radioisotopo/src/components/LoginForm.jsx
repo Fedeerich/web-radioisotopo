@@ -87,7 +87,7 @@ export function LoginForm() {
     return (
         <form className="login-form" onSubmit={manejarLogin} noValidate>
             <div className="header-container">
-                <img src={ logo } alt="Logo" className="logo" />
+                <img src={ logo } alt="Logo" className="logo" width="80" height="80" />
                 <h1>{t('bienvenidoAreaPrivada')}</h1>
                 <p>{t('accederCuentaGestion')}</p>
             </div>
@@ -116,6 +116,7 @@ export function LoginForm() {
                     type="button" 
                     className="show-password-btn"
                     onClick={() => dispatch({ type: 'TOGGLE_PASSWORD' })}
+                    aria-label={state.mostrarPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
                 >
                     {state.mostrarPassword ? (
                         <i className="fi fi-rs-crossed-eye"></i>

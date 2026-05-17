@@ -160,11 +160,11 @@ export function LandingPage() {
     }, []);
 
     return (
-        <div id="top" className="landing-wrapper">
+        <main id="top" className="landing-wrapper">
             <header className={`landing-header ${scrolled ? 'scrolled' : ''}`}>
                 <a href="#top" className="landing-logo">
                     <div className="landing-logo-icon">
-                        <img src={logo} alt="Radioisòtop" />
+                            <img src={logo} alt="Radioisòtop" width="80" height="80" />
                     </div>
                     <span>{t('radioisotopos')}</span>
                 </a>
@@ -290,10 +290,10 @@ export function LandingPage() {
                     </div>
                     <div className="collaborators-logos">
                         <div className="collaborator-logo fade-in-element stagger-1">
-                            <img src={collaborator1} alt="Colaborador 1" />
+                            <img src={collaborator1} alt="Colaborador 1" width="200" height="200" />
                         </div>
                         <div className="collaborator-logo fade-in-element stagger-2">
-                            <img src={collaborator2} alt="Colaborador 2" />
+                            <img src={collaborator2} alt="Colaborador 2" width="200" height="200" />
                         </div>
                     </div>
                 </div>
@@ -336,6 +336,6 @@ export function LandingPage() {
                     <a href="/privacidad" className="btn-cookies-learn">{t('cookiesMasInfo')}</a>
                 </div>
             </div>
-        </div>
+        </main>
     );
 }

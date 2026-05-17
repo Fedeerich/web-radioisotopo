@@ -48,7 +48,7 @@ export function SideBar() {
                 <div className="sidebar-top">
                     <div className="logo-box">
                         <div className="logo-circle">
-                            <img src={logo} alt="Logo" className="logo"/>
+                            <img src={logo} alt="Logo" className="logo" width="40" height="40" />
                         </div>
                         <span>{t('radioisotopos')}</span>
                     </div>

@@ -129,7 +129,7 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <h4 className="card-title">{t('progresoRadioterapia')}</h4>
                     <div className="atom-container">
                         <div className="atom-icon">
-                            <img src={moleculaImg} alt="Molecula" />
+                            <img src={moleculaImg} alt="Molecula" width="60" height="60" />
                         </div>
                         <p className="atom-text">{patientData.tratamiento}</p>
                     </div>

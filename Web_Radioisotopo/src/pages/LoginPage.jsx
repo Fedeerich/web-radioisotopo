@@ -13,8 +13,8 @@ import { LoginForm } from "../components/LoginForm";
 // PAGE LOGIN
 export function LoginPage() {
     return(
-        <div className="login-page-container">
+        <main className="login-page-container">
             <LoginForm /> 
-        </div>
+        </main>
     )
 }
