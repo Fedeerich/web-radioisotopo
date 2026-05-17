@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://radiasync.vercel.app/sitemap.xml
