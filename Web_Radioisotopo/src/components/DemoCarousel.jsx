@@ -2,7 +2,7 @@ export function DemoCarousel({ images, slideIndex, t, onChangeSlide, onDotClick,
     const altPrefix = type === 'web' ? t('demoWeb') : type === 'app' ? t('demoApp') : t('demoSmartwatch');
     const dotPrefix = type + '-dot-';
     return (
-        <div className="demo-card-image carousel-container" onClick={onOpenLightbox} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpenLightbox(); }}>
+        <div className="demo-card-image carousel-container" onClick={onOpenLightbox} role="button" tabIndex={0} aria-label={altPrefix} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onOpenLightbox(); }}>
             <div className="carousel-slides">
                 {images.map((img, index) => (
                     <div key={img} className={`carousel-slide ${index === slideIndex ? 'active' : ''}`}>
@@ -27,6 +27,7 @@ export function DemoCarousel({ images, slideIndex, t, onChangeSlide, onDotClick,
                         className={`carousel-dot ${index === slideIndex ? 'active' : ''}`}
                         onClick={(e) => { e.stopPropagation(); onDotClick(index); }}
                         role="button" tabIndex={0}
+                        aria-label={`${altPrefix} ${index + 1}`}
                         onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.stopPropagation(); onDotClick(index); } }}
                     ></span>
                 ))}

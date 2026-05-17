@@ -290,10 +290,10 @@ export function LandingPage() {
                     </div>
                     <div className="collaborators-logos">
                         <div className="collaborator-logo fade-in-element stagger-1">
-                            <img src={collaborator1} alt="Colaborador 1" width="200" height="200" />
+                            <img src={collaborator1} alt="Colaborador 1" width="320" height="154" />
                         </div>
                         <div className="collaborator-logo fade-in-element stagger-2">
-                            <img src={collaborator2} alt="Colaborador 2" width="200" height="200" />
+                            <img src={collaborator2} alt="Colaborador 2" width="320" height="124" />
                         </div>
                     </div>
                 </div>
