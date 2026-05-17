@@ -35,7 +35,7 @@ export function LandingHero({ t }) {
 
                 <div className="hero-visual fade-in-element stagger-3">
                     <div className="hero-image-wrapper">
-                        <img src={ imgMedicos } alt="Professionals mèdics" width="1200" height="675" />
+                        <img src={ imgMedicos } alt="Professionals mèdics" width="900" height="600" />
                         <div className="hero-image-overlay"></div>
                     </div>
                     <div className="hero-floating-card hero-floating-card-1">
@@ -250,7 +250,7 @@ export function LandingShowcase({ t }) {
                 </div>
                 <div className="showcase-visual fade-in-element">
                     <div className="showcase-image-main">
-                        <img src={imgMedicos2} alt="Dashboard del sistema" width="1200" height="675" />
+                        <img src={imgMedicos2} alt="Dashboard del sistema" width="900" height="600" />
                     </div>
                     <div className="showcase-stats-overlay">
                         <div className="landing-showcase-stat-card">
