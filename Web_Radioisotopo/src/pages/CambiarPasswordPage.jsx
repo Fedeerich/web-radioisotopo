@@ -18,7 +18,7 @@ import { useTranslation } from "../hooks/useTranslation";
 import { validatePassword } from "../utils/validations";
 
 // PAGE CAMBIAR PASSWORD
-export function CambiarPasswordPage() {
+export default function CambiarPasswordPage() {
     const [passwords, setPasswords] = useState({ actual: "", nueva: "", confirmar: "" });
     const [estado, setEstado] = useState({ cargando: false, error: "", exito: "" });
     const navigate = useNavigate();

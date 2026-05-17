@@ -87,7 +87,7 @@ export function LoginForm() {
     return (
         <form className="login-form" onSubmit={manejarLogin} noValidate>
             <div className="header-container">
-                <img src={ logo } alt="Logo" className="logo" width="80" height="80" />
+                <img src={ logo } alt="Logo" className="logo" width="160" height="160" />
                 <h1>{t('bienvenidoAreaPrivada')}</h1>
                 <p>{t('accederCuentaGestion')}</p>
             </div>

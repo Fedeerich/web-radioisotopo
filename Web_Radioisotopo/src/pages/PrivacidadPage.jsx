@@ -13,7 +13,7 @@ import { useTranslation } from '../hooks/useTranslation';
 import '../styles/Privacidad.css';
 
 // PAGE PRIVACIDAD
-export function PrivacidadPage() {
+export default function PrivacidadPage() {
     const { t } = useTranslation();
 
     return (

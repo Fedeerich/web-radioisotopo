@@ -19,7 +19,7 @@ import { GestionUsuarioPage } from './pages/GestionUsuarioPage';
 import { AuditoriaPage } from './pages/AuditoriaPage';
 
 // PAGINA PRINCIPAL APP
-export function App() {
+export default function App() {
     const location = useLocation();
     const navigate = useNavigate();
 

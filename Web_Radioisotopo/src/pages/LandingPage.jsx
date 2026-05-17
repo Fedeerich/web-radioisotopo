@@ -77,7 +77,7 @@ function reducer(state, action) {
     }
 }
 
-export function LandingPage() {
+export default function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
     const [showLangMenu, setShowLangMenu] = useState(false);
     const { t, idioma, changeLanguage } = useTranslation();

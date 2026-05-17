@@ -13,34 +13,32 @@ import { StrictMode, Suspense, lazy } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from "./context/AuthContext";
+import LandingPage from './pages/LandingPage';
+import LoginPage from './pages/LoginPage';
+import CambiarPasswordPage from './pages/CambiarPasswordPage';
+import PrivacidadPage from './pages/PrivacidadPage';
 
-const LandingPage = lazy(() => import('./pages/LandingPage'));
-const LoginPage = lazy(() => import('./pages/LoginPage'));
 const App = lazy(() => import('./App'));
-const CambiarPasswordPage = lazy(() => import('./pages/CambiarPasswordPage'));
-const PrivacidadPage = lazy(() => import('./pages/PrivacidadPage'));
 
 // FUNCIÓN ROOT
 function Root() {
   return (
     <AuthProvider>
       <BrowserRouter>
-        <Suspense fallback={<div className="loading-screen">Cargando…</div>}>
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/login-page" element={<LoginPage />} />
-            
-            <Route path="/main-page" element={<App />} />
-            <Route path="/paciente" element={<App />} />
-            <Route path="/configuracion" element={<App />} />
-            <Route path="/admin" element={<App />} /> 
-            <Route path="/auditoria" element={<App />} />
-            <Route path="/cambiar-password" element={<CambiarPasswordPage />} />
-            <Route path="/privacidad" element={<PrivacidadPage />} />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/login-page" element={<LoginPage />} />
+          
+          <Route path="/main-page" element={<Suspense fallback={<div className="loading-screen">Cargando…</div>}><App /></Suspense>} />
+          <Route path="/paciente" element={<Suspense fallback={<div className="loading-screen">Cargando…</div>}><App /></Suspense>} />
+          <Route path="/configuracion" element={<Suspense fallback={<div className="loading-screen">Cargando…</div>}><App /></Suspense>} />
+          <Route path="/admin" element={<Suspense fallback={<div className="loading-screen">Cargando…</div>}><App /></Suspense>} /> 
+          <Route path="/auditoria" element={<Suspense fallback={<div className="loading-screen">Cargando…</div>}><App /></Suspense>} />
+          <Route path="/cambiar-password" element={<CambiarPasswordPage />} />
+          <Route path="/privacidad" element={<PrivacidadPage />} />
 
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </Suspense>
+          <Route path="*" element={<Navigate to="/" />} />
+        </Routes>
       </BrowserRouter>
     </AuthProvider>
   );

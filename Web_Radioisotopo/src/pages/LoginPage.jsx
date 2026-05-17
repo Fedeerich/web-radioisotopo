@@ -11,7 +11,7 @@ UPDATED:       [23/04/2026]
 import { LoginForm } from "../components/LoginForm";
 
 // PAGE LOGIN
-export function LoginPage() {
+export default function LoginPage() {
     return(
         <main className="login-page-container">
             <LoginForm /> 
