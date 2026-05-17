@@ -246,8 +246,26 @@ The application will be available at `http://localhost:5173` (Vite default port)
 
 ## Authors
 
-- Marcos
-- Wael
+- **Marcos Gongora Carriedo**
+- **Wael Zerrouk El Kasri**
+
+---
+
+## Related Repositories
+
+| Project | Repository |
+|---|---|
+| Mobile App (this project) | [app-radioisotopo](https://github.com/Fedeerich/app-radioisotopo) |
+| Backend API (Node.js) | [web-radioisotopo](https://github.com/Fedeerich/web-radioisotopo) |
+| API Service (Java) | [RadioisotopsAPI](https://github.com/Waeeeell/RadioisotopsAPI) |
+| Smartwatch App (Wear OS) | [WearOs_Radioisotops](https://github.com/Waeeeell/WearOs_Radiois-tops.git) |
+
+---
+
+## Documentation & Media
+
+- **Project Report (Google Docs):** [View Document](https://docs.google.com/document/d/1R-SAZtx4eSSWveYiFlreRSbVty9Dd-G1S0sTAU66yrk/edit?usp=sharing)
+- **Demo Video:** *(link pending)*
 
 ## Version
 
