@@ -11,20 +11,20 @@ UPDATED:       [06/05/2026]
     --landing-bg: #f4f7f9;
     --landing-bg-card: #ffffff;
     --landing-bg-light: #ffffff;
-    --landing-primary: #2b6cb0;
-    --landing-primary-hover: #1a4d7a;
+    --landing-primary: #1e56a0;
+    --landing-primary-hover: #153d73;
     --landing-secondary: #4299e1;
-    --landing-accent: #38a169;
-    --landing-accent-secondary: #7c3aed;
-    --landing-accent-tertiary: #0891b2;
+    --landing-accent: #2f855a;
+    --landing-accent-secondary: #6d28d9;
+    --landing-accent-tertiary: #0e7490;
     --landing-text: #1a202c;
     --landing-text-secondary: #4a5568;
     --landing-text-muted: #5a6878;
     --landing-border: #e2e8f0;
     --landing-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     --landing-shadow-lg: 0 10px 40px rgba(0, 0, 0, 0.12);
-    --landing-gradient: linear-gradient(135deg, #2b6cb0 0%, #4299e1 100%);
-    --landing-gradient-soft: linear-gradient(135deg, #2b6cb0 0%, #38a169 100%);
+    --landing-gradient: linear-gradient(135deg, #1e56a0 0%, #4299e1 100%);
+    --landing-gradient-soft: linear-gradient(135deg, #1e56a0 0%, #2f855a 100%);
 }
 
 .landing-wrapper * {
@@ -284,8 +284,8 @@ html {
     right: 0;
     bottom: 0;
     background-image: 
-        linear-gradient(rgba(43, 108, 176, 0.05) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(43, 108, 176, 0.05) 1px, transparent 1px);
+        linear-gradient(rgba(30, 86, 160, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(30, 86, 160, 0.05) 1px, transparent 1px);
     background-size: 50px 50px;
     pointer-events: none;
 }
@@ -362,7 +362,7 @@ html {
     display: inline-flex;
     align-items: center;
     gap: 8px;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     color: var(--landing-primary);
     padding: 8px 16px;
     border-radius: 50px;
@@ -431,7 +431,7 @@ html {
 .btn-primary:hover {
     background: var(--landing-primary-hover);
     transform: translateY(-1px);
-    box-shadow: 0 4px 15px rgba(43, 108, 176, 0.25);
+    box-shadow: 0 4px 15px rgba(30, 86, 160, 0.25);
 }
 
 .btn-secondary {
@@ -522,7 +522,7 @@ html {
 .floating-card-icon {
     width: 48px;
     height: 48px;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -603,7 +603,7 @@ html {
 .landing-stat-icon {
     width: 50px;
     height: 50px;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -630,7 +630,7 @@ html {
 
 .section-badge {
     display: inline-block;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     color: var(--landing-primary);
     padding: 8px 20px;
     border-radius: 50px;
@@ -679,7 +679,7 @@ html {
 .feature-icon {
     width: 64px;
     height: 64px;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     border-radius: 16px;
     display: flex;
     align-items: center;
@@ -727,8 +727,8 @@ html {
 
 .showcase-tag {
     display: inline-block;
-    background: rgba(56, 161, 105, 0.1);
-    color: #276749;
+    background: rgba(47, 133, 90, 0.1);
+    color: #1e5a3a;
     padding: 8px 16px;
     border-radius: 50px;
     font-size: 0.85rem;
@@ -872,7 +872,7 @@ html {
 .btn-cta-primary:hover {
     background: var(--landing-primary-hover);
     transform: translateY(-2px);
-    box-shadow: 0 10px 30px rgba(43, 108, 176, 0.3);
+    box-shadow: 0 10px 30px rgba(30, 86, 160, 0.3);
 }
 
 .btn-cta-secondary {
@@ -1047,7 +1047,7 @@ html {
 .feature-icon {
     width: 64px;
     height: 64px;
-    background: rgba(43, 108, 176, 0.1);
+    background: rgba(30, 86, 160, 0.1);
     border-radius: 16px;
     display: flex;
     align-items: center;
