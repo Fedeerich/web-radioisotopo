@@ -267,6 +267,6 @@ The application will be available at `http://localhost:5173` (Vite default port)
 - **Project Report (Google Docs):** [View Document](https://docs.google.com/document/d/1R-SAZtx4eSSWveYiFlreRSbVty9Dd-G1S0sTAU66yrk/edit?usp=sharing)
 - **Demo Video:** *(link pending)*
 
-## Version
+## License
 
-1.0.0 (Updated: May 2026)
+© 2026 RadiaSync. All rights reserved.
