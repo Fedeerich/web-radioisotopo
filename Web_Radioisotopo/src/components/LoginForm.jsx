@@ -1,35 +1,41 @@
-/*
-================================================================================
-PROJECT:       [RADIOISOTOPO]
-VERSION:       1.0.0
-DESCRIPTION:   [Componente LoginForm]
-AUTHOR:        [Marcos, Wael]
-UPDATED:       [25/04/2026]
-================================================================================
-*/
-
-// IMPORTS
 import "../styles/Login.css";
 import logo from "../assets/logo.webp"; 
 import { loginService } from "../services/api";
-import { useState, useEffect } from "react"; 
+import { useReducer, useEffect } from "react"; 
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { useTranslation } from "../hooks/useTranslation";
 import { validateEmail, validatePassword } from "../utils/validations"; 
 
-// COMPONENTE LOGIN FORM
+const initialState = {
+    mostrarPassword: false,
+    email: "",
+    password: "",
+    recordarme: false,
+    mensajeError: "",
+    cargando: false,
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_FIELD':
+            return { ...state, [action.field]: action.value };
+        case 'SET_ERROR':
+            return { ...state, mensajeError: action.message };
+        case 'SET_CARGANDO':
+            return { ...state, cargando: action.cargando };
+        case 'TOGGLE_PASSWORD':
+            return { ...state, mostrarPassword: !state.mostrarPassword };
+        default:
+            return state;
+    }
+}
+
 export function LoginForm() {
     const { login } = useAuth();
     const navigate = useNavigate();
     const { t } = useTranslation();
-
-    const [mostrarPassword, setMostrarPassword] = useState(false);
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [recordarme, setRecordarme] = useState(false);
-    const [mensajeError, setMensajeError] = useState("");
-    const [cargando, setCargando] = useState(false); 
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -41,24 +47,24 @@ export function LoginForm() {
 
     const manejarLogin = async (e) => {
         e.preventDefault();
-        setMensajeError(""); 
+        dispatch({ type: 'SET_ERROR', message: "" });
 
-        if (!validateEmail(email)) {
-            setMensajeError(t('errorCorreoInvalido'));
+        if (!validateEmail(state.email)) {
+            dispatch({ type: 'SET_ERROR', message: t('errorCorreoInvalido') });
             return;
         }
 
-        if (!validatePassword(password)) {
-            setMensajeError(t('errorContrasenaInvalida'));
+        if (!validatePassword(state.password)) {
+            dispatch({ type: 'SET_ERROR', message: t('errorContrasenaInvalida') });
             return;
         }
 
-        setCargando(true);
+        dispatch({ type: 'SET_CARGANDO', cargando: true });
 
         try {
-            const respuesta = await loginService.iniciarSesion(email, password);
+            const respuesta = await loginService.iniciarSesion(state.email, state.password);
             
-            if (recordarme) {
+            if (state.recordarme) {
                 localStorage.setItem("mantenerSesion", "true");
             } else {
                 localStorage.removeItem("mantenerSesion");
@@ -72,9 +78,9 @@ export function LoginForm() {
                 navigate("/main-page");
             }
         } catch (error) {
-            setMensajeError(error.message); 
+            dispatch({ type: 'SET_ERROR', message: error.message });
         } finally {
-            setCargando(false);
+            dispatch({ type: 'SET_CARGANDO', cargando: false });
         }
     };
 
@@ -89,29 +95,29 @@ export function LoginForm() {
             <input 
                 id="email" 
                 type="email" 
-                value={ email }
-                onChange={(e) => setEmail(e.target.value)}
+                value={ state.email }
+                onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'email', value: e.target.value })}
                 placeholder={t('correoElectronico')} 
                 required 
-                className={ mensajeError === t('errorCorreoInvalido') ? "input-error" : "" }
+                className={ state.mensajeError === t('errorCorreoInvalido') ? "input-error" : "" }
             />
             
             <div className="passDiv">
                 <input 
                     id="passId" 
-                    type={mostrarPassword ? "text" : "password"} 
-                    value={ password }
-                    onChange={(e) => setPassword(e.target.value)}
+                    type={state.mostrarPassword ? "text" : "password"} 
+                    value={ state.password }
+                    onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'password', value: e.target.value })}
                     placeholder={t('contrasena')} 
                     required 
-                    className={ mensajeError === t('errorContrasenaInvalida') ? "input-error" : "" }
+                    className={ state.mensajeError === t('errorContrasenaInvalida') ? "input-error" : "" }
                 />
                 <button 
                     type="button" 
                     className="show-password-btn"
-                    onClick={() => setMostrarPassword(!mostrarPassword)}
+                    onClick={() => dispatch({ type: 'TOGGLE_PASSWORD' })}
                 >
-                    {mostrarPassword ? (
+                    {state.mostrarPassword ? (
                         <i className="fi fi-rs-crossed-eye"></i>
                     ) : (
                         <i className="fi fi-rs-eye"></i>
@@ -123,8 +129,8 @@ export function LoginForm() {
                 <label className="remember-me">
                     <input 
                         type="checkbox" 
-                        checked={recordarme}
-                        onChange={(e) => setRecordarme(e.target.checked)}
+                        checked={state.recordarme}
+                        onChange={(e) => dispatch({ type: 'SET_FIELD', field: 'recordarme', value: e.target.checked })}
                     />
                     <span>{t('recordarme')}</span>
                 </label>
@@ -132,19 +138,21 @@ export function LoginForm() {
                     className="forgot-password" 
                     style={{ cursor: 'pointer' }}
                     onClick={() => navigate('/cambiar-password')}
+                    role="button" tabIndex={0}
+                    onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') navigate('/cambiar-password'); }}
                 >
                     {t('quieresCambiarContrasena')}
                 </span>
             </div>
 
-            {mensajeError && (
+            {state.mensajeError && (
                 <span className="error-texto-final">
-                    {mensajeError}
+                    {state.mensajeError}
                 </span>
             )}
 
-            <button type="submit" className="submit-btn" disabled={cargando}>
-                {cargando ? <span className="spinner"></span> : t('iniciarSesion')}
+            <button type="submit" className="submit-btn" disabled={state.cargando}>
+                {state.cargando ? <span className="spinner"></span> : t('iniciarSesion')}
             </button>
         </form>
     );

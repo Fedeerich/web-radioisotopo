@@ -39,25 +39,25 @@ export function GestionUsuarioPage() {
     const [errores, setErrores] = useState({});
 
     const handleChangeUser = (e) => {
-        setFormData({
-            ...formData,
+        setFormData(prev => ({
+            ...prev,
             [e.target.name]: e.target.value
-        });
+        }));
         if (errores[e.target.name]) {
-            setErrores({ ...errores, [e.target.name]: false });
+            setErrores(prev => ({ ...prev, [e.target.name]: false }));
         }
     };
 
     const handleChangeDoctor = (e) => {
-        setFormData({
-            ...formData,
+        setFormData(prev => ({
+            ...prev,
             doctor: {
-                ...formData.doctor,
+                ...prev.doctor,
                 [e.target.name]: e.target.value
             }
-        });
+        }));
         if (errores[e.target.name]) {
-            setErrores({ ...errores, [e.target.name]: false });
+            setErrores(prev => ({ ...prev, [e.target.name]: false }));
         }
     };
 
@@ -122,8 +122,9 @@ export function GestionUsuarioPage() {
                 <h3 className="section-title">Datos de Acceso (Usuario)</h3>
                 <div className="form-grid">
                     <div className="input-group">
-                        <label>Nombre Completo</label>
+                        <label htmlFor="nombreCompleto">Nombre Completo</label>
                         <input 
+                            id="nombreCompleto"
                             type="text" 
                             name="nombreCompleto"
                             value={formData.nombreCompleto} 
@@ -135,8 +136,9 @@ export function GestionUsuarioPage() {
                     </div>
                     
                     <div className="input-group">
-                        <label>Correo Electrónico Corporativo</label>
+                        <label htmlFor="email">Correo Electrónico Corporativo</label>
                         <input 
+                            id="email"
                             type="email" 
                             name="email"
                             value={formData.email} 
@@ -148,8 +150,9 @@ export function GestionUsuarioPage() {
                     </div>
 
                     <div className="input-group">
-                        <label>Contraseña Temporal</label>
+                        <label htmlFor="password">Contraseña Temporal</label>
                         <input 
+                            id="password"
                             type="password" 
                             name="password"
                             value={formData.password} 
@@ -161,8 +164,9 @@ export function GestionUsuarioPage() {
                     </div>
 
                     <div className="input-group">
-                        <label>Hospital de Referencia</label>
+                        <label htmlFor="hospitalRef">Hospital de Referencia</label>
                         <input 
+                            id="hospitalRef"
                             type="text" 
                             name="hospitalRef"
                             value={formData.hospitalRef} 
@@ -179,15 +183,16 @@ export function GestionUsuarioPage() {
                 <h3 className="section-title">Datos Profesionales (Médico)</h3>
                 <div className="form-grid">
                     <div className="input-group">
-                        <label>Especialidad</label>
+                        <label htmlFor="especialidad">Especialidad</label>
                         <select 
+                            id="especialidad"
                             name="especialidad" 
                             value={formData.doctor.especialidad} 
                             onChange={handleChangeDoctor}
                             required
                             className={errores.especialidad ? "input-error" : ""}
                         >
-                            <option value="">Selecciona una especialidad...</option>
+                            <option value="">Selecciona una especialidad&hellip;</option>
                             <option value="Oncología Radioterápica">Oncología Radioterápica</option>
                             <option value="Medicina Nuclear">Medicina Nuclear</option>
                             <option value="Radiología">Radiología</option>
@@ -196,8 +201,9 @@ export function GestionUsuarioPage() {
                     </div>
 
                     <div className="input-group">
-                        <label>Número de Colegiado</label>
+                        <label htmlFor="colegiadoNum">Número de Colegiado</label>
                         <input 
+                            id="colegiadoNum"
                             type="text" 
                             name="colegiadoNum"
                             value={formData.doctor.colegiadoNum} 

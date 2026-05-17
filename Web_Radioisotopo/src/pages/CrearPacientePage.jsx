@@ -19,6 +19,8 @@ import { validateName, validateCIP, validateDosis } from "../utils/validations";
 
 registerLocale("es", es);
 
+const FAR_FUTURE_DATE = new Date('2099-12-31');
+
 import "react-datepicker/dist/react-datepicker.css";
 import "../styles/CrearPaciente.css";
 
@@ -43,10 +45,10 @@ export function CrearPacientePage({ alVolver }) {
     const [conectando, setConectando] = useState(false);
     const [errores, setErrores] = useState({});
 
-    const handleChange = (e) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    const manejarCambioFormulario = (e) => {
+        setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
         if (errores[e.target.name]) {
-            setErrores({ ...errores, [e.target.name]: false });
+            setErrores(prev => ({ ...prev, [e.target.name]: false }));
         }
     };
 
@@ -60,7 +62,7 @@ export function CrearPacientePage({ alVolver }) {
                 optionalServices: ['device_information']
             });
 
-            setFormData({ ...formData, watchId: device.id });
+            setFormData(prev => ({ ...prev, watchId: device.id }));
             setMensaje({ texto: `${t('relojVinculado')}: ${device.name || 'Galaxy Watch'}`, tipo: "exito" });
 
         } catch (error) {
@@ -143,7 +145,7 @@ export function CrearPacientePage({ alVolver }) {
                                 type="text" 
                                 name="nombreCompleto" 
                                 value={formData.nombreCompleto} 
-                                onChange={handleChange} 
+                                onChange={manejarCambioFormulario} 
                                 placeholder={t('ejemploNombre')} 
                                 className={`form-input ${errores.nombreCompleto ? 'input-error' : ''}`} 
                             />
@@ -155,7 +157,7 @@ export function CrearPacientePage({ alVolver }) {
                                     type="text" 
                                     name="cip" 
                                     value={formData.cip} 
-                                    onChange={handleChange} 
+                                    onChange={manejarCambioFormulario} 
                                     placeholder={t('ejemploCIP')} 
                                     className={`form-input ${errores.cip ? 'input-error' : ''}`} 
                                 />
@@ -164,19 +166,19 @@ export function CrearPacientePage({ alVolver }) {
                                 <label>{t('dataNaixement')}</label>
                                 <DatePicker 
                                     selected={formData.fechaNacimiento} 
-                                    onChange={(date) => setFormData({...formData, fechaNacimiento: date})} 
+                                    onChange={(date) => setFormData(prev => ({...prev, fechaNacimiento: date}))} 
                                     dateFormat="dd/MM/yyyy" 
                                     className="form-input custom-datepicker" 
                                     showYearDropdown 
                                     dropdownMode="select" 
-                                    maxDate={new Date()} 
+                                    maxDate={FAR_FUTURE_DATE} 
                                     locale="es" 
                                 />
                             </div>
                         </div>
                         <div className="form-group">
                             <label>{t('hospitalReferencia')}</label>
-                            <select name="hospitalReferencia" value={formData.hospitalReferencia} onChange={handleChange} className="form-input select-styled">
+                            <select name="hospitalReferencia" value={formData.hospitalReferencia} onChange={manejarCambioFormulario} className="form-input select-styled">
                                 <option value="Hospital del Mar">Hospital del Mar</option>
                                 <option value="Hospital Clínic">Hospital Clínic</option>
                                 <option value="Hospital Vall d'Hebron">Hospital Vall d'Hebron</option>
@@ -194,7 +196,7 @@ export function CrearPacientePage({ alVolver }) {
                             <select 
                                 name="radioisotopo" 
                                 value={formData.radioisotopo} 
-                                onChange={handleChange} 
+                                onChange={manejarCambioFormulario} 
                                 className={`form-input select-styled ${errores.radioisotopo ? 'input-error' : ''}`}
                             >
                                 <option value="">{t('seleccionaIsotopo')}</option>
@@ -210,14 +212,14 @@ export function CrearPacientePage({ alVolver }) {
                                     type="text"
                                     name="dosis" 
                                     value={formData.dosis} 
-                                    onChange={handleChange} 
+                                    onChange={manejarCambioFormulario} 
                                     placeholder={t('ejemploDosis')} 
                                     className={`form-input ${errores.dosis ? 'input-error' : ''}`} 
                                 />
                             </div>
                             <div className="form-group half">
                                 <label>{t('unitats')}</label>
-                                <select name="unidades" value={formData.unidades} onChange={handleChange} className="form-input select-styled">
+                                <select name="unidades" value={formData.unidades} onChange={manejarCambioFormulario} className="form-input select-styled">
                                     <option value="MBq">{t('megaBecquerels')}</option>
                                     <option value="mCi">{t('milicurio')}</option>
                                     <option value="Ci">{t('curis')}</option>
@@ -228,7 +230,7 @@ export function CrearPacientePage({ alVolver }) {
                             <label>{t('dataHoraAdministracio')}</label>
                             <DatePicker 
                                 selected={formData.fechaAdministracion} 
-                                onChange={(date) => setFormData({...formData, fechaAdministracion: date})} 
+                                onChange={(date) => setFormData(prev => ({...prev, fechaAdministracion: date}))} 
                                 showTimeSelect 
                                 timeFormat="HH:mm" 
                                 timeIntervals={15} 

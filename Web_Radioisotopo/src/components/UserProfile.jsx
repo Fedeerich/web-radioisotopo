@@ -1,76 +1,33 @@
 /*
-================================================================================
+===============================================================================
 PROJECT:       [RADIOISOTOPO]
 VERSION:       1.0.0
-DESCRIPTION:   [Componente User Profile]
+DESCRIPTION:   [Componente User Profile - Avatar en NavBar]
 AUTHOR:        [Marcos, Wael]
 UPDATED:       [23/04/2026]
-================================================================================
+===============================================================================
 */
 
 // IMPORTS
-import React, { useState, useRef } from 'react';
+import React from 'react';
 
 // COMPONENTE USERPROFILE
-const UserProfile = ({ userId }) => { 
-  const [userAvatar, setUserAvatar] = useState(null);
-  const [isUploading, setIsUploading] = useState(false);
-  const fileInputRef = useRef(null);
-
-  const handleAvatarClick = () => {
-    fileInputRef.current.click();
-  };
-
-  const handleFileChange = async (event) => {
-    const file = event.target.files[0];
-    if (!file) return;
-
-    const previewUrl = URL.createObjectURL(file);
-    setUserAvatar(previewUrl);
-
-    const formData = new FormData();
-    formData.append('file', file);
-
-    try {
-      setIsUploading(true);
-      const response = await fetch(`http://localhost:8080/api/users/${userId}/upload-avatar`, {
-        method: 'POST',
-        body: formData,
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log("Imagen guardada en el servidor:", data.url);
-        alert("¡Imagen de perfil actualizada!");
-      } else {
-        alert("Error al subir la imagen");
-      }
-    } catch (error) {
-      console.error("Error de conexión:", error);
-    } finally {
-      setIsUploading(false);
-    }
-  };
+const UserProfile = ({ avatarUrl, nombre, onClick, isUploading }) => {
+  if (!onClick) return null;
 
   return (
-    <div className="profile-section">
-      <div className="avatar-circle" onClick={handleAvatarClick} style={{ cursor: 'pointer', position: 'relative' }}>
-        {userAvatar ? (
-          <img src={userAvatar} alt="Profile" style={{ width: 50, height: 50, borderRadius: '50%' }} />
+    <div className="avatar-edit-container" onClick={onClick} role="button" tabIndex={0} onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') onClick(); }}>
+      <div className="avatar-large">
+        {avatarUrl ? (
+          <img src={avatarUrl} alt="" />
         ) : (
-          <div className="initials">AD</div>
+          <span>{nombre ? nombre.substring(0, 2).toUpperCase() : "??"}</span>
         )}
-        
-        {isUploading && <div className="loader">Cargando...</div>}
+        <div className="avatar-overlay"><i className="fi fi-rs-camera"></i></div>
       </div>
-
-      <input 
-        type="file" 
-        ref={fileInputRef} 
-        onChange={handleFileChange} 
-        style={{ display: 'none' }} 
-        accept="image/*" 
-      />
+      {isUploading && <span className="uploading-text">Cargando&hellip;</span>}
     </div>
   );
 };
+
+export default UserProfile;

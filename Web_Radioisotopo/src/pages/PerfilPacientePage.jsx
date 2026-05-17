@@ -70,6 +70,13 @@ export function PerfilPacientePage({ paciente, alVolver }) {
 
     const tieneReloj = paciente?.watchId && paciente.watchId !== "null" && paciente.watchId.trim() !== "";
 
+    const mensajesConFecha = mensajes.map(msg => ({
+        ...msg,
+        fechaFormateada: msg.fechaEnvio
+            ? new Date(msg.fechaEnvio).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'})
+            : ''
+    }));
+
     return (
         <div className="detalle-container">
             <div className="patient-header">
@@ -203,15 +210,15 @@ export function PerfilPacientePage({ paciente, alVolver }) {
                     <div className="card chat-card">
                         <h4 className="card-title">{t('centroComunicacion')}</h4>
                         <div className="message-list">
-                            {mensajes.length > 0 ? mensajes.map((msg, i) => (
-                                <div className="msg-item" key={i}>
+                            {mensajesConFecha.length > 0 ? mensajesConFecha.map((msg, i) => (
+                                <div className="msg-item" key={msg.id || msg._id || i}>
                                     <div className="msg-icon"><i className="fi fi-rs-envelope"></i></div>
                                     <div className="msg-content">
                                         <div className="msg-left">
                                             <strong style={{fontSize: '1.05rem', display: 'block'}}>{msg.asunto}</strong>
                                             <span className="msg-subject" style={{color: '#555'}}>{msg.mensaje}</span>
                                         </div>
-                                        <small className="msg-preview">{msg.fechaEnvio ? new Date(msg.fechaEnvio).toLocaleString([], {day: '2-digit', month: '2-digit', hour: '2-digit', minute: '2-digit'}) : ''}</small>
+                                        <small className="msg-preview">{msg.fechaFormateada}</small>
                                     </div>
                                 </div>
                             )) : (

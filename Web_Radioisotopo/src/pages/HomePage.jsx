@@ -1,23 +1,13 @@
-/*
-================================================================================
-PROJECT:       [RADIOISOTOPO]
-VERSION:       1.0.0
-DESCRIPTION:   [Página principal despues de iniciar sesion]
-AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
-================================================================================
-*/
-
-// IMPORTS
 import { useState, useEffect } from "react";
 import { loginService } from "../services/api";
 import "../styles/Home.css";
 
-// PAGE HOME
 export function HomePage({ alSeleccionarPaciente }) {
-    const [totalPacientes, setTotalPacientes] = useState("...");
-    const [alertasHoy, setAlertasHoy] = useState(0);
-    const [actividadReciente, setActividadReciente] = useState([]);
+    const [dashboardData, setDashboardData] = useState({
+        totalPacientes: "...",
+        alertasHoy: 0,
+        actividadReciente: [],
+    });
 
     const formatearTiempo = (fecha) => {
         const ahora = new Date();
@@ -34,14 +24,12 @@ export function HomePage({ alSeleccionarPaciente }) {
     useEffect(() => {
         const cargarDatosHome = async () => {
             try {
-                const total = await loginService.obtenerTotalPacientes();
-                setTotalPacientes(total);
-
-                const alertas = await loginService.obtenerAlertasHoy();
-                setAlertasHoy(alertas);
-
-                const recientes = await loginService.obtenerPacientesRecientes();
-                setActividadReciente(recientes);
+                const [total, alertas, recientes] = await Promise.all([
+                    loginService.obtenerTotalPacientes(),
+                    loginService.obtenerAlertasHoy(),
+                    loginService.obtenerPacientesRecientes(),
+                ]);
+                setDashboardData({ totalPacientes: total, alertasHoy: alertas, actividadReciente: recientes });
             } catch (error) {
                 console.error("Error cargando datos de la Home:", error);
             }
@@ -65,7 +53,7 @@ export function HomePage({ alSeleccionarPaciente }) {
                         <i className="fi fi-rs-users"></i>
                     </div>
                     <div className="stat-details">
-                        <span className="stat-number">{totalPacientes}</span>
+                        <span className="stat-number">{dashboardData.totalPacientes}</span>
                         <span className="stat-label">Pacientes Activos</span>
                     </div>
                 </div>
@@ -75,7 +63,7 @@ export function HomePage({ alSeleccionarPaciente }) {
                         <i className="fi fi-rs-exclamation"></i>
                     </div>
                     <div className="stat-details">
-                        <span className="stat-number">{alertasHoy}</span>
+                        <span className="stat-number">{dashboardData.alertasHoy}</span>
                         <span className="stat-label">Alertas de hoy</span>
                     </div>
                 </div>
@@ -97,15 +85,17 @@ export function HomePage({ alSeleccionarPaciente }) {
                 </div>
                 
                 <div className="activity-list">
-                    {actividadReciente.length === 0 ? (
+                    {dashboardData.actividadReciente.length === 0 ? (
                         <p className="notif-empty" style={{padding: '20px'}}>No has revisado pacientes recientemente.</p>
                     ) : (
-                        actividadReciente.map((act, index) => (
+                        dashboardData.actividadReciente.map((act) => (
                             <div 
-                                key={index} 
+                                key={act.nombre + act.fecha} 
                                 className="activity-item" 
                                 style={{cursor: 'pointer'}}
                                 onClick={() => alSeleccionarPaciente(act)}
+                                role="button" tabIndex={0}
+                                onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') alSeleccionarPaciente(act); }}
                             >
                                 <div className="status-dot blue-dot"></div>
                                 <div className="patient-info">

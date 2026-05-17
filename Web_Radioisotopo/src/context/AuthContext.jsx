@@ -9,7 +9,7 @@ UPDATED:       [23/04/2026]
 */
 
 // IMPORT
-import { createContext, useState, useContext, useEffect } from "react";
+import { createContext, useState, useEffect, use } from "react";
 import { loginService } from "../services/api";
 
 // CONTEXT AUTCH
@@ -50,15 +50,11 @@ export const AuthProvider = ({ children }) => {
     setUsuario(prev => ({ ...prev, ...nuevosDatos }));
   };
 
-  if (cargando) {
-    return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        <p>Verificando credenciales clínicas...</p>
-      </div>
-    );
-  }
-
-  return (
+  return cargando ? (
+    <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <p>Verificando credenciales cl&iacute;nicas&hellip;</p>
+    </div>
+  ) : (
     <AuthContext.Provider value={{ usuario, login, logout, actualizarUsuario, isAuthenticated: !!usuario }}>
       {children}
     </AuthContext.Provider>
@@ -66,7 +62,7 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => {
-  const context = useContext(AuthContext);
+  const context = use(AuthContext);
   if (!context) {
     throw new Error("useAuth debe usarse dentro de un AuthProvider");
   }

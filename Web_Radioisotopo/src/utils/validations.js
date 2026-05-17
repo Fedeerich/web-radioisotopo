@@ -27,19 +27,19 @@ export const validatePassword = (password) => {
 }
 
 // VALIDATE DATE (Adaptado a tu diseño visual: Formato DD/MM/AAAA)
-export const validateDate = (date) => {
+const validateDate = (date) => {
     const re = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4}$/;
     return re.test(date);
 }
 
 // VALIDATE DATETIME (Formato DD/MM/AAAA HH:MM para la administración del isótopo)
-export const validateDateTime = (datetime) => {
+const validateDateTime = (datetime) => {
     const re = /^(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/\d{4} ([01][0-9]|2[0-3]):[0-5][0-9]$/;
     return re.test(datetime);
 }
 
 // VALIDATE URL (Soporta http/https, localhost, dominios estándar, puertos y rutas complejas)
-export const validateUrl = (url) => {
+const validateUrl = (url) => {
     const re = /^https?:\/\/(localhost|((www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}))(:\d+)?\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)$/;
     return re.test(url);
 }

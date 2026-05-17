@@ -1,18 +1,5 @@
-/*
-================================================================================
-PROJECT:       [RADIOISOTOPO]
-VERSION:       1.0.0
-DESCRIPTION:   [Página principal que puedes ver si no tienes cuenta]
-AUTHOR:        [Marcos, Wael]
-UPDATED:       [06/05/2026]
-================================================================================
-*/
-
-// IMPORTS
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useReducer } from 'react';
 import '../styles/Landing.css';
-import imgMedicos from '../assets/images/medicos.webp';
-import imgMedicos2 from '../assets/images/medicos2.webp';
 import logo from '../assets/logo.webp';
 import imgInicioWeb from '../assets/images-demo/inicio-web.webp';
 import imgAltaPacientesWeb from '../assets/images-demo/alta-pacientes-web.webp';
@@ -30,98 +17,107 @@ import imgSmartwatchFourth from '../assets/images-demo/fourth-smartwatch.webp';
 import imgSmartwatchFifht from '../assets/images-demo/fifht-smartwatch.webp';
 import collaborator1 from '../assets/collaborators/collaborator1.webp';
 import collaborator2 from '../assets/collaborators/collaborator2.webp';
-import { AtomIcon, UsersIcon, ShieldIcon, ChartIcon, BellIcon, DocumentIcon, CheckIcon, ArrowIcon, LockIcon } from '../constants/iconosLanding';
 import { useTranslation } from '../hooks/useTranslation';
 import { getCookie, setCookie } from '../utils/cookies';
+import { DemoCarousel } from '../components/DemoCarousel';
+import { LightboxModal } from '../components/LightboxModal';
+import { LandingHero, LandingFeatures, LandingShowcase, LandingStats, LandingCTA } from '../components/LandingSections';
 
-// PAGE LANDING PAGE
+const images = {
+    web: [imgInicioWeb, imgAltaPacientesWeb, imgAltaMedicoWeb, imgPacientesWeb, imgAuditoriaWeb, imgConfigWeb],
+    app: [imgPhone1, imgPhone2, imgPhone3],
+    watch: [imgSmartwatchOne, imgSmartwatchSecond, imgSmartwatchThird, imgSmartwatchFourth, imgSmartwatchFifht],
+};
+
+const initialState = {
+    webSlide: 0,
+    appSlide: 0,
+    watchSlide: 0,
+    lightboxOpen: false,
+    lightboxImages: [],
+    lightboxIndex: 0,
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_SLIDE':
+            return { ...state, [`${action.carousel}Slide`]: action.index };
+        case 'CHANGE_SLIDE': {
+            const slideKey = `${action.carousel}Slide`;
+            const imgs = images[action.carousel];
+            let next = state[slideKey] + action.direction;
+            if (next < 0) next = imgs.length - 1;
+            if (next >= imgs.length) next = 0;
+            return { ...state, [slideKey]: next };
+        }
+        case 'OPEN_LIGHTBOX': {
+            const imgs = images[action.carousel];
+            const slideKey = `${action.carousel}Slide`;
+            return { ...state, lightboxOpen: true, lightboxImages: imgs, lightboxIndex: state[slideKey] };
+        }
+        case 'CLOSE_LIGHTBOX':
+            return { ...state, lightboxOpen: false, lightboxImages: [], lightboxIndex: 0 };
+        case 'NAVIGATE_LIGHTBOX': {
+            let next = state.lightboxIndex + action.direction;
+            if (next < 0) next = state.lightboxImages.length - 1;
+            if (next >= state.lightboxImages.length) next = 0;
+            return { ...state, lightboxIndex: next };
+        }
+        case 'ROTATE_ALL': {
+            const { web, app, watch } = action.interacting;
+            return {
+                ...state,
+                webSlide: web ? state.webSlide : (state.webSlide + 1) % images.web.length,
+                appSlide: app ? state.appSlide : (state.appSlide + 1) % images.app.length,
+                watchSlide: watch ? state.watchSlide : (state.watchSlide + 1) % images.watch.length,
+            };
+        }
+        default:
+            return state;
+    }
+}
+
 export function LandingPage() {
     const [scrolled, setScrolled] = useState(false);
     const [showLangMenu, setShowLangMenu] = useState(false);
     const { t, idioma, changeLanguage } = useTranslation();
 
-    // Estados para los carruseles de demo
-    const [webSlide, setWebSlide] = useState(0);
-    const [appSlide, setAppSlide] = useState(0);
-    const [watchSlide, setWatchSlide] = useState(0);
-    const [userInteracting, setUserInteracting] = useState({ web: false, app: false, watch: false });
-    const [lightboxOpen, setLightboxOpen] = useState(false);
-    const [lightboxImages, setLightboxImages] = useState([]);
-    const [lightboxIndex, setLightboxIndex] = useState(0);
+    const [state, dispatch] = useReducer(reducer, initialState);
+    const userInteractingRef = useRef({ web: false, app: false, watch: false });
+    const [, setInteractionTrigger] = useState(0);
 
-    // Imágenes del carrusel web demo
-    const webImages = [imgInicioWeb, imgAltaPacientesWeb, imgAltaMedicoWeb, imgPacientesWeb, imgAuditoriaWeb, imgConfigWeb];
-    const appImages = [
-        imgPhone1,
-        imgPhone2,
-        imgPhone3
-    ];
-    const watchImages = [
-        imgSmartwatchOne,
-        imgSmartwatchSecond,
-        imgSmartwatchThird,
-        imgSmartwatchFourth,
-        imgSmartwatchFifht
-    ];
-
-    const openLightbox = (type) => {
-        const images = type === 'web' ? webImages : type === 'app' ? appImages : watchImages;
-        const currentSlide = type === 'web' ? webSlide : type === 'app' ? appSlide : watchSlide;
-        setLightboxImages(images);
-        setLightboxIndex(currentSlide);
-        setLightboxOpen(true);
+    const openLightbox = (carousel) => {
+        dispatch({ type: 'OPEN_LIGHTBOX', carousel });
         document.body.style.overflow = 'hidden';
     };
 
     const closeLightbox = () => {
-        setLightboxOpen(false);
+        dispatch({ type: 'CLOSE_LIGHTBOX' });
         document.body.style.overflow = '';
     };
 
     const navigateLightbox = (direction) => {
-        setLightboxIndex(prev => {
-            let next = prev + direction;
-            if (next < 0) next = lightboxImages.length - 1;
-            if (next >= lightboxImages.length) next = 0;
-            return next;
-        });
+        dispatch({ type: 'NAVIGATE_LIGHTBOX', direction });
     };
 
-    // Función para cambiar slide
-    const changeSlide = (type, direction) => {
-        setUserInteracting(prev => ({ ...prev, [type]: true }));
-        const images = type === 'web' ? webImages : type === 'app' ? appImages : watchImages;
-        const currentSlide = type === 'web' ? webSlide : type === 'app' ? appSlide : watchSlide;
-        const setSlide = type === 'web' ? setWebSlide : type === 'app' ? setAppSlide : setWatchSlide;
-        
-        let newSlide = currentSlide + direction;
-        if (newSlide < 0) newSlide = images.length - 1;
-        if (newSlide >= images.length) newSlide = 0;
-        setSlide(newSlide);
+    const changeSlide = (carousel, direction) => {
+        userInteractingRef.current = { ...userInteractingRef.current, [carousel]: true };
+        setInteractionTrigger(n => n + 1);
+        dispatch({ type: 'CHANGE_SLIDE', carousel, direction });
     };
 
-    // Auto-rotación cada 5 segundos si el usuario no interactúa
+    const handleDotClick = (carousel, index) => {
+        userInteractingRef.current = { ...userInteractingRef.current, [carousel]: true };
+        setInteractionTrigger(n => n + 1);
+        dispatch({ type: 'SET_SLIDE', carousel, index });
+    };
+
     useEffect(() => {
-        const intervals = [];
-        
-        if (!userInteracting.web) {
-            intervals.push(setInterval(() => {
-                setWebSlide(prev => (prev + 1) % webImages.length);
-            }, 5000));
-        }
-        if (!userInteracting.app) {
-            intervals.push(setInterval(() => {
-                setAppSlide(prev => (prev + 1) % appImages.length);
-            }, 5000));
-        }
-        if (!userInteracting.watch) {
-            intervals.push(setInterval(() => {
-                setWatchSlide(prev => (prev + 1) % watchImages.length);
-            }, 5000));
-        }
-
-        return () => intervals.forEach(clearInterval);
-    }, [userInteracting]);
+        const interval = setInterval(() => {
+            dispatch({ type: 'ROTATE_ALL', interacting: userInteractingRef.current });
+        }, 5000);
+        return () => clearInterval(interval);
+    }, [setInteractionTrigger]);
 
     useEffect(() => {
         document.body.classList.remove('dark-mode');
@@ -131,7 +127,7 @@ export function LandingPage() {
         const handleScroll = () => {
             setScrolled(window.scrollY > 50);
         };
-        window.addEventListener('scroll', handleScroll);
+        window.addEventListener('scroll', handleScroll, { passive: true });
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
@@ -216,251 +212,15 @@ export function LandingPage() {
                 </div>
             </header>
 
-            <section className="landing-hero">
-                <div className="hero-bg-grid"></div>
-                <div className="hero-bg-glow hero-bg-glow-1"></div>
-                <div className="hero-bg-glow hero-bg-glow-2"></div>
-                
-                <div className="hero-container">
-                    <div className="hero-content">
-                        <div className="hero-badge fade-in-element stagger-1">
-                            <span className="hero-badge-dot"></span>
-                            {t('tecnologiaNuclear')}
-                        </div>
-                        <h1 className="hero-title fade-in-element stagger-2">
-                            {t('gestioInteligent')} 
-                            <span className="hero-title-gradient">{t('radiofarmacsClinics')}</span>
-                        </h1>
-                        <p className="hero-description fade-in-element stagger-3">
-                            {t('plataformaIntegral')}
-                        </p>
-                        <div className="hero-actions fade-in-element stagger-4">
-                            <a href="https://mail.google.com/mail/?view=cm&to=radioisotopo.portal@gmail.com&su=Información%20sobre%20Radioisòtops" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                                {t('demanaInformacio')}
-                                <ArrowIcon />
-                            </a>
-                            <a href="#demo" className="btn-secondary">
-                                {t('veureDemo')}
-                            </a>
-                        </div>
-                    </div>
+            <LandingHero t={t} />
 
-                    <div className="hero-visual fade-in-element stagger-3">
-                        <div className="hero-image-wrapper">
-                            <img src={ imgMedicos } alt="Professionals mèdics" />
-                            <div className="hero-image-overlay"></div>
-                        </div>
-                        <div className="hero-floating-card hero-floating-card-1">
-                            <div className="floating-card-icon">
-                                <ShieldIcon />
-                            </div>
-                            <div className="floating-card-title">{t('seguretatTotal')}</div>
-                            <div className="floating-card-subtitle">{t('protocolsCertificats')}</div>
-                        </div>
-                        <div className="hero-floating-card hero-floating-card-2">
-                            <div className="floating-card-icon">
-                                <ChartIcon />
-                            </div>
-                            <div className="floating-card-title">{t('precisio')}</div>
-                            <div className="floating-card-subtitle">{t('dadesRealTime')}</div>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <LandingStats t={t} />
 
-            <section className="landing-stats">
-                <div className="landing-stats-grid">
-                    <div className="landing-stat-item fade-in-element stagger-1">
-                        <div className="landing-stat-icon">
-                            <UsersIcon />
-                        </div>
-                        <div className="landing-stat-number">50+</div>
-                        <div className="landing-stat-label">{t('hospitalsConnectats')}</div>
-                    </div>
-                    <div className="landing-stat-item fade-in-element stagger-2">
-                        <div className="landing-stat-icon">
-                            <ChartIcon />
-                        </div>
-                        <div className="landing-stat-number">12K</div>
-                        <div className="landing-stat-label">{t('pacientsMonitoritzats')}</div>
-                    </div>
-                    <div className="landing-stat-item fade-in-element stagger-3">
-                        <div className="landing-stat-icon">
-                            <ShieldIcon />
-                        </div>
-                        <div className="landing-stat-number">99.9%</div>
-                        <div className="landing-stat-label">{t('disponibilitat')}</div>
-                    </div>
-                    <div className="landing-stat-item fade-in-element stagger-4">
-                        <div className="landing-stat-icon">
-                            <BellIcon />
-                        </div>
-                        <div className="landing-stat-number">0</div>
-                        <div className="landing-stat-label">{t('incidentsSeguretat')}</div>
-                    </div>
-                </div>
-            </section>
+            <LandingFeatures t={t} />
 
-            <section id="caracteristiques" className="landing-features">
-                <div className="section-header fade-in-element">
-                    <div className="section-badge">{t('caracteristiques')}</div>
-                    <h2 className="landing-section-title">{t('estatArtControl')}</h2>
-                    <p className="section-description">
-                        {t('solucioCompleta')}
-                    </p>
-                </div>
+            <LandingShowcase t={t} />
 
-                <div className="features-container">
-                    <div className="feature-card fade-in-element stagger-1">
-                        <div className="feature-icon">
-                            <UsersIcon />
-                        </div>
-                        <h3 className="feature-title">{t('monitoritzacioPacients')}</h3>
-                        <p className="feature-description">
-                            {t('seguimentLogic')}
-                        </p>
-                    </div>
-
-                    <div className="feature-card fade-in-element stagger-2">
-                        <div className="feature-icon">
-                            <BellIcon />
-                        </div>
-                        <h3 className="feature-title">{t('alertesSeguretat')}</h3>
-                        <p className="feature-description">
-                            {t('protocolAutematic')}
-                        </p>
-                    </div>
-
-                    <div className="feature-card fade-in-element stagger-3">
-                        <div className="feature-icon">
-                            <DocumentIcon />
-                        </div>
-                        <h3 className="feature-title">{t('informesAuditoria')}</h3>
-                        <p className="feature-description">
-                            {t('generacioAutomatitzada')}
-                        </p>
-                    </div>
-
-                    <div className="feature-card fade-in-element stagger-1">
-                        <div className="feature-icon">
-                            <ChartIcon />
-                        </div>
-                        <h3 className="feature-title">{t('analyticsAvancat')}</h3>
-                        <p className="feature-description">
-                            {t('dashboardInteligent')}
-                        </p>
-                    </div>
-
-                    <div className="feature-card fade-in-element stagger-2">
-                        <div className="feature-icon">
-                            <ShieldIcon />
-                        </div>
-                        <h3 className="feature-title">{t('complimentNormatiu')}</h3>
-                        <p className="feature-description">
-                            {t('normativaEuropea')}
-                        </p>
-                    </div>
-
-                    <div className="feature-card fade-in-element stagger-3">
-                        <div className="feature-icon">
-                            <LockIcon />
-                        </div>
-                        <h3 className="feature-title">{t('xifratGrauMedic')}</h3>
-                        <p className="feature-description">
-                            {t('protectioDades')}
-                        </p>
-                    </div>
-                </div>
-            </section>
-
-            <section className="landing-showcase">
-                <div className="showcase-container">
-                    <div className="showcase-content">
-                        <div className="section-badge fade-in-element">{t('solucionsIntegrals')}</div>
-                        <h2 className="landing-section-title fade-in-element">
-                            {t('dissenyatEquips')}
-                        </h2>
-                        <p className="section-description fade-in-element">
-                            {t('plataformaIntegra')}
-                        </p>
-                        <div className="showcase-features fade-in-element">
-                            <div className="showcase-feature-item">
-                                <div className="showcase-feature-icon">
-                                    <CheckIcon />
-                                </div>
-                                <div className="showcase-feature-text">
-                                    <h4>{t('integracioApi')}</h4>
-                                    <p>{t('connecteuSistemes')}</p>
-                                </div>
-                            </div>
-                            <div className="showcase-feature-item">
-                                <div className="showcase-feature-icon">
-                                    <CheckIcon />
-                                </div>
-                                <div className="showcase-feature-text">
-                                    <h4>{t('suport247')}</h4>
-                                    <p>{t('equipEspecialistes')}</p>
-                                </div>
-                            </div>
-                            <div className="showcase-feature-item">
-                                <div className="showcase-feature-icon">
-                                    <CheckIcon />
-                                </div>
-                                <div className="showcase-feature-text">
-                                    <h4>{t('formacioInclosa')}</h4>
-                                    <p>{t('cursosCertificacio')}</p>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div className="showcase-visual fade-in-element">
-                        <div className="showcase-image-main">
-                            <img src={imgMedicos2} alt="Dashboard del sistema" />
-                        </div>
-                        <div className="showcase-stats-overlay">
-                            <div className="landing-showcase-stat-card">
-                                <div className="landing-showcase-stat-number">24/7</div>
-                                <div className="landing-showcase-stat-label">{t('sincronizacion')}</div>
-                            </div>
-                            <div className="landing-showcase-stat-card">
-                                <div className="landing-showcase-stat-number">Multi</div>
-                                <div className="landing-showcase-stat-label">{t('integracions')}</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-
-            <section id="contacte" className="landing-cta">
-                <div className="cta-container">
-                    <h2 className="cta-title fade-in-element">
-                        {t('prepareuHospital')}
-                    </h2>
-                    <p className="cta-description fade-in-element">
-                        {t('contacteuNosaltres')}
-                    </p>
-                        <div className="cta-actions fade-in-element">
-                        <a href="https://mail.google.com/mail/?view=cm&to=radioisotopo.portal@gmail.com&su=Informació%20sobre%20Radioisòtops" target="_blank" rel="noopener noreferrer" className="btn-primary">
-                            {t('contactaNos')}
-                            <ArrowIcon />
-                        </a>
-                    </div>
-                    <div className="cta-trust fade-in-element">
-                        <div className="cta-trust-item">
-                            <CheckIcon />
-                            <span>{t('respostaMenys24h')}</span>
-                        </div>
-                        <div className="cta-trust-item">
-                            <CheckIcon />
-                            <span>{t('assessoriaPersonalitzada')}</span>
-                        </div>
-                        <div className="cta-trust-item">
-                            <CheckIcon />
-                            <span>{t('senseCompromis')}</span>
-                        </div>
-                    </div>
-                </div>
-            </section>
+            <LandingCTA t={t} />
 
             <section id="demo" className="landing-demo">
                 <div className="demo-header section-header fade-in-element">
@@ -472,114 +232,45 @@ export function LandingPage() {
                     </div>
                     <div className="demo-grid">
                         <div className="demo-card fade-in-element stagger-1">
-                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('web')}>
-                                <div className="carousel-slides">
-                                    {webImages.map((img, index) => (
-                                         <div key={index} className={`carousel-slide ${index === webSlide ? 'active' : ''}`}>
-                                             <img src={img} alt={`${t('demoWeb')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
-                                         </div>
-                                     ))}
-                                </div>
-                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('web', -1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('web', 1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <div className="carousel-dots">
-                                    {webImages.map((_, index) => (
-                                        <span 
-                                            key={index} 
-                                            className={`carousel-dot ${index === webSlide ? 'active' : ''}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setWebSlide(index);
-                                                setUserInteracting(prev => ({ ...prev, web: true }));
-                                            }}
-                                        ></span>
-                                    ))}
-                                </div>
-                            </div>
+                            <DemoCarousel
+                                images={images.web}
+                                slideIndex={state.webSlide}
+                                t={t}
+                                onChangeSlide={(dir) => changeSlide('web', dir)}
+                                onDotClick={(index) => handleDotClick('web', index)}
+                                onOpenLightbox={() => openLightbox('web')}
+                                type="web"
+                            />
                             <div className="demo-card-content">
                                 <h3>{t('demoWeb')}</h3>
                                 <p>{t('demoWebDesc')}</p>
                             </div>
                         </div>
                         <div className="demo-card fade-in-element stagger-2">
-                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('app')}>
-                                <div className="carousel-slides">
-                                    {appImages.map((img, index) => (
-                                         <div key={index} className={`carousel-slide ${index === appSlide ? 'active' : ''}`}>
-                                             <img src={img} alt={`${t('demoApp')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
-                                         </div>
-                                     ))}
-                                </div>
-                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('app', -1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('app', 1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <div className="carousel-dots">
-                                    {appImages.map((_, index) => (
-                                        <span 
-                                            key={index} 
-                                            className={`carousel-dot ${index === appSlide ? 'active' : ''}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setAppSlide(index);
-                                                setUserInteracting(prev => ({ ...prev, app: true }));
-                                            }}
-                                        ></span>
-                                    ))}
-                                </div>
-                            </div>
+                            <DemoCarousel
+                                images={images.app}
+                                slideIndex={state.appSlide}
+                                t={t}
+                                onChangeSlide={(dir) => changeSlide('app', dir)}
+                                onDotClick={(index) => handleDotClick('app', index)}
+                                onOpenLightbox={() => openLightbox('app')}
+                                type="app"
+                            />
                             <div className="demo-card-content">
                                 <h3>{t('demoApp')}</h3>
                                 <p>{t('demoAppDesc')}</p>
                             </div>
                         </div>
                         <div className="demo-card fade-in-element stagger-3">
-                            <div className="demo-card-image carousel-container" onClick={() => openLightbox('watch')}>
-                                <div className="carousel-slides">
-                                    {watchImages.map((img, index) => (
-                                         <div key={index} className={`carousel-slide ${index === watchSlide ? 'active' : ''}`}>
-                                             <img src={img} alt={`${t('demoSmartwatch')} ${index + 1}`} style={{width: '90%', height: 'auto', display: 'block', margin: '0 auto'}} />
-                                         </div>
-                                     ))}
-                                </div>
-                                <button className="carousel-btn carousel-prev" onClick={(e) => { e.stopPropagation(); changeSlide('watch', -1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <button className="carousel-btn carousel-next" onClick={(e) => { e.stopPropagation(); changeSlide('watch', 1); }}>
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                                        <path d="M9 18l6-6-6-6" strokeLinecap="round" strokeLinejoin="round"/>
-                                    </svg>
-                                </button>
-                                <div className="carousel-dots">
-                                    {watchImages.map((_, index) => (
-                                        <span 
-                                            key={index} 
-                                            className={`carousel-dot ${index === watchSlide ? 'active' : ''}`}
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setWatchSlide(index);
-                                                setUserInteracting(prev => ({ ...prev, watch: true }));
-                                            }}
-                                        ></span>
-                                    ))}
-                                </div>
-                            </div>
+                            <DemoCarousel
+                                images={images.watch}
+                                slideIndex={state.watchSlide}
+                                t={t}
+                                onChangeSlide={(dir) => changeSlide('watch', dir)}
+                                onDotClick={(index) => handleDotClick('watch', index)}
+                                onOpenLightbox={() => openLightbox('watch')}
+                                type="watch"
+                            />
                             <div className="demo-card-content">
                                 <h3>{t('demoSmartwatch')}</h3>
                                 <p>{t('demoSmartwatchDesc')}</p>
@@ -620,30 +311,13 @@ export function LandingPage() {
                     </nav>
                 </div>
             </footer>
-            {lightboxOpen && (
-                <div className="lightbox-overlay" onClick={closeLightbox}>
-                    <div className="lightbox-content" onClick={e => e.stopPropagation()}>
-                        <button className="lightbox-close" onClick={closeLightbox}>
-                            <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M18 6L6 18"/>
-                                <path d="M6 6l12 12"/>
-                            </svg>
-                        </button>
-                        <button className="lightbox-nav lightbox-prev" onClick={() => navigateLightbox(-1)}>
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M15 18l-6-6 6-6"/>
-                            </svg>
-                        </button>
-                        <img src={lightboxImages[lightboxIndex]} alt={`Imagen ${lightboxIndex + 1}`} />
-                        <button className="lightbox-nav lightbox-next" onClick={() => navigateLightbox(1)}>
-                            <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                                <path d="M9 18l6-6-6-6"/>
-                            </svg>
-                        </button>
-                        <div className="lightbox-counter">{lightboxIndex + 1} / {lightboxImages.length}</div>
-                    </div>
-                </div>
-            )}
+            <LightboxModal
+                open={state.lightboxOpen}
+                images={state.lightboxImages}
+                currentIndex={state.lightboxIndex}
+                onClose={closeLightbox}
+                onNavigate={navigateLightbox}
+            />
             <div className="cookies-banner" id="cookies-banner">
                 <div className="cookies-banner-content">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

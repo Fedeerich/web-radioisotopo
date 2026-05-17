@@ -10,9 +10,11 @@ UPDATED:       [06/05/2026]
 
 const API_URL = "https://api-radioisotopo-proxy.m-gongora-carriedo.workers.dev/api"; 
 
+const getToken = () => localStorage.getItem("token");
+
 const getHeaders = () => ({
     "Content-Type": "application/json",
-    "Authorization": `Bearer ${localStorage.getItem("token")}`
+    "Authorization": `Bearer ${getToken()}`
 });
 
 // Service Login (API TOTAL)
@@ -32,7 +34,11 @@ export const loginService = {
             throw new Error("Vuelve a intentarlo de nuevo");
         }
 
-        if (!respuesta.ok) throw new Error("Credenciales incorrectas");
+        if (!respuesta.ok) {
+            if (respuesta.status === 401) throw new Error("Credenciales incorrectas");
+            if (respuesta.status >= 500) throw new Error("El servidor no está disponible, inténtelo de nuevo más tarde");
+            throw new Error("Error inesperado al iniciar sesión");
+        }
         
         const datos = await respuesta.json();
         if (datos.token) {
@@ -43,7 +49,7 @@ export const loginService = {
     },
 
     obtenerPerfilActual: async () => {
-        const token = localStorage.getItem("token");
+        const token = getToken();
         if (!token) return null;
 
         const respuesta = await fetch(`${API_URL}/auth/me`, {
@@ -329,7 +335,7 @@ export const loginService = {
         const respuesta = await fetch(`${API_URL}/users/${userId}/upload-avatar`, {
             method: "POST",
             headers: {
-                "Authorization": `Bearer ${localStorage.getItem("token")}`
+                "Authorization": `Bearer ${getToken()}`
             },
             body: formData
         });

@@ -1,15 +1,4 @@
-/*
-================================================================================
-PROJECT:       [RADIOISOTOPO]
-VERSION:       1.0.0
-DESCRIPTION:   [Pagina para ver los pacientes activos]
-AUTHOR:        [Marcos, Wael]
-UPDATED:       [23/04/2026]
-================================================================================
-*/
-
-// IMPORTS
-import { useState, useEffect } from "react";
+import { useReducer, useEffect } from "react";
 import "../styles/Paciente.css";
 
 import { PerfilPacientePage } from './PerfilPacientePage';
@@ -17,51 +6,71 @@ import { CrearPacientePage } from './CrearPacientePage';
 import { loginService } from "../services/api";
 import { useTranslation } from "../hooks/useTranslation";
 
-// PAGE PACIENTE PAGE
+const initialState = {
+    pacienteSeleccionado: null,
+    creandoPaciente: false,
+    pacientes: [],
+    busqueda: "",
+    cargando: true,
+};
+
+function reducer(state, action) {
+    switch (action.type) {
+        case 'SET_PACIENTES':
+            return { ...state, pacientes: action.pacientes, cargando: false };
+        case 'SET_CARGANDO':
+            return { ...state, cargando: action.cargando };
+        case 'SET_BUSQUEDA':
+            return { ...state, busqueda: action.busqueda };
+        case 'SELECCIONAR_PACIENTE':
+            return { ...state, pacienteSeleccionado: action.paciente };
+        case 'VOLVER_LISTA':
+            return { ...state, pacienteSeleccionado: null };
+        case 'CREAR_PACIENTE':
+            return { ...state, creandoPaciente: true };
+        case 'VOLVER_CREAR':
+            return { ...state, creandoPaciente: false };
+        default:
+            return state;
+    }
+}
+
 export function PacientePage() {
     const { t } = useTranslation();
-    const [pacienteSeleccionado, setPacienteSeleccionado] = useState(null);
-    const [creandoPaciente, setCreandoPaciente] = useState(false);
-    
-    const [pacientes, setPacientes] = useState([]);
-    const [busqueda, setBusqueda] = useState("");
-    const [cargando, setCargando] = useState(true);
+    const [state, dispatch] = useReducer(reducer, initialState);
 
     useEffect(() => {
         const cargarDatos = async () => {
             try {
                 const data = await loginService.obtenerListaPacientes();
-                setPacientes(data);
+                dispatch({ type: 'SET_PACIENTES', pacientes: data });
             } catch (error) {
                 console.error("Error cargando pacientes:", error);
-            } finally {
-                setCargando(false);
+                dispatch({ type: 'SET_CARGANDO', cargando: false });
             }
         };
         cargarDatos();
     }, []);
 
-    const pacientesFiltrados = pacientes.filter(p => 
-        p.nombre?.toLowerCase().includes(busqueda.toLowerCase()) || 
-        p.cip?.toLowerCase().includes(busqueda.toLowerCase())
+    const pacientesFiltrados = state.pacientes.filter(p => 
+        p.nombre?.toLowerCase().includes(state.busqueda.toLowerCase()) || 
+        p.cip?.toLowerCase().includes(state.busqueda.toLowerCase())
     );
 
-    if (creandoPaciente) {
-        return <CrearPacientePage alVolver={() => setCreandoPaciente(false)} />;
+    if (state.pacienteSeleccionado) {
+        return <PerfilPacientePage paciente={state.pacienteSeleccionado} alVolver={() => dispatch({ type: 'VOLVER_LISTA' })} />;
     }
 
-    if (pacienteSeleccionado) {
-        return <PerfilPacientePage paciente={pacienteSeleccionado} alVolver={() => setPacienteSeleccionado(null)} />;
-    }
-
-    return (
+    return state.creandoPaciente ? (
+        <CrearPacientePage alVolver={() => dispatch({ type: 'VOLVER_CREAR' })} />
+    ) : (
         <div className="pacientes-container">
             <header className="content-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
                     <h1>{t('gestionDePacientes')}</h1>
                     <p>{t('gestionDispositivosTratamientos')}</p>
                 </div>
-                <button className="btn-add-patient" onClick={() => setCreandoPaciente(true)}>
+                <button className="btn-add-patient" onClick={() => dispatch({ type: 'CREAR_PACIENTE' })}>
                     <i className="fi fi-sr-user-add"></i> {t('anadirPaciente')}
                 </button>
             </header>
@@ -72,8 +81,8 @@ export function PacientePage() {
                     <input 
                         type="text" 
                         placeholder={t('buscarPorTarjetaSanitaria')} 
-                        value={busqueda}
-                        onChange={(e) => setBusqueda(e.target.value)}
+                        value={state.busqueda}
+                        onChange={(e) => dispatch({ type: 'SET_BUSQUEDA', busqueda: e.target.value })}
                     />
                 </div>
                 <div className="filter-group">
@@ -104,7 +113,7 @@ export function PacientePage() {
                         </tr>
                     </thead>
                     <tbody>
-                        {cargando ? (
+                        {state.cargando ? (
                             <tr><td colSpan="5" style={{ textAlign: 'center', padding: '20px' }}>{t('cargandoDatosClinicos')}</td></tr>
                         ) : (
                             pacientesFiltrados.map((p, index) => (
@@ -142,7 +151,7 @@ export function PacientePage() {
                                     <td>
                                         <button 
                                             className="btn-perfil" 
-                                            onClick={() => setPacienteSeleccionado(p)}
+                                            onClick={() => dispatch({ type: 'SELECCIONAR_PACIENTE', paciente: p })}
                                         >
                                             {t('verPerfil')}
                                         </button>

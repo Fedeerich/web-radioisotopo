@@ -42,17 +42,19 @@ export function AuditoriaPage() {
             setMedicos(lista);
 
             const nuevosAvatares = {};
+            const medicosConAvatar = [];
+            for (const m of lista) {
+                if (m.profilePicUrl) medicosConAvatar.push(m);
+            }
             await Promise.all(
-                lista
-                    .filter(m => m.profilePicUrl)
-                    .map(async (m) => {
-                        const finalUrl = m.profilePicUrl.startsWith('http') 
-                            ? m.profilePicUrl 
-                            : `${BASE_HOST}${m.profilePicUrl}`;
+                medicosConAvatar.map(async (m) => {
+                    const finalUrl = m.profilePicUrl.startsWith('http') 
+                        ? m.profilePicUrl 
+                        : `${BASE_HOST}${m.profilePicUrl}`;
 
-                        const blobUrl = await cargarImagenComoBlob(finalUrl);
-                        if (blobUrl) nuevosAvatares[m.id] = blobUrl;
-                    })
+                    const blobUrl = await cargarImagenComoBlob(finalUrl);
+                    if (blobUrl) nuevosAvatares[m.id] = blobUrl;
+                })
             );
             setAvatares(nuevosAvatares);
         } catch (error) {

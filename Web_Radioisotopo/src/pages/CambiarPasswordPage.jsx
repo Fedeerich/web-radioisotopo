@@ -28,12 +28,12 @@ export function CambiarPasswordPage() {
         e.preventDefault();
 
         if (passwords.nueva !== passwords.confirmar) {
-            setEstado({ ...estado, error: t('contrasenasNoCoinciden'), exito: "" });
+            setEstado(prev => ({ ...prev, error: t('contrasenasNoCoinciden'), exito: "" }));
             return;
         }
 
         if (!validatePassword(passwords.nueva)) {
-            setEstado({ ...estado, error: t('errorContrasenaInvalida'), exito: "" });
+            setEstado(prev => ({ ...prev, error: t('errorContrasenaInvalida'), exito: "" }));
             return;
         }
 
@@ -52,16 +52,16 @@ export function CambiarPasswordPage() {
     return (
         <div className="password-page-container">
             <div className="password-card">
-                <div className="logo-container" style={{marginBottom: '20px'}}>
-                    <div className="avatar" style={{backgroundColor: '#e0f2fe', width: '80px', height: '80px', margin: '0 auto', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center'}}>
-                        <img src={logo} alt="Logo" style={{width: '120px'}} /> 
+                <div className="logo-container-cp">
+                    <div className="avatar-circle-cp">
+                        <img src={logo} alt="Logo" /> 
                     </div>
                 </div>
 
                 <h2>{t('seguridadCuenta')}</h2>
                 <p>{t('introduceContrasenaActual')}</p>
 
-                <form onSubmit={manejarCambio} style={{width: '100%'}}>
+                <form onSubmit={manejarCambio} className="password-form">
                     {estado.error && <div className="mensaje-error">{estado.error}</div>}
                     {estado.exito && <div className="mensaje-exito">{estado.exito}</div>}
                     
@@ -70,14 +70,14 @@ export function CambiarPasswordPage() {
                         placeholder={t('contrasenaActual')} 
                         required 
                         value={passwords.actual}
-                        onChange={e => setPasswords({...passwords, actual: e.target.value})}
+                        onChange={e => setPasswords(prev => ({...prev, actual: e.target.value}))}
                     />
                     <input 
                         type="password" 
                         placeholder={t('nuevaContrasena')} 
                         required 
                         value={passwords.nueva}
-                        onChange={e => setPasswords({...passwords, nueva: e.target.value})}
+                        onChange={e => setPasswords(prev => ({...prev, nueva: e.target.value}))}
                         className={ estado.error === t('errorContrasenaInvalida') ? "input-error" : "" }
                     />
                     <input 
@@ -85,7 +85,7 @@ export function CambiarPasswordPage() {
                         placeholder={t('confirmarNuevaContrasena')} 
                         required 
                         value={passwords.confirmar}
-                        onChange={e => setPasswords({...passwords, confirmar: e.target.value})}
+                        onChange={e => setPasswords(prev => ({...prev, confirmar: e.target.value}))}
                         className={ estado.error === t('contrasenasNoCoinciden') ? "input-error" : "" }
                     />
                     

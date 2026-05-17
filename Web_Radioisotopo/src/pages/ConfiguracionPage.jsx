@@ -149,11 +149,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('bateriaBajaDispositivos')}</strong>
                                     <p>{t('avisarSmartWatchBaja')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifBateria">
                                     <input 
+                                        id="notifBateria"
                                         type="checkbox" 
                                         checked={usuario?.notifBateria || false} 
                                         onChange={(e) => actualizarPreferencia('bateriaBaja', e.target.checked)}
+                                        aria-label={t('bateriaBajaDispositivos')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -164,11 +166,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('desconexionBiometrica')}</strong>
                                     <p>{t('alertaPerdidaSenal')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifDesconexion">
                                     <input 
+                                        id="notifDesconexion"
                                         type="checkbox" 
                                         checked={usuario?.notifDesconexion || false}
                                         onChange={(e) => actualizarPreferencia('desconexionBiometrica', e.target.checked)}
+                                        aria-label={t('desconexionBiometrica')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -179,11 +183,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('resumenSemanal')}</strong>
                                     <p>{t('recibirInformeCorreo')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifResumen">
                                     <input 
+                                        id="notifResumen"
                                         type="checkbox" 
                                         checked={usuario?.notifResumen || false}
                                         onChange={(e) => actualizarPreferencia('resumenSemanal', e.target.checked)}
+                                        aria-label={t('resumenSemanal')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -194,11 +200,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('alertaRadiacionSegura')}</strong>
                                     <p>{t('avisarPacienteNiveles')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifRadiacion">
                                     <input 
+                                        id="notifRadiacion"
                                         type="checkbox" 
                                         checked={usuario?.notifRadiacion || false}
                                         onChange={(e) => actualizarPreferencia('radiacionSegura', e.target.checked)}
+                                        aria-label={t('alertaRadiacionSegura')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -209,11 +217,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('anomaliaConstantesVitales')}</strong>
                                     <p>{t('notificarAlteraciones')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifVitales">
                                     <input 
+                                        id="notifVitales"
                                         type="checkbox" 
                                         checked={usuario?.notifVitales || false}
                                         onChange={(e) => actualizarPreferencia('anomaliaVitales', e.target.checked)}
+                                        aria-label={t('anomaliaConstantesVitales')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
@@ -224,11 +234,13 @@ export function ConfiguracionPage() {
                                     <strong>{t('falloSincronizacion')}</strong>
                                     <p>{t('avisarRelojNoEnvia')}</p>
                                 </div>
-                                <label className="switch">
+                                <label className="switch" htmlFor="notifSincro">
                                     <input 
+                                        id="notifSincro"
                                         type="checkbox" 
                                         checked={usuario?.notifSincro || false}
                                         onChange={(e) => actualizarPreferencia('falloSincronizacion', e.target.checked)}
+                                        aria-label={t('falloSincronizacion')}
                                     />
                                     <span className="slider round"></span>
                                 </label>
