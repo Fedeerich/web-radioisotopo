@@ -215,7 +215,13 @@ UPDATED:       [23/04/2026]
     background-color: #008cff;
     border-color: #008cff;
     color: white;
-    min-width: 115px;
+}
+
+.auditoria-container .btn-perfil {
+    width: 95px;
+    padding: 10px 5px;
+    text-align: center;
+    font-size: 0.78rem;
 }
 
 .btn-sync:hover {
