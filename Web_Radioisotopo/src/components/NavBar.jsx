@@ -1,4 +1,5 @@
 import { useReducer, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import "../styles/NavBar.css";
 import UserProfile from "./UserProfile";
 import { useAuth } from "../context/AuthContext";
@@ -36,8 +37,9 @@ function reducer(state, action) {
 }
 
 export function NavBar() {
-    const { usuario, actualizarUsuario } = useAuth();
+    const { usuario, actualizarUsuario, logout } = useAuth();
     const { t } = useTranslation();
+    const navigate = useNavigate();
     const [state, dispatch] = useReducer(reducer, initialState);
     const fileInputRef = useRef(null);
 
@@ -211,7 +213,7 @@ export function NavBar() {
                                     accept="image/*" 
                                     onChange={handleAvatarChange} 
                                 />
-                                <button className="logout-btn">{t('cerrarSesion')}</button>
+                                <button className="logout-btn" onClick={() => { logout(); navigate('/'); }}>{t('cerrarSesion')}</button>
                             </div>
                         </div>
                     )}

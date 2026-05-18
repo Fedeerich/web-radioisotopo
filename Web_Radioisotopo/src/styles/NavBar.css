@@ -475,6 +475,10 @@ Sustituye todo tu bloque de Media Queries (la parte final de tu archivo CSS del 
         padding: 5px 3px;
     }
 
+    .connection-status {
+        display: none;
+    }
+
     .notifications-dropdown {
         width: 280px;
         right: -30px;
@@ -486,9 +490,6 @@ Sustituye todo tu bloque de Media Queries (la parte final de tu archivo CSS del 
 }
 
 @media (max-width: 480px) {
-    .connection-status {
-        display: none; 
-    }
 
     .navbar-divider-vertical {
         display: none;

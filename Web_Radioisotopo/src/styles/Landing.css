@@ -345,6 +345,8 @@ html {
 
 .hero-visual {
     position: relative;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .hero-visual img {
@@ -483,8 +485,7 @@ html {
 
 .hero-image-wrapper img {
     width: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
+    height: auto;
     border-radius: 24px;
     box-shadow: var(--landing-shadow-lg);
     border: 1px solid var(--landing-border);
@@ -778,6 +779,8 @@ html {
 
 .showcase-visual {
     position: relative;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .showcase-image-main {
@@ -786,7 +789,6 @@ html {
     box-shadow: var(--landing-shadow-lg);
     border: 1px solid var(--landing-border);
     display: block;
-    object-fit: cover;
 }
 
 .showcase-stats-overlay {
@@ -1127,12 +1129,13 @@ html {
 
 .showcase-visual {
     position: relative;
+    max-width: 600px;
+    margin: 0 auto;
 }
 
 .showcase-visual img {
     width: 100%;
-    aspect-ratio: 3 / 2;
-    object-fit: cover;
+    height: auto;
     border-radius: 24px;
     box-shadow: var(--landing-shadow-lg);
     border: 1px solid var(--landing-border);
